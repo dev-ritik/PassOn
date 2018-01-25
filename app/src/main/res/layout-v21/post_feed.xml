@@ -10,8 +10,9 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:padding="5dp"
-        card_view:cardCornerRadius="0dp">
-        <!--android:elevation="300dp"-->
+    android:elevation="3dp"
+
+    card_view:cardCornerRadius="0dp">
 
 
         <LinearLayout
@@ -26,15 +27,15 @@
 
                 <ImageView
                     android:id="@+id/bookPic"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/pic" />
+                    android:scaleType="center"
+                    android:src="@drawable/pic"
+                    />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/rightLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -45,8 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="H.C. Verma"
-                    android:textStyle="bold" />
+                    android:text="H.C. Verma"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="Physics" />
+                        android:text="Physics"/>
 
                     <TextView
                         android:id="@+id/filter2"
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="vol-1" />
+                        android:text="vol-1"/>
 
                     <CheckBox
                         android:id="@+id/favorite"
@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="jan, 12 2016\n 04:56:12 PM" />
+                        android:text="jan, 12 2016\n 04:56:12 PM"/>
                 </LinearLayout>
                 <Button
                     android:layout_width="wrap_content"
