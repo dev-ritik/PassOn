@@ -25,11 +25,13 @@
                 android:layout_weight="2">
 
                 <ImageView
-                    android:id="@+id/thumbnail"
+                    android:id="@+id/bookPic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerInside" />
+                    android:scaleType="center"
+                    android:src="@drawable/pic"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -42,7 +44,8 @@
                     android:id="@+id/bookName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="H.C. Verma"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,14 +57,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:text="Physics"/>
 
                     <TextView
                         android:id="@+id/filter2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:text="vol-1"/>
 
                     <CheckBox
                         android:id="@+id/favorite"
@@ -81,7 +86,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="10dp" />
+                        android:padding="10dp"
+                        android:text="jan, 12 2016\n 04:56:12 PM"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
