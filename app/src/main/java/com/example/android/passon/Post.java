@@ -22,6 +22,9 @@ public class Post {
     private String time;
     private ArrayList<String> favourite;
 
+    public Post(){
+
+    }
     public Post(int index,String photoUrl, String currentTime, String bookname, String posterId, String filter1,String filter2, ArrayList saveIt) {
         this.index=index;
         this.bookPhotoUrl = photoUrl;
@@ -31,14 +34,14 @@ public class Post {
         this.filter2 = filter2;
         this.posterId = posterId;
         this.favourite = saveIt;
-        Log.i(posterId, "standpoint post43");
-//        Log.i(text, "standpoint post44");
-        Log.i(photoUrl, "standpoint post45");
-        Log.i(time, "standpoint post46");
-        Log.i(saveIt.toString(), "standpoint post47");
-//        Log.i(likedUsers.toString(), "standpoint post48");
-//        Log.i(unlikedUsers.toString(), "standpoint post49");
-        Log.i(bookName, "standpoint post50");
+//        Log.i(posterId, "standpoint post43");
+////        Log.i(text, "standpoint post44");
+//        Log.i(photoUrl, "standpoint post45");
+//        Log.i(time, "standpoint post46");
+//        Log.i(saveIt.toString(), "standpoint post47");
+////        Log.i(likedUsers.toString(), "standpoint post48");
+////        Log.i(unlikedUsers.toString(), "standpoint post49");
+//        Log.i(bookName, "standpoint post50");
 
     }
 
@@ -51,7 +54,6 @@ public class Post {
     }
 
     public String getPosterId() {
-        Log.i(posterId, "standpoint post55");
         return posterId;
     }
 

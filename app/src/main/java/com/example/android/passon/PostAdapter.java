@@ -5,9 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
          ImageView bookPic;
          TextView bookName,filter1,filter2;
          CheckBox favouritePost;
-
+        Button request;
 
 
         private ViewHolder(View view) {
@@ -32,6 +34,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             filter1=(TextView)view.findViewById(R.id.filter1);
             filter2=(TextView)view.findViewById(R.id.filter2);
             favouritePost = (CheckBox)view.findViewById(R.id.favorite);
+            request=(Button)view.findViewById(R.id.request);
 
         }
     }
@@ -50,12 +53,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
-        Log.i("point Po53","adapter");
+        Log.i("point Po53",Integer.toString(Posts.size()));
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());
         holder.bookPic.setImageResource(R.drawable.pic);
         holder.favouritePost.setChecked(true);
+        holder.request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Please enter some text", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
     @Override

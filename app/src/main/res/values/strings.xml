@@ -7,4 +7,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="bookName">bookname</string>
+    <string name="filter1">filter1</string>
+    <string name="filter2">filter2</string>
+    <string name="date">date</string>
 </resources>
