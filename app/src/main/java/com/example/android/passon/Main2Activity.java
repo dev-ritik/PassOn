@@ -1,6 +1,9 @@
 package com.example.android.passon;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +44,9 @@ public class Main2Activity extends AppCompatActivity
     static boolean backupCalledAlready = false;
 
     private FirebaseDatabase mfirebaseDatabase;
-    public static DatabaseReference mMessagesDatabaseReference;
+    public static DatabaseReference mPostDatabaseReference;
+    public static DatabaseReference mRequestDatabaseReference;
+    public static DatabaseReference mUserDatabaseReference;
     public static ChildEventListener mChildEventListener;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
     public static StorageReference mChatPhotosStorageReference;
@@ -98,8 +104,10 @@ public class Main2Activity extends AppCompatActivity
         }
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mMessagesDatabaseReference = mfirebaseDatabase.getReference().child("input");
+        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post");
         mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
+//        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request");
+        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -202,13 +210,36 @@ public class Main2Activity extends AppCompatActivity
                 //pust post object to database
                 Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), "d", filter1.getText().toString(), filter2.getText().toString(), favouriteArrayList);
 //                posts.add(post);
-                mMessagesDatabaseReference.push().setValue(post);
+                mPostDatabaseReference.push().setValue(post);
                 bookName.setText("");
                 filter1.setText("");
                 filter2.setText("");
             }
         });
 
+//        mAuthStateListener = new FirebaseAuth.AuthStateListener()
+//        {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                //to find if user is signed or not
+//                if (mChildEventListener != null) {
+//                }
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    //user is signed
+////                    onSignInitilize(user.getUid(), user.getEmail(),user.getPhotoUrl());
+////                    mUser = user.getDisplayName();//send name and operate with db
+////                    Log.i(mUser,"standpoint M321");
+//                    mUserDatabaseReference.push()
+//
+//                } else {
+//                    //user signed out
+//                    onSignOutCleaner();
+//                    startActivityForResult((new Intent(getApplicationContext(), com.example.android.anonymoustwitter.LoginActivity.class)),
+//                            RC_SIGN_IN);
+//                }
+//            }
+//        };
     }
 
     @Override
@@ -238,8 +269,14 @@ public class Main2Activity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
+        } else if (id == R.id.chat) {
+//        mUserProfile=mFirebaseAuth.getCurrentUser().getPhotoUrl();
+            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ChatActivity.class);
+        intent.putExtra("person1", "ritik");
+        intent.putExtra("person2", "kumar");
+            startActivity(intent);
 
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -288,7 +325,7 @@ public class Main2Activity extends AppCompatActivity
 
 
     private void attachDatabaseListener() {
-        mMessagesDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        mPostDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
@@ -334,7 +371,7 @@ public class Main2Activity extends AppCompatActivity
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
 
                     for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
-                        if (iterator.next().getTimeCurrent() == post.getTimeCurrent())
+                        if (iterator.next().getTime() == post.getTime())
                             iterator.remove();
                         Log.i(Integer.toString(posts.size()), "point m311");
                     }
@@ -353,7 +390,7 @@ public class Main2Activity extends AppCompatActivity
                     // error or permission denied
                 }
             };
-            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+            mPostDatabaseReference.addChildEventListener(mChildEventListener);
             Log.i("child addeddd", "point m610");
         }
 
@@ -361,7 +398,7 @@ public class Main2Activity extends AppCompatActivity
 
     private void detachDatabaseReadListener() {
         if (mChildEventListener != null)
-            mMessagesDatabaseReference.removeEventListener(mChildEventListener);
+            mPostDatabaseReference.removeEventListener(mChildEventListener);
         mChildEventListener = null;
     }
 

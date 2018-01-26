@@ -55,7 +55,6 @@
             android:transcriptMode="alwaysScroll"
             tools:listitem="@layout/post_feed" />
 
-
     </LinearLayout>
 
     <ProgressBar

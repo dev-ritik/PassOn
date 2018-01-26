@@ -11,4 +11,6 @@
     <string name="filter1">filter1</string>
     <string name="filter2">filter2</string>
     <string name="date">date</string>
+    <string name="enterData">Enter Text</string>
+    <string name="chat">chat</string>
 </resources>

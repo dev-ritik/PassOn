@@ -9,10 +9,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="5dp"
+        android:elevation="3dp"
         android:padding="5dp"
-    android:elevation="3dp"
-
-    card_view:cardCornerRadius="0dp">
+        card_view:cardCornerRadius="0dp">
 
 
         <LinearLayout
@@ -31,8 +30,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="center"
-                    android:src="@drawable/pic"
-                    />
+                    android:src="@drawable/pic" />
             </LinearLayout>
 
             <LinearLayout
@@ -46,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="H.C. Verma"/>
+                    android:text="H.C. Verma" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="Physics"/>
+                        android:text="Physics" />
 
                     <TextView
                         android:id="@+id/filter2"
@@ -67,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="vol-1"/>
+                        android:text="vol-1" />
 
                     <CheckBox
                         android:id="@+id/favorite"
@@ -88,14 +86,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:text="jan, 12 2016\n 04:56:12 PM"/>
+                        android:text="jan, 12 2016\n 04:56:12 PM" />
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="@string/get_it"/>
+                    android:text="@string/get_it" />
             </LinearLayout>
         </LinearLayout>
 

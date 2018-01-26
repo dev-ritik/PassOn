@@ -22,9 +22,10 @@ public class Post {
     private String time;
     private ArrayList<String> favourite;
 
+//
     public Post(){
-
     }
+
     public Post(int index,String photoUrl, String currentTime, String bookname, String posterId, String filter1,String filter2, ArrayList saveIt) {
         this.index=index;
         this.bookPhotoUrl = photoUrl;
@@ -44,6 +45,17 @@ public class Post {
 //        Log.i(bookName, "standpoint post50");
 
     }
+//
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+//
+
 
     public int getIndex() {
         return index;
@@ -61,17 +73,7 @@ public class Post {
         this.posterId = posterId;
     }
 
-    public void setTimeCurrent(String time) {
-        this.time = time;
-    }
-
-    public String getTimeCurrent() {
-//        System.out.println(time);
-//        System.out.println("standpoint 56");
-
-        return time;
-    }
-
+//
     public String getBookPhotoUrl() {
         return bookPhotoUrl;
     }
