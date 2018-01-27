@@ -38,7 +38,6 @@ public class ChatActivity extends AppCompatActivity {
     public static DatabaseReference mChatDatabaseReference;
     private static ChildEventListener mChildEventListener;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
-//    public static StorageReference mChatPhotosStorageReference;
 
     private RecyclerView mRecyclerView;
     public static RecyclerView.Adapter mAdapter;
@@ -191,7 +190,6 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
 //                mProgressBar.setVisibility(View.INVISIBLE);
-
             }
 
             @Override
@@ -201,7 +199,7 @@ public class ChatActivity extends AppCompatActivity {
         });
         
         if (mChildEventListener == null) {
-            Log.i("mChildEventListener", "standpoint CH298");
+//            Log.i("mChildEventListener", "standpoint CH298");
             mChildEventListener = new ChildEventListener() {//working with db after authentication
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
