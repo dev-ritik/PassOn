@@ -17,7 +17,10 @@
         </activity>
         <activity android:name=".ChatActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".BookPostActivity"></activity>
     </application>
 
 </manifest>

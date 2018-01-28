@@ -21,14 +21,13 @@ public class Post {
 //    private ArrayList<String> likedUsers;
 //    private ArrayList<String> unlikedUsers;
     private String time;
-    private ArrayList<String> favourite;
     private boolean post;
 
 //
     public Post(){
     }
 
-    public Post(int index,String photoUrl, String currentTime, String bookname, String posterId,String posterName, String filter1,String filter2,boolean post, ArrayList saveIt) {
+    public Post(int index,String photoUrl, String currentTime, String bookname, String posterId,String posterName, String filter1,String filter2,boolean post) {
         this.index=index;
         this.bookPhotoUrl = photoUrl;
         this.time = currentTime;
@@ -38,7 +37,6 @@ public class Post {
         this.posterId = posterId;
         this.posterName=posterName;
         this.post=post;
-        this.favourite = saveIt;
 
 //        Log.i(posterId, "standpoint post43");
 ////        Log.i(text, "standpoint post44");
@@ -110,10 +108,6 @@ public class Post {
         this.bookName = user;
     }
 
-    public ArrayList<String> getFavourite() {
-
-        return favourite;
-    }
     public void setFilter1(String filter1){
         this.filter1=filter1;
     }
@@ -128,12 +122,6 @@ public class Post {
 
     public String getFilter2(){
         return filter2;
-    }
-
-    public void setFavourite(ArrayList<String> favourite) {
-//        System.out.println("standpoint 84");
-        this.favourite = favourite;
-
     }
 
 }

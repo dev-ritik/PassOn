@@ -55,7 +55,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
-        Log.i("point Re53",Integer.toString(Posts.size()));
+//        Log.i("point Re53",Integer.toString(Posts.size()));
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());

@@ -31,4 +31,6 @@
     <string name="registerFail">Registration failed</string>
     <string name="forgotPasswordEnterEmail">Enter your email first</string>
     <string name="registerSuccess">Registration successful</string>
+    <string name="Saved">saved</string>
+    <string name="profile">profile</string>
 </resources>

@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 //import com.google.firebase.auth.AuthResult;
 //import com.google.firebase.auth.FirebaseAuth;
 
@@ -42,9 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-
     // Firebase instance variables
-
 
 
     @Override
@@ -56,7 +55,6 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.register_password);
         mConfirmPasswordView = (EditText) findViewById(R.id.register_confirm_password);
         mAuth = FirebaseAuth.getInstance();
-
 
 
     }
@@ -91,11 +89,11 @@ public class RegisterActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        } else if (mPasswordView.getText().toString().length()==0) {
+        } else if (mPasswordView.getText().toString().length() == 0) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
-        } else if (mPasswordView.getText().toString().length()==0) {
+        } else if (mPasswordView.getText().toString().length() == 0) {
             mConfirmPasswordView.setError(getString(R.string.error_field_required));
             focusView = mConfirmPasswordView;
             cancel = true;
@@ -107,22 +105,19 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
 
-            mAuth.createUserWithEmailAndPassword(mEmailView.getText().toString(),mPasswordView.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(mEmailView.getText().toString(), mPasswordView.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    Log.d("Flash",""+task.isSuccessful());
-                    if (task.isSuccessful())
-                    {
+                    Log.d("Flash", "" + task.isSuccessful());
+                    if (task.isSuccessful()) {
 
                         saveCredentials();
                         Toast.makeText(RegisterActivity.this, R.string.registerSuccess, Toast.LENGTH_SHORT).show();
                         finish();
 
-                    }
-                    else
-                    {
+                    } else {
                         errorAlert(getString(R.string.registerFail));
-                        Log.d("Flash","Registration failed");
+                        Log.d("Flash", "Registration failed");
                     }
                 }
             });
@@ -137,27 +132,29 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         String confirmpass = mConfirmPasswordView.getText().toString();
-        return confirmpass.equals(password) && password.length()>7;
+        return confirmpass.equals(password) && password.length() > 7;
     }
+
     private void saveCredentials() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String username = mUsernameView.getText().toString();
-        SharedPreferences prefs = getSharedPreferences(CHAT_PREFS,0);
-        prefs.edit().putString("Email",email).apply();
-        prefs.edit().putString("Password",password).apply();
-        prefs.edit().putString("Username",username).apply();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        Log.i("point Re148", currentUser.getEmail());
+        SharedPreferences prefs = getSharedPreferences(CHAT_PREFS, 0);
+        prefs.edit().putString("Email", email).apply();
+        prefs.edit().putString("Password", password).apply();
+        prefs.edit().putString("Username", username).apply();
     }
+
     private void errorAlert(String message) {
         new AlertDialog.Builder(RegisterActivity.this)
                 .setTitle("Oops!")
                 .setMessage(message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("ok",null)
+                .setPositiveButton("ok", null)
                 .show();
     }
-
-
 
 
 }
