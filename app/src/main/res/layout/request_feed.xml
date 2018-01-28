@@ -33,7 +33,13 @@
                     android:padding="10dp"
                     android:text="H.C. Verma"
                     android:textStyle="bold" />
-
+                <TextView
+                    android:id="@+id/PosterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="H.C. Verma"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

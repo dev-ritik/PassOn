@@ -30,7 +30,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 private boolean tapCount=false;
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
-        TextView bookName, filter1, filter2, time;
+        TextView bookName, filter1, filter2, time,posterName;
         CheckBox favouritePost;
         Button request;
 
@@ -42,6 +42,7 @@ private boolean tapCount=false;
             filter2 = (TextView) view.findViewById(R.id.filter2);
             request = (Button) view.findViewById(R.id.request);
             time = (TextView) view.findViewById(R.id.time);
+            posterName=(TextView)view.findViewById(R.id.PosterName);
         }
     }
 
@@ -63,6 +64,7 @@ private boolean tapCount=false;
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
 //        Log.i("point Po53",Integer.toString(Posts.size()));
+        holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());

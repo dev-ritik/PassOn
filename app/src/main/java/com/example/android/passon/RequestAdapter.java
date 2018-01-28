@@ -32,7 +32,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
-        TextView bookName, filter1, filter2, time;
+        TextView bookName, filter1, filter2, time,posterName;
         CheckBox favouritePost;
         Button request;
         CardView cardView;
@@ -46,6 +46,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             request = (Button) view.findViewById(R.id.request);
             cardView = (CardView) view.findViewById(R.id.card_view);
             time = (TextView) view.findViewById(R.id.time);
+            posterName=(TextView)view.findViewById(R.id.PosterName);
         }
     }
 
@@ -67,6 +68,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
 //        Log.i("point Re53",Integer.toString(Posts.size()));
+        holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());

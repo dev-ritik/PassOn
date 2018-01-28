@@ -60,7 +60,7 @@ public class BookRequestActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View view) {
                 if(!(bookName.getText().toString().equals("")||filter1.equals("")||filter2.equals("")||filter1.equals("Select Subject")||filter2.equals("Select Class"))) {
                     //pust post object to database
-                    Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), Main2Activity.mUserId,Main2Activity.mUser, filter1, filter2, false);
+                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId,Main2Activity.mUser, filter1, filter2, false);
 //                requests.add(post);
                     mRequestDatabaseReference.push().setValue(post);
                     bookName.setText("");

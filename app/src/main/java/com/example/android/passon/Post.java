@@ -1,5 +1,6 @@
 package com.example.android.passon;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class Post {
 
 //    private String text;
     private int index;
-    private String bookPhotoUrl;
+    private Uri bookPhotoUrl;
     private String bookName;
     private String posterId;
     private String posterName;
@@ -27,7 +28,7 @@ public class Post {
     public Post(){
     }
 
-    public Post(int index,String photoUrl, String currentTime, String bookname, String posterId,String posterName, String filter1,String filter2,boolean post) {
+    public Post(int index,Uri photoUrl, String currentTime, String bookname, String posterId,String posterName, String filter1,String filter2,boolean post) {
         this.index=index;
         this.bookPhotoUrl = photoUrl;
         this.time = currentTime;
@@ -92,11 +93,11 @@ public class Post {
     }
 
 //
-    public String getBookPhotoUrl() {
+    public Uri getBookPhotoUrl() {
         return bookPhotoUrl;
     }
 
-    public void setBookPhotoUrl(String bookPhotoUrl) {
+    public void setBookPhotoUrl(Uri bookPhotoUrl) {
         this.bookPhotoUrl = bookPhotoUrl;
     }
 

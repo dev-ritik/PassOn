@@ -19,21 +19,17 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/bookPic"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2">
-
-                <ImageView
-                    android:id="@+id/bookPic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="center"
-                    android:src="@drawable/pic" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic" />
 
             <LinearLayout
+                android:id="@+id/rightLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -44,7 +40,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="H.C. Verma" />
+                    android:text="H.C. Verma"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/PosterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="H.C. Verma"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,12 +72,12 @@
                         android:text="vol-1" />
 
                     <!--<CheckBox-->
-                        <!--android:id="@+id/favorite"-->
-                        <!--android:layout_width="35dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="top"-->
-                        <!--android:background="@android:color/transparent"-->
-                        <!--android:button="@android:drawable/btn_star" />-->
+                    <!--android:id="@+id/favorite"-->
+                    <!--android:layout_width="35dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="top"-->
+                    <!--android:background="@android:color/transparent"-->
+                    <!--android:button="@android:drawable/btn_star" />-->
                 </LinearLayout>
 
                 <LinearLayout
