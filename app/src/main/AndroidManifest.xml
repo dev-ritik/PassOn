@@ -20,7 +20,9 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".BookPostActivity"></activity>
+        <activity android:name=".BookPostActivity" />
+        <activity android:name=".BookRequestActivity" />
+        <activity android:name=".SplashScreenActivity"></activity>
     </application>
 
 </manifest>

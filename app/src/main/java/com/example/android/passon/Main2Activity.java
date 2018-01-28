@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -57,24 +59,24 @@ public class Main2Activity extends AppCompatActivity
     public static DatabaseReference mPostDatabaseReference;
     public static DatabaseReference mRequestDatabaseReference;
     public static DatabaseReference mUserDatabaseReference;
-    public static DatabaseReference mUserCountDatabaseReference;
+//    public static DatabaseReference mUserCountDatabaseReference;
     public static ChildEventListener mChildEventListenerPost, mChildEventListenerRequest;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
     public static StorageReference mChatPhotosStorageReference;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private RecyclerView mRecyclerViewPost, mRecyclerViewRequest;
-    public static RecyclerView.Adapter mAdapterPost, mAdapterRequest;
-    private RecyclerView.LayoutManager mLayoutManagerPost, mLayoutManagerRequest;
+//    private RecyclerView mRecyclerViewPost, mRecyclerViewRequest;
+//    public static RecyclerView.Adapter mAdapterPost, mAdapterRequest;
+//    private RecyclerView.LayoutManager mLayoutManagerPost, mLayoutManagerRequest;
+//
+//    ArrayList<Post> posts;
+//    ArrayList<Post> requests;
+//    ArrayList<String> favouriteArrayList;
 
-    ArrayList<Post> posts;
-    ArrayList<Post> requests;
-    ArrayList<String> favouriteArrayList;
-
-    private ProgressBar mProgressBar;
+    public static ProgressBar mProgressBar;
     private LinearLayout mInputData;
-    private EditText bookName, filter1, filter2;
-    private Button postButton, requestButton;
+//    private EditText bookName, filter1, filter2;
+//    private Button postButton, requestButton;
     private Boolean bookNameEnable = false, filter1Enable = false, filter2Enable = false, userExists = false;
     private String email;
     private FirebaseAuth mAuth;
@@ -108,25 +110,51 @@ public class Main2Activity extends AppCompatActivity
             finish();
             startActivity(intent);
         }
+        if (!backupCalledAlready) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            backupCalledAlready = true;
+            //to set up offline compatibility
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mInputData = (LinearLayout) findViewById(R.id.inputData);
-        bookName = (EditText) findViewById(R.id.edit1);
-        filter1 = (EditText) findViewById(R.id.edit2);
-        filter2 = (EditText) findViewById(R.id.edit3);
-        postButton = (Button) findViewById(R.id.postButton);
-        requestButton = (Button) findViewById(R.id.requestButton);
+//        bookName = (EditText) findViewById(R.id.edit1);
+//        filter1 = (EditText) findViewById(R.id.edit2);
+//        filter2 = (EditText) findViewById(R.id.edit3);
+//        postButton = (Button) findViewById(R.id.postButton);
+//        requestButton = (Button) findViewById(R.id.requestButton);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.visions_viewpager);
+
+        // Create an adapter that knows which fragment should be shown on each page
+        PassOnFragmentPagerAdapter adapter = new PassOnFragmentPagerAdapter(getSupportFragmentManager(),Main2Activity.this);
+
+        // Set the adapter onto the view pager
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(Main2Activity.this, BookPostActivity.class));
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
+        FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Main2Activity.this, BookRequestActivity.class));
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -137,149 +165,145 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (!backupCalledAlready) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            backupCalledAlready = true;
-            //to set up offline compatibility
-        }
+
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
         mPostDatabaseReference = mfirebaseDatabase.getReference().child("post");
         mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
         mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request");
         mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
-        mUserCountDatabaseReference = mfirebaseDatabase.getReference().child("userCount");
+//        mUserCountDatabaseReference = mfirebaseDatabase.getReference().child("userCount");
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mRecyclerViewPost = (RecyclerView) findViewById(R.id.post_recycler_view);
-        mRecyclerViewRequest = (RecyclerView) findViewById(R.id.request_recycler_view);
+//        mRecyclerViewPost = (RecyclerView) findViewById(R.id.post_recycler_view);
+//        mRecyclerViewRequest = (RecyclerView) findViewById(R.id.request_recycler_view);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        posts = new ArrayList<>();
-        requests = new ArrayList<>();
-        favouriteArrayList = new ArrayList<>();
-        favouriteArrayList.add("qwerty");
-
-        mAdapterPost = new PostAdapter(posts);
-        mAdapterRequest = new RequestAdapter(requests);
-//        mRecyclerViewPost.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        mRecyclerViewPost.setAdapter(mAdapterPost);
-        mRecyclerViewRequest.setAdapter(mAdapterRequest);
-
-        mLayoutManagerPost = new LinearLayoutManager(this);
-        mLayoutManagerRequest = new LinearLayoutManager(this);
-
-        mRecyclerViewPost.setLayoutManager(mLayoutManagerPost);
-        mRecyclerViewRequest.setLayoutManager(mLayoutManagerRequest);
+//        posts = new ArrayList<>();
+//        requests = new ArrayList<>();
+//        favouriteArrayList = new ArrayList<>();
+//        favouriteArrayList.add("qwerty");
+//
+//        mAdapterPost = new PostAdapter(posts);
+//        mAdapterRequest = new RequestAdapter(requests);
+////        mRecyclerViewPost.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+//
+//        mRecyclerViewPost.setAdapter(mAdapterPost);
+//        mRecyclerViewRequest.setAdapter(mAdapterRequest);
+//
+//        mLayoutManagerPost = new LinearLayoutManager(this);
+//        mLayoutManagerRequest = new LinearLayoutManager(this);
+//
+//        mRecyclerViewPost.setLayoutManager(mLayoutManagerPost);
+//        mRecyclerViewRequest.setLayoutManager(mLayoutManagerRequest);
 
 //        mRecyclerViewPost.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
 //        mRecyclerViewPost.setItemAnimator(new DefaultItemAnimator());
 
         //working of 3 edit text input
-        bookName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+//        bookName.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if (charSequence.toString().trim().length() > 0) {
+//                    bookNameEnable = true;
+//                } else {
+//                    bookNameEnable = false;
+//                }
+//                if (bookNameEnable && filter1Enable && filter2Enable) {
+//                    postButton.setEnabled(true);
+//                    requestButton.setEnabled(true);
+//                } else {
+//                    postButton.setEnabled(false);
+//                    requestButton.setEnabled(false);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//            }
+//        });
+//        filter1.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if (charSequence.toString().trim().length() > 0) {
+//                    filter1Enable = true;
+//
+//                } else {
+//                    filter1Enable = false;
+//                }
+//                if (bookNameEnable && filter1Enable && filter2Enable) {
+//                    postButton.setEnabled(true);
+//                    requestButton.setEnabled(true);
+//                } else {
+//                    postButton.setEnabled(false);
+//                    requestButton.setEnabled(false);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//            }
+//        });
+//        filter2.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                if (charSequence.toString().trim().length() > 0) {
+//                    filter2Enable = true;
+//                } else {
+//                    filter2Enable = false;
+//                }
+//                if (bookNameEnable && filter1Enable && filter2Enable) {
+//                    postButton.setEnabled(true);
+//                    requestButton.setEnabled(true);
+//                } else {
+//                    postButton.setEnabled(false);
+//                    requestButton.setEnabled(false);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//            }
+//        });
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
-                    bookNameEnable = true;
-                } else {
-                    bookNameEnable = false;
-                }
-                if (bookNameEnable && filter1Enable && filter2Enable) {
-                    postButton.setEnabled(true);
-                    requestButton.setEnabled(true);
-                } else {
-                    postButton.setEnabled(false);
-                    requestButton.setEnabled(false);
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-        filter1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
-                    filter1Enable = true;
-
-                } else {
-                    filter1Enable = false;
-                }
-                if (bookNameEnable && filter1Enable && filter2Enable) {
-                    postButton.setEnabled(true);
-                    requestButton.setEnabled(true);
-                } else {
-                    postButton.setEnabled(false);
-                    requestButton.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-        filter2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
-                    filter2Enable = true;
-                } else {
-                    filter2Enable = false;
-                }
-                if (bookNameEnable && filter1Enable && filter2Enable) {
-                    postButton.setEnabled(true);
-                    requestButton.setEnabled(true);
-                } else {
-                    postButton.setEnabled(false);
-                    requestButton.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //pust post object to database
-                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), mUserId, mUser, filter1.getText().toString(), filter2.getText().toString(), true);
-//                posts.add(post);
-                mPostDatabaseReference.push().setValue(post);
-                bookName.setText("");
-                filter1.setText("");
-                filter2.setText("");
-            }
-        });
-        requestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //pust post object to database
-                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(),  mUserId, mUser, filter1.getText().toString(), filter2.getText().toString(), false);
-//                requests.add(post);
-                mRequestDatabaseReference.push().setValue(post);
-                bookName.setText("");
-                filter1.setText("");
-                filter2.setText("");
-            }
-        });
+//        postButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //pust post object to database
+//                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), mUserId, mUser, filter1.getText().toString(), filter2.getText().toString(), true);
+////                posts.add(post);
+//                mPostDatabaseReference.push().setValue(post);
+//                bookName.setText("");
+//                filter1.setText("");
+//                filter2.setText("");
+//            }
+//        });
+//        requestButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //pust post object to database
+//                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(),  mUserId, mUser, filter1.getText().toString(), filter2.getText().toString(), false);
+////                requests.add(post);
+//                mRequestDatabaseReference.push().setValue(post);
+//                bookName.setText("");
+//                filter1.setText("");
+//                filter2.setText("");
+//            }
+//        });
 
 //        mAuthStateListener = new FirebaseAuth.AuthStateListener()
 //        {
@@ -381,15 +405,15 @@ public class Main2Activity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        detachDatabaseReadListener();
+//        detachDatabaseReadListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
         mUserId = ANONYMOUS;
         mEmailId = "";
-        posts.clear();
-        requests.clear();
-        mAdapterPost.notifyItemRangeRemoved(0, mAdapterPost.getItemCount());
-        mAdapterRequest.notifyItemRangeRemoved(0, mAdapterRequest.getItemCount());
+//        posts.clear();
+//        requests.clear();
+//        mAdapterPost.notifyItemRangeRemoved(0, mAdapterPost.getItemCount());
+//        mAdapterRequest.notifyItemRangeRemoved(0, mAdapterRequest.getItemCount());
 
 
     }
@@ -437,7 +461,7 @@ public class Main2Activity extends AppCompatActivity
 //                UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request);
 //                mUserDatabaseReference.push().setValue(userInfo);
 //            }
-            attachDatabaseListener();//take input from database
+//            attachDatabaseListener();//take input from database
         } else if (currentUser == null)
 
         {
@@ -452,7 +476,7 @@ public class Main2Activity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        attachDatabaseListener();
+//        attachDatabaseListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
         Log.i("resume", "point m323");
@@ -461,144 +485,144 @@ public class Main2Activity extends AppCompatActivity
     }
 
 
-    private void attachDatabaseListener() {
-        mPostDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
-                mProgressBar.setVisibility(View.INVISIBLE);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-//        if (mChildEventListenerPost != null) {
-//            Log.i(mChildEventListenerPost.toString(), "point m293");
-//        }
-        if (mChildEventListenerPost == null) {
-            Log.i("mChildEventListenerPost", "standpoint 298");
-            mChildEventListenerPost = new ChildEventListener() {//working with db after authentication
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("onchildadded", "point M114");
-//                    Log.i(Integer.toString(posts.size()), "point m289");
-
-                    //attached to all added child(all past and future child)
-                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-                    posts.add(post);
-                    mAdapterPost.notifyDataSetChanged();
-                    mAdapterRequest.notifyDataSetChanged();
-//                    Log.i(Integer.toString(posts.size()), "point m295");
-//                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m420");
-//                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m421");
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    // changed content of a child
-                    Log.i("child changed", "point m370");
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    // child deleted
-                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-
-                    for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
-                        if (iterator.next().getTime() == post.getTime())
-                            iterator.remove();
-                        Log.i(Integer.toString(posts.size()), "point m311");
-                    }
-                    Log.i(Integer.toString(posts.size()), "point m389");
-                    mAdapterPost.notifyDataSetChanged();
-                    mAdapterRequest.notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    //moved position of a child
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // error or permission denied
-                }
-            };
-            mPostDatabaseReference.addChildEventListener(mChildEventListenerPost);
-            Log.i("child addeddd", "point m610");
-        }
-        if (mChildEventListenerRequest == null) {
+//    private void attachDatabaseListener() {
+//        mPostDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
+//                mProgressBar.setVisibility(View.INVISIBLE);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+////        if (mChildEventListenerPost != null) {
+////            Log.i(mChildEventListenerPost.toString(), "point m293");
+////        }
+//        if (mChildEventListenerPost == null) {
 //            Log.i("mChildEventListenerPost", "standpoint 298");
-            mChildEventListenerRequest = new ChildEventListener() {//working with db after authentication
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("onchildadded", "point M114");
-//                    Log.i(Integer.toString(requests.size()), "point m289");
-
-                    //attached to all added child(all past and future child)
-                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-                    requests.add(post);
-                    mAdapterPost.notifyDataSetChanged();
-                    mAdapterRequest.notifyDataSetChanged();
-                    Log.i(Integer.toString(requests.size()), "point m295");
-                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m473");
-                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m474");
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    // changed content of a child
-                    Log.i("child changed", "point m370");
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    // child deleted
-                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-
-                    for (Iterator<Post> iterator = requests.iterator(); iterator.hasNext(); ) {
-                        if (iterator.next().getTime() == post.getTime())
-                            iterator.remove();
-                        Log.i(Integer.toString(requests.size()), "point m311");
-                    }
-                    Log.i(Integer.toString(requests.size()), "point m389");
-                    mAdapterPost.notifyDataSetChanged();
-                    mAdapterRequest.notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    //moved position of a child
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // error or permission denied
-                }
-            };
-            mRequestDatabaseReference.addChildEventListener(mChildEventListenerRequest);
-            Log.i("child addeddd", "point m610");
-        }
-
-    }
-
-    private void detachDatabaseReadListener() {
-        if (mChildEventListenerPost != null)
-            mPostDatabaseReference.removeEventListener(mChildEventListenerPost);
-        mChildEventListenerPost = null;
-        if (mChildEventListenerRequest != null)
-            mPostDatabaseReference.removeEventListener(mChildEventListenerRequest);
-        mChildEventListenerRequest = null;
-    }
+//            mChildEventListenerPost = new ChildEventListener() {//working with db after authentication
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    Log.i("onchildadded", "point M114");
+////                    Log.i(Integer.toString(posts.size()), "point m289");
+//
+//                    //attached to all added child(all past and future child)
+//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+//                    posts.add(post);
+//                    mAdapterPost.notifyDataSetChanged();
+//                    mAdapterRequest.notifyDataSetChanged();
+////                    Log.i(Integer.toString(posts.size()), "point m295");
+////                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m420");
+////                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m421");
+//
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                    // changed content of a child
+//                    Log.i("child changed", "point m370");
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                    // child deleted
+//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+//
+//                    for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
+//                        if (iterator.next().getTime() == post.getTime())
+//                            iterator.remove();
+//                        Log.i(Integer.toString(posts.size()), "point m311");
+//                    }
+//                    Log.i(Integer.toString(posts.size()), "point m389");
+//                    mAdapterPost.notifyDataSetChanged();
+//                    mAdapterRequest.notifyDataSetChanged();
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                    //moved position of a child
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // error or permission denied
+//                }
+//            };
+//            mPostDatabaseReference.addChildEventListener(mChildEventListenerPost);
+//            Log.i("child addeddd", "point m610");
+//        }
+//        if (mChildEventListenerRequest == null) {
+////            Log.i("mChildEventListenerPost", "standpoint 298");
+//            mChildEventListenerRequest = new ChildEventListener() {//working with db after authentication
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    Log.i("onchildadded", "point M114");
+////                    Log.i(Integer.toString(requests.size()), "point m289");
+//
+//                    //attached to all added child(all past and future child)
+//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+//                    requests.add(post);
+//                    mAdapterPost.notifyDataSetChanged();
+//                    mAdapterRequest.notifyDataSetChanged();
+//                    Log.i(Integer.toString(requests.size()), "point m295");
+//                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m473");
+//                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m474");
+//
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                    // changed content of a child
+//                    Log.i("child changed", "point m370");
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                    // child deleted
+//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+//
+//                    for (Iterator<Post> iterator = requests.iterator(); iterator.hasNext(); ) {
+//                        if (iterator.next().getTime() == post.getTime())
+//                            iterator.remove();
+//                        Log.i(Integer.toString(requests.size()), "point m311");
+//                    }
+//                    Log.i(Integer.toString(requests.size()), "point m389");
+//                    mAdapterPost.notifyDataSetChanged();
+//                    mAdapterRequest.notifyDataSetChanged();
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                    //moved position of a child
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // error or permission denied
+//                }
+//            };
+//            mRequestDatabaseReference.addChildEventListener(mChildEventListenerRequest);
+//            Log.i("child addeddd", "point m610");
+//        }
+//
+//    }
+//
+//    private void detachDatabaseReadListener() {
+//        if (mChildEventListenerPost != null)
+//            mPostDatabaseReference.removeEventListener(mChildEventListenerPost);
+//        mChildEventListenerPost = null;
+//        if (mChildEventListenerRequest != null)
+//            mPostDatabaseReference.removeEventListener(mChildEventListenerRequest);
+//        mChildEventListenerRequest = null;
+//    }
 
     public String calculateTime() {
         return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();

@@ -61,6 +61,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.bookName.setText(post.getBookName());
         holder.bookPic.setVisibility(View.GONE);
         holder.favouritePost.setChecked(true);
+        if(holder.request==null) {
+            Log.i("ReqAdapter", "Line 64");
+        }
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

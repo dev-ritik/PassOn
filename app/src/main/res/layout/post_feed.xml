@@ -64,13 +64,13 @@
                         android:padding="10dp"
                         android:text="vol-1" />
 
-                    <CheckBox
-                        android:id="@+id/favorite"
-                        android:layout_width="35dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:background="@android:color/transparent"
-                        android:button="@android:drawable/btn_star" />
+                    <!--<CheckBox-->
+                        <!--android:id="@+id/favorite"-->
+                        <!--android:layout_width="35dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="top"-->
+                        <!--android:background="@android:color/transparent"-->
+                        <!--android:button="@android:drawable/btn_star" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -87,6 +87,7 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
