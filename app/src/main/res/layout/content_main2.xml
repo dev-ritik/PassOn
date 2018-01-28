@@ -26,34 +26,76 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/bookName" />
 
-            <EditText
-                android:id="@+id/edit2"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/filter1" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edit3"
+                <EditText
+                    android:id="@+id/edit2"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/filter1" />
+
+                <EditText
+                    android:id="@+id/edit3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/filter2" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/filter2" />
+                android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/sendButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="send" />
+                <Button
+                    android:id="@+id/postButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="post" />
+                <Button
+                    android:id="@+id/requestButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="request" />
+
+                <Button
+                    android:id="@+id/Logout"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:onClick="logout"
+                    android:text="Logout" />
+            </LinearLayout>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
+            android:id="@+id/post_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             android:divider="@android:color/transparent"
             android:scrollbars="vertical"
             android:stackFromBottom="true"
             android:transcriptMode="alwaysScroll"
             tools:listitem="@layout/post_feed" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:background="@color/black"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/request_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:divider="@android:color/transparent"
+            android:scrollbars="vertical"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll"
+            tools:listitem="@layout/post_feed" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:background="@color/black"/>
 
     </LinearLayout>
 

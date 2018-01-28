@@ -1,5 +1,6 @@
 package com.example.android.passon;
 
+import android.net.Uri;
 import java.util.ArrayList;
 
 /**
@@ -10,18 +11,19 @@ public class UserInfo {
 
     private String userName;
     private String userId;
-    private String dp;
+    private Uri dp;
     private String emailId;
     private int rating;
     private String address;
     private int phoneNo;
     private int profileNo;
     private ArrayList<String> connectedUsers;
+    private ArrayList<String> connectionRequestUsers;
 
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid, String dp, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers) {
+    public UserInfo(int profileNo, String username, String userid, Uri dp, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers,ArrayList requestededUsers) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
@@ -31,8 +33,15 @@ public class UserInfo {
         this.address = address;
         this.phoneNo = phoneNo;
         this.connectedUsers = connectedUsers;
+        this.connectionRequestUsers=requestededUsers;
+    }
+    public ArrayList<String> getConnectionRequestUsers() {
+        return connectionRequestUsers;
     }
 
+    public void setConnectionRequestUsers(ArrayList<String> connectionRequestUsers) {
+        this.connectionRequestUsers = connectionRequestUsers;
+    }
     public String getAddress() {
         return address;
     }
@@ -70,11 +79,11 @@ public class UserInfo {
         this.userId = userId;
     }
 
-    public String getDp() {
+    public Uri getDp() {
         return dp;
     }
 
-    public void setDp(String dp) {
+    public void setDp(Uri dp) {
         this.dp = dp;
     }
 

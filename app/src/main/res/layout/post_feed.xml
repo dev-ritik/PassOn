@@ -19,19 +19,14 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/bookPic"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2">
-
-                <ImageView
-                    android:id="@+id/bookPic"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/pic" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pic" />
 
             <LinearLayout
                 android:id="@+id/rightLayout"
@@ -90,11 +85,12 @@
                         android:padding="10dp"
                         android:text="jan, 12 2016\n 04:56:12 PM" />
                 </LinearLayout>
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="@string/get_it"/>
+                    android:text="@string/get_it" />
             </LinearLayout>
         </LinearLayout>
 

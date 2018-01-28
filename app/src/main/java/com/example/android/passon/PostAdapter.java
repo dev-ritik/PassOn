@@ -1,5 +1,6 @@
 package com.example.android.passon;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +27,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
          CheckBox favouritePost;
         Button request;
 
-
         private ViewHolder(View view) {
             super(view);
             bookPic=(ImageView)view.findViewById(R.id.bookPic);
@@ -35,7 +35,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             filter2=(TextView)view.findViewById(R.id.filter2);
             favouritePost = (CheckBox)view.findViewById(R.id.favorite);
             request=(Button)view.findViewById(R.id.request);
-
         }
     }
     public PostAdapter(ArrayList<Post> posts) {

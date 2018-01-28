@@ -1,6 +1,7 @@
 package com.example.android.passon;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,27 +50,40 @@ public class Main2Activity extends AppCompatActivity
     public static DatabaseReference mPostDatabaseReference;
     public static DatabaseReference mRequestDatabaseReference;
     public static DatabaseReference mUserDatabaseReference;
-    public static ChildEventListener mChildEventListener;//to listen the changes in db
+    public static ChildEventListener mChildEventListenerPost,mChildEventListenerRequest;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
     public static StorageReference mChatPhotosStorageReference;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    private RecyclerView mRecyclerView;
-    public static RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerViewPost,mRecyclerViewRequest;
+    public static RecyclerView.Adapter mAdapterPost,mAdapterRequest;
+    private RecyclerView.LayoutManager mLayoutManagerPost,mLayoutManagerRequest;
 
     ArrayList<Post> posts;
+    ArrayList<Post> requests;
     ArrayList<String> favouriteArrayList;
 
     private ProgressBar mProgressBar;
     private LinearLayout mInputData;
     private EditText bookName, filter1, filter2;
-    private Button sendButton;
+    private Button postButton,requestButton;
     private Boolean bookNameEnable = false, filter1Enable = false, filter2Enable = false;
+    private String email;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        mAuth = FirebaseAuth.getInstance();
+        SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
+        email = prefs.getString("Email", null);
+        if(email==null)
+        {
+            Intent intent = new Intent(this,LoginActivity.class);
+            finish();
+            startActivity(intent);
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,8 +91,8 @@ public class Main2Activity extends AppCompatActivity
         bookName = (EditText) findViewById(R.id.edit1);
         filter1 = (EditText) findViewById(R.id.edit2);
         filter2 = (EditText) findViewById(R.id.edit3);
-        sendButton = (Button) findViewById(R.id.sendButton);
-
+        postButton = (Button) findViewById(R.id.postButton);
+        requestButton = (Button) findViewById(R.id.requestButton);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -106,27 +122,36 @@ public class Main2Activity extends AppCompatActivity
         mFirebaseStorage = FirebaseStorage.getInstance();
         mPostDatabaseReference = mfirebaseDatabase.getReference().child("post");
         mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
-//        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request");
+        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request");
         mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerViewPost = (RecyclerView) findViewById(R.id.post_recycler_view);
+        mRecyclerViewRequest = (RecyclerView) findViewById(R.id.request_recycler_view);
         mProgressBar.setVisibility(View.INVISIBLE);
 
         attachDatabaseListener();//take input from database
 
         posts = new ArrayList<>();
+        requests = new ArrayList<>();
         favouriteArrayList = new ArrayList<>();
         favouriteArrayList.add("qwerty");
 
-        mAdapter = new PostAdapter(posts);
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mAdapterPost = new PostAdapter(posts);
+        mAdapterRequest = new RequestAdapter(requests);
+//        mRecyclerViewPost.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        mRecyclerView.setAdapter(mAdapter);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewPost.setAdapter(mAdapterPost);
+        mRecyclerViewRequest.setAdapter(mAdapterRequest);
+
+        mLayoutManagerPost = new LinearLayoutManager(this);
+        mLayoutManagerRequest = new LinearLayoutManager(this);
+
+        mRecyclerViewPost.setLayoutManager(mLayoutManagerPost);
+        mRecyclerViewRequest.setLayoutManager(mLayoutManagerRequest);
+
+//        mRecyclerViewPost.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+//        mRecyclerViewPost.setItemAnimator(new DefaultItemAnimator());
 
         //working of 3 edit text input
         bookName.addTextChangedListener(new TextWatcher() {
@@ -142,9 +167,11 @@ public class Main2Activity extends AppCompatActivity
                     bookNameEnable = false;
                 }
                 if (bookNameEnable && filter1Enable && filter2Enable) {
-                    sendButton.setEnabled(true);
+                    postButton.setEnabled(true);
+                    requestButton.setEnabled(true);
                 } else {
-                    sendButton.setEnabled(false);
+                    postButton.setEnabled(false);
+                    requestButton.setEnabled(false);
                 }
 
 
@@ -168,11 +195,12 @@ public class Main2Activity extends AppCompatActivity
                     filter1Enable = false;
                 }
                 if (bookNameEnable && filter1Enable && filter2Enable) {
-                    sendButton.setEnabled(true);
+                    postButton.setEnabled(true);
+                    requestButton.setEnabled(true);
                 } else {
-                    sendButton.setEnabled(false);
+                    postButton.setEnabled(false);
+                    requestButton.setEnabled(false);
                 }
-
             }
 
             @Override
@@ -192,25 +220,37 @@ public class Main2Activity extends AppCompatActivity
                     filter2Enable = false;
                 }
                 if (bookNameEnable && filter1Enable && filter2Enable) {
-                    sendButton.setEnabled(true);
+                    postButton.setEnabled(true);
+                    requestButton.setEnabled(true);
                 } else {
-                    sendButton.setEnabled(false);
+                    postButton.setEnabled(false);
+                    requestButton.setEnabled(false);
                 }
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //pust post object to database
-                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), "d", filter1.getText().toString(), filter2.getText().toString(), favouriteArrayList);
+                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), "d","k", filter1.getText().toString(), filter2.getText().toString(),true, favouriteArrayList);
 //                posts.add(post);
                 mPostDatabaseReference.push().setValue(post);
+                bookName.setText("");
+                filter1.setText("");
+                filter2.setText("");
+            }
+        });
+        requestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //pust post object to database
+                Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), "d","k", filter1.getText().toString(), filter2.getText().toString(),false, favouriteArrayList);
+//                requests.add(post);
+                mRequestDatabaseReference.push().setValue(post);
                 bookName.setText("");
                 filter1.setText("");
                 filter2.setText("");
@@ -222,15 +262,18 @@ public class Main2Activity extends AppCompatActivity
 //            @Override
 //            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 //                //to find if user is signed or not
-//                if (mChildEventListener != null) {
-//                }
 //                FirebaseUser user = firebaseAuth.getCurrentUser();
 //                if (user != null) {
 //                    //user is signed
 ////                    onSignInitilize(user.getUid(), user.getEmail(),user.getPhotoUrl());
 ////                    mUser = user.getDisplayName();//send name and operate with db
 ////                    Log.i(mUser,"standpoint M321");
-//                    mUserDatabaseReference.push()
+//                    ArrayList<String> connected=new ArrayList<>();
+//                    ArrayList<String> request=new ArrayList<>();
+//                    connected.add("qwert");
+//                    request.add("weert");
+//                    UserInfo userInfo=new UserInfo(1,user.getDisplayName(),user.getUid(),null,user.getEmail(),2,"iitR",123456789,connected,request);
+//                    mUserDatabaseReference.push().setValue(UserInfo);
 //
 //                } else {
 //                    //user signed out
@@ -270,7 +313,7 @@ public class Main2Activity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.chat) {
-//        mUserProfile=mFirebaseAuth.getCurrentUser().getPhotoUrl();
+//        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
             Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ChatActivity.class);
         intent.putExtra("person1", "ritik");
         intent.putExtra("person2", "kumar");
@@ -309,18 +352,37 @@ public class Main2Activity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         detachDatabaseReadListener();
+//        if (mAuthStateListener != null)
+//            mAuth.removeAuthStateListener(mAuthStateListener);
         posts.clear();
-        mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
+        requests.clear();
+        mAdapterPost.notifyItemRangeRemoved(0, mAdapterPost.getItemCount());
+        mAdapterRequest.notifyItemRangeRemoved(0, mAdapterRequest.getItemCount());
+
 
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        Log.d("Flash",""+(currentUser==null));
+        if(currentUser==null)
+        {
+            Intent intent = new Intent(this, LoginActivity.class);
+            finish();
+            startActivity(intent);
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
         attachDatabaseListener();
+//        if (mAuthStateListener != null)
+//            mAuth.removeAuthStateListener(mAuthStateListener);
         Log.i("resume", "point m323");
-//        if (mChildEventListener != null) {
-//            Log.i(mChildEventListener.toString(), "point m355");
+//        if (mChildEventListenerPost != null) {
+//            Log.i(mChildEventListenerPost.toString(), "point m355");
     }
 
 
@@ -340,12 +402,12 @@ public class Main2Activity extends AppCompatActivity
         });
 
 
-//        if (mChildEventListener != null) {
-//            Log.i(mChildEventListener.toString(), "point m293");
+//        if (mChildEventListenerPost != null) {
+//            Log.i(mChildEventListenerPost.toString(), "point m293");
 //        }
-        if (mChildEventListener == null) {
-            Log.i("mChildEventListener", "standpoint 298");
-            mChildEventListener = new ChildEventListener() {//working with db after authentication
+        if (mChildEventListenerPost == null) {
+            Log.i("mChildEventListenerPost", "standpoint 298");
+            mChildEventListenerPost = new ChildEventListener() {//working with db after authentication
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Log.i("onchildadded", "point M114");
@@ -354,8 +416,11 @@ public class Main2Activity extends AppCompatActivity
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
                     posts.add(post);
-                    mAdapter.notifyDataSetChanged();
+                    mAdapterPost.notifyDataSetChanged();
+                    mAdapterRequest.notifyDataSetChanged();
                     Log.i(Integer.toString(posts.size()), "point m295");
+                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m420");
+                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m421");
 
                 }
 
@@ -376,7 +441,8 @@ public class Main2Activity extends AppCompatActivity
                         Log.i(Integer.toString(posts.size()), "point m311");
                     }
                     Log.i(Integer.toString(posts.size()), "point m389");
-                    mAdapter.notifyDataSetChanged();
+                    mAdapterPost.notifyDataSetChanged();
+                    mAdapterRequest.notifyDataSetChanged();
 
                 }
 
@@ -390,21 +456,86 @@ public class Main2Activity extends AppCompatActivity
                     // error or permission denied
                 }
             };
-            mPostDatabaseReference.addChildEventListener(mChildEventListener);
+            mPostDatabaseReference.addChildEventListener(mChildEventListenerPost);
+            Log.i("child addeddd", "point m610");
+        }
+        if (mChildEventListenerRequest == null) {
+//            Log.i("mChildEventListenerPost", "standpoint 298");
+            mChildEventListenerRequest = new ChildEventListener() {//working with db after authentication
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.i("onchildadded", "point M114");
+                    Log.i(Integer.toString(requests.size()), "point m289");
+
+                    //attached to all added child(all past and future child)
+                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+                    requests.add(post);
+                    mAdapterPost.notifyDataSetChanged();
+                    mAdapterRequest.notifyDataSetChanged();
+                    Log.i(Integer.toString(requests.size()), "point m295");
+                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m473");
+                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m474");
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    // changed content of a child
+                    Log.i("child changed", "point m370");
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    // child deleted
+                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+
+                    for (Iterator<Post> iterator = requests.iterator(); iterator.hasNext(); ) {
+                        if (iterator.next().getTime() == post.getTime())
+                            iterator.remove();
+                        Log.i(Integer.toString(requests.size()), "point m311");
+                    }
+                    Log.i(Integer.toString(requests.size()), "point m389");
+                    mAdapterPost.notifyDataSetChanged();
+                    mAdapterRequest.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    //moved position of a child
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // error or permission denied
+                }
+            };
+            mRequestDatabaseReference.addChildEventListener(mChildEventListenerRequest);
             Log.i("child addeddd", "point m610");
         }
 
     }
 
     private void detachDatabaseReadListener() {
-        if (mChildEventListener != null)
-            mPostDatabaseReference.removeEventListener(mChildEventListener);
-        mChildEventListener = null;
+        if (mChildEventListenerPost != null)
+            mPostDatabaseReference.removeEventListener(mChildEventListenerPost);
+        mChildEventListenerPost = null;
+        if (mChildEventListenerRequest != null)
+            mPostDatabaseReference.removeEventListener(mChildEventListenerRequest);
+        mChildEventListenerRequest = null;
     }
 
     public String calculateTime() {
         return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();
 
     }
-
+    public void logout(View view) {
+        FirebaseAuth.getInstance().signOut();
+        SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
+        prefs.edit().putString("Email",null).apply();
+        prefs.edit().putString("Password",null).apply();
+        Intent intent = new Intent(this,LoginActivity.class);
+        finish();
+        startActivity(intent);
+    }
 }
