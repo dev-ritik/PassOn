@@ -12,7 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+
+import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
 /**
  * Created by ritik on 25-01-2018.
@@ -20,26 +27,28 @@ import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<Post> Posts;
-
+private boolean tapCount=false;
     public class ViewHolder extends RecyclerView.ViewHolder {
-         ImageView bookPic;
-         TextView bookName,filter1,filter2;
-         CheckBox favouritePost;
+        ImageView bookPic;
+        TextView bookName, filter1, filter2, time;
+        CheckBox favouritePost;
         Button request;
 
         private ViewHolder(View view) {
             super(view);
-            bookPic=(ImageView)view.findViewById(R.id.bookPic);
-            bookName=(TextView)view.findViewById(R.id.bookName);
-            filter1=(TextView)view.findViewById(R.id.filter1);
-            filter2=(TextView)view.findViewById(R.id.filter2);
-            favouritePost = (CheckBox)view.findViewById(R.id.favorite);
-            request=(Button)view.findViewById(R.id.request);
+            bookPic = (ImageView) view.findViewById(R.id.bookPic);
+            bookName = (TextView) view.findViewById(R.id.bookName);
+            filter1 = (TextView) view.findViewById(R.id.filter1);
+            filter2 = (TextView) view.findViewById(R.id.filter2);
+            request = (Button) view.findViewById(R.id.request);
+            time = (TextView) view.findViewById(R.id.time);
         }
     }
+
     public PostAdapter(ArrayList<Post> posts) {
         Posts = posts;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
@@ -48,7 +57,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         return new ViewHolder(v);
     }
-        // create a new view
+
+    // create a new view
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
@@ -57,17 +67,47 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());
         holder.bookPic.setImageResource(R.drawable.pic);
-        holder.favouritePost.setChecked(true);
+        holder.time.setText(post.getTime());
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Please enter some text", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "request sent", Toast.LENGTH_SHORT).show();
+                if (!tapCount) {
+                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
+                    changeData(post.getPosterId(), Main2Activity.mUserId);
+                    holder.request.setText(R.string.request_sent);
+                    tapCount = true;
+                } else {
+                    Toast.makeText(view.getContext(), "Request cancelled", Toast.LENGTH_SHORT).show();
+                    tapCount = false;
+                    holder.request.setText("request");
+                }
             }
         });
-
     }
+
     @Override
     public int getItemCount() {
         return Posts.size();
+    }
+
+    public void changeData(String posteruid, final String requesterUid) {
+
+        Log.i(posteruid, "standpoint re91");
+        Log.i(requesterUid, "standpoint re94");
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

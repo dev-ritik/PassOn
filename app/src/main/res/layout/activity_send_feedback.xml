@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="4dp"
+    tools:context="com.example.android.passon.SendFeedbackActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/curve_shape"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Feedback/Bug Report"
+                android:textAlignment="center"
+                android:textSize="30sp"/>
+
+        </LinearLayout>
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Your identity would be hidden while filling this form."/>
+        <EditText
+            android:id="@+id/feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="4000"
+            android:textSize="20sp"
+            android:hint="Enter your feedback here..."
+            android:maxLines="10"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+            <Button
+                android:id="@+id/feedback_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Feedback"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/thanks_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanks for the feedback! Your feedback is valuable to us"
+            android:visibility="invisible"/>
+    </LinearLayout>
+</ScrollView>

@@ -24,19 +24,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/edit2"
+            <Spinner
+                android:id="@+id/s1"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:hint="@string/filter1" />
+                android:layout_gravity="center_horizontal" />
 
-            <EditText
-                android:id="@+id/edit3"
+            <Spinner
+                android:id="@+id/s2"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/filter2" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout

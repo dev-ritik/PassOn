@@ -20,20 +20,6 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2">
-
-                <ImageView
-                    android:id="@+id/bookPic"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/pic" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/rightLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -70,12 +56,12 @@
                         android:text="vol-1" />
 
                     <!--<CheckBox-->
-                        <!--android:id="@+id/favorite"-->
-                        <!--android:layout_width="35dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="top"-->
-                        <!--android:background="@android:color/transparent"-->
-                        <!--android:button="@android:drawable/btn_star" />-->
+                    <!--android:id="@+id/favorite"-->
+                    <!--android:layout_width="35dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="top"-->
+                    <!--android:background="@android:color/transparent"-->
+                    <!--android:button="@android:drawable/btn_star" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -90,12 +76,13 @@
                         android:padding="10dp"
                         android:text="jan, 12 2016\n 04:56:12 PM" />
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="@string/get_it"/>
+                    android:text="@string/get_it" />
             </LinearLayout>
         </LinearLayout>
 

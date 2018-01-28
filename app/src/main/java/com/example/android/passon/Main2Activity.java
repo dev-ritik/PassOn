@@ -94,6 +94,7 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
 
         mUserId = ANONYMOUS;
+        mUser=ANONYMOUS;
         mUserProfile=null;
         mEmailId = "";
         mAuth = FirebaseAuth.getInstance();
@@ -383,18 +384,20 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_profile) {
+            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ProfileActivity.class);
+            intent.putExtra("email", mEmailId);
+            startActivity(intent);
+        } else if (id == R.id.nav_id_card) {
+            startActivity(new Intent(Main2Activity.this, GetIDActivity.class));
+        } else if (id == R.id.nav_transactions) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            logout();
+        } else if(id==R.id.nav_app_info){
+            startActivity(new Intent(Main2Activity.this,AppInfoActivity.class));
+        } else if (id==R.id.nav_user_feedback){
+            startActivity(new Intent(Main2Activity.this,SendFeedbackActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -402,14 +405,15 @@ public class Main2Activity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
 //        detachDatabaseReadListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
-        mUserId = ANONYMOUS;
-        mEmailId = "";
+//        mUserId = ANONYMOUS;
+//        mEmailId = "";
 //        posts.clear();
 //        requests.clear();
 //        mAdapterPost.notifyItemRangeRemoved(0, mAdapterPost.getItemCount());
@@ -430,41 +434,37 @@ public class Main2Activity extends AppCompatActivity
             mUserId=currentUser.getUid();
             mEmailId=currentUser.getEmail();
             Log.i(currentUser.getUid(), "point m376");
-//            Query query = mUserDatabaseReference.orderByChild("userId").equalTo(currentUser.getUid());
-//            query.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    count = dataSnapshot.getChildrenCount();
-////                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-////                        count++;
-////                    }
-//                    Log.i(Long.toString(count),"point Ma396");
-//
-//
-////                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-////            if(count==mUserDatabaseReference.)
-//            if(count==0) {
-//                Log.i(currentUser.getUid(), "standpoint m570");
-//                Log.i("seems new", "point m558");
-//
-//                ArrayList<String> connected = new ArrayList<>();
-//                ArrayList<String> request = new ArrayList<>();
-//                connected.add("qwert");
-//                request.add("weert");
-//                UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request);
-//                mUserDatabaseReference.push().setValue(userInfo);
-//            }
-//            attachDatabaseListener();//take input from database
-        } else if (currentUser == null)
+            Query query = mUserDatabaseReference.orderByChild("userId").equalTo(currentUser.getUid());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    count = dataSnapshot.getChildrenCount();
+                    if(count==0) {
+                        Log.i(currentUser.getUid(), "standpoint m570");
+                        Log.i("seems new", "point m558");
 
-        {
+                        ArrayList<String> connected = new ArrayList<>();
+                        ArrayList<String> request = new ArrayList<>();
+                        connected.add("qwert");
+                        request.add("weert");
+                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request);
+                        mUserDatabaseReference.push().setValue(userInfo);
+//                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                        count++;
+                    }
+                    Log.i("point Ma396",Long.toString(count));
+//                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+//            if(count==mUserDatabaseReference.)
+            Log.i("seems new", "point m462");
+
+        } else{
             Log.i("current user is null", "standpoint m389");
             Intent intent = new Intent(this, LoginActivity.class);
             finish();
@@ -629,9 +629,10 @@ public class Main2Activity extends AppCompatActivity
 
     }
 
-    public void logout(View view) {
+    public void logout() {
         FirebaseAuth.getInstance().signOut();
         mUserId = ANONYMOUS;
+        mUser=ANONYMOUS;
         mEmailId = "";
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

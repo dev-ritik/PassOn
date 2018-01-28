@@ -33,4 +33,47 @@
     <string name="registerSuccess">Registration successful</string>
     <string name="Saved">saved</string>
     <string name="profile">profile</string>
+    <string name="request_sent">request sent</string>
+    <string name="app_intention">The app Pass On is intended to help the needy to get books for free and for those who want to donate their books to help the people.</string>
+    <string name="book_post_info">Through this app those who want their books to be handed over to others can post details about their books.</string>
+    <string name="about_the_app">About the App</string>
+    <string name="book_request_info">The app also allows the needy to post their requests so that their request can be processed</string>
+    <string-array name="subject_spinner">
+        <item>Select Subject</item>
+        <item>Physics</item>
+        <item>Chemistry</item>
+        <item>Biology</item>
+        <item>General Science</item>
+        <item>History</item>
+        <item>Civics</item>
+        <item>Geography</item>
+        <item>Social Sciences</item>
+        <item>Mathematics</item>
+        <item>Commerce</item>
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Computer Science</item>
+        <item>Second Languages</item>
+        <item>Non-acamedics</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="class_spinner">
+        <item>Select Class</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>Engineering</item>
+        <item>Medical</item>
+        <item>Competitive</item>
+        <item>Others</item>
+    </string-array>
 </resources>
