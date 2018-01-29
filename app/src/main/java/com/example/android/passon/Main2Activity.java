@@ -344,39 +344,39 @@ public class Main2Activity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.chat) {
-//        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
-            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ChatActivity.class);
-            intent.putExtra("person1", "ritik");
-            intent.putExtra("person2", "kumar");
-            startActivity(intent);
-
-        }else if (id == R.id.profile) {
-//        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
-            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ProfileActivity.class);
-            intent.putExtra("email", mEmailId);
-            startActivity(intent);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main2, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        } else if (id == R.id.chat) {
+////        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
+//            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ChatActivity.class);
+//            intent.putExtra("person1", "ritik");
+//            intent.putExtra("person2", "kumar");
+//            startActivity(intent);
+//
+//        }else if (id == R.id.profile) {
+////        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
+//            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ProfileActivity.class);
+//            intent.putExtra("email", mEmailId);
+//            startActivity(intent);
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

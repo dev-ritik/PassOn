@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,18 +31,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 private boolean tapCount=false;
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
-        TextView bookName, filter1, filter2, time;
+        TextView bookName, filter1, filter2, time,posterName,phoneNo,institute;
         CheckBox favouritePost;
         Button request;
+        LinearLayout detail;
 
         private ViewHolder(View view) {
             super(view);
-            bookPic = (ImageView) view.findViewById(R.id.bookPic);
+//            bookPic = (ImageView) view.findViewById(R.id.bookPic);
             bookName = (TextView) view.findViewById(R.id.bookName);
+            phoneNo=(TextView)view.findViewById(R.id.edit11);
+            institute=(TextView)view.findViewById(R.id.edit12);
             filter1 = (TextView) view.findViewById(R.id.filter1);
             filter2 = (TextView) view.findViewById(R.id.filter2);
             request = (Button) view.findViewById(R.id.request);
             time = (TextView) view.findViewById(R.id.time);
+            posterName=(TextView)view.findViewById(R.id.PosterName);
+            detail=(LinearLayout)view.findViewById(R.id.profile_info1);
         }
     }
 
@@ -63,24 +69,30 @@ private boolean tapCount=false;
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
 //        Log.i("point Po53",Integer.toString(Posts.size()));
+        holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());
-        holder.bookPic.setImageResource(R.drawable.pic);
+//        holder.bookPic.setImageResource(R.drawable.pic);
         holder.time.setText(post.getTime());
+        holder.phoneNo.setText(post.getPhonenumber());
+        holder.institute.setText(post.getInstitute());
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "request sent", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "request sent", Toast.LENGTH_SHORT).show();
                 if (!tapCount) {
-                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
-                    changeData(post.getPosterId(), Main2Activity.mUserId);
-                    holder.request.setText(R.string.request_sent);
+//                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
+//                    changeData(post.getPosterId(), Main2Activity.mUserId);
+                    holder.request.setText("close");
+                    holder.detail.setVisibility(View.VISIBLE);
                     tapCount = true;
                 } else {
-                    Toast.makeText(view.getContext(), "Request cancelled", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(view.getContext(), "Request cancelled", Toast.LENGTH_SHORT).show();
                     tapCount = false;
-                    holder.request.setText("request");
+                    holder.request.setText("open");
+                    holder.detail.setVisibility(View.GONE);
+
                 }
             }
         });

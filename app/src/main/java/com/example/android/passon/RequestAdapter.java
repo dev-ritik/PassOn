@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,20 +33,26 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
-        TextView bookName, filter1, filter2, time;
+        TextView bookName, filter1, filter2, time,posterName,phoneNo,institute;
         CheckBox favouritePost;
         Button request;
         CardView cardView;
+        LinearLayout detail;
 
         private ViewHolder(View view) {
             super(view);
-            bookPic = (ImageView) view.findViewById(R.id.bookPic);
+//            bookPic = (ImageView) view.findViewById(R.id.bookPic);
             bookName = (TextView) view.findViewById(R.id.bookName);
             filter1 = (TextView) view.findViewById(R.id.filter1);
             filter2 = (TextView) view.findViewById(R.id.filter2);
+            phoneNo=(TextView)view.findViewById(R.id.edit11);
+            institute=(TextView)view.findViewById(R.id.edit12);
             request = (Button) view.findViewById(R.id.request);
             cardView = (CardView) view.findViewById(R.id.card_view);
             time = (TextView) view.findViewById(R.id.time);
+            posterName=(TextView)view.findViewById(R.id.PosterName);
+            detail=(LinearLayout)view.findViewById(R.id.profile_info1);
+
         }
     }
 
@@ -67,10 +74,13 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
 //        Log.i("point Re53",Integer.toString(Posts.size()));
+        holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());
-        holder.bookPic.setVisibility(View.GONE);
+//        holder.bookPic.setVisibility(View.GONE);
+        holder.phoneNo.setText(post.getPhonenumber());
+        holder.institute.setText(post.getInstitute());
         holder.time.setText(post.getTime());
         if (holder.request == null) {
             Log.i("ReqAdapter", "Line 64");
@@ -78,15 +88,19 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!tapCount) {
-                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
-                    changeData(post.getPosterId(), Main2Activity.mUserId);
-                    holder.request.setText(R.string.request_sent);
+//                Toast.makeText(view.getContext(), "request sent", Toast.LENGTH_SHORT).show();
+                if (!tapCount) {
+//                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
+//                    changeData(post.getPosterId(), Main2Activity.mUserId);
+                    holder.request.setText("close");
+                    holder.detail.setVisibility(View.VISIBLE);
                     tapCount = true;
-                }else {
-                    Toast.makeText(view.getContext(), "Request cancelled", Toast.LENGTH_SHORT).show();
-                    tapCount=false;
-                    holder.request.setText("request");
+                } else {
+//                    Toast.makeText(view.getContext(), "Request cancelled", Toast.LENGTH_SHORT).show();
+                    tapCount = false;
+                    holder.request.setText("open");
+                    holder.detail.setVisibility(View.GONE);
+
                 }
             }
         });

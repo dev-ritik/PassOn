@@ -26,7 +26,7 @@ public class BookRequestActivity extends AppCompatActivity implements AdapterVie
     public static DatabaseReference mUserDatabaseReference;
     private FirebaseStorage mFirebaseStorage;
 
-    private EditText bookName;
+    private EditText bookName,phoneNo,institute;
     private Button requestButton;
     Spinner s1,s2;
     String filter1,filter2;
@@ -38,6 +38,8 @@ public class BookRequestActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_book_request);
 
         bookName = (EditText) findViewById(R.id.edit4);
+        phoneNo=(EditText)findViewById(R.id.edit11);
+        institute=(EditText)findViewById(R.id.edit12);
         filter1 = "";
         filter2 = "";
         s1 = (Spinner) findViewById(R.id.s3);
@@ -60,7 +62,7 @@ public class BookRequestActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View view) {
                 if(!(bookName.getText().toString().equals("")||filter1.equals("")||filter2.equals("")||filter1.equals("Select Subject")||filter2.equals("Select Class"))) {
                     //pust post object to database
-                    Post post = new Post(1, "a", calculateTime(), bookName.getText().toString(), Main2Activity.mUserId,Main2Activity.mUser, filter1, filter2, false);
+                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId,Main2Activity.mUser, filter1, filter2, false,phoneNo.getText().toString(),institute.getText().toString());
 //                requests.add(post);
                     mRequestDatabaseReference.push().setValue(post);
                     bookName.setText("");
