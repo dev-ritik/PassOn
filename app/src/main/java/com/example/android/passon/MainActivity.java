@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mfirebaseDatabase = FirebaseDatabase.getInstance();
 
-        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
+        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user1");
         Log.i("point ma21","attached");
         mUserDatabaseReference.removeValue();
     }

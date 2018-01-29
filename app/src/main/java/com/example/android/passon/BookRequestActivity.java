@@ -54,8 +54,8 @@ public class BookRequestActivity extends AppCompatActivity implements AdapterVie
 
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request");
-        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
+        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request1");
+        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user1");
 
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override

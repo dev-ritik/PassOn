@@ -77,8 +77,8 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
 
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post");
-        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
+        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post1");
+        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user1");
         mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
 
         if (Build.VERSION.SDK_INT >= 23) {

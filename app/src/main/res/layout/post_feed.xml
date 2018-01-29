@@ -13,30 +13,21 @@
         card_view:cardCornerRadius="0dp">
         <!--android:elevation="300dp"-->
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/bookPic"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="centerCrop"
-                android:src="@drawable/pic" />
-
             <LinearLayout
                 android:id="@+id/rightLayout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/bookName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="H.C. Verma"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/PosterName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -92,8 +83,30 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="@string/get_it" />
+                <LinearLayout
+                    android:id="@+id/profile_info1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/edit11"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="**********" />
+
+                    <TextView
+                        android:id="@+id/edit12"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="_________" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

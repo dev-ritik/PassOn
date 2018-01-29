@@ -55,7 +55,7 @@ public class BooksFragment extends Fragment {
         mAdapterPost = new PostAdapter(posts);
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post");
+        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post1");
         mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
         mRecyclerViewPost.setAdapter(mAdapterPost);
         mLayoutManagerPost = new LinearLayoutManager(rootView.getContext());

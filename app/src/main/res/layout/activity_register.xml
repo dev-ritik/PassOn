@@ -8,7 +8,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:background="@drawable/pic"
+    android:background="@drawable/backgroundpic"
     tools:context="com.example.android.passon.RegisterActivity"
     android:gravity="top">
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/postpic"
     tools:context="com.example.android.passon.BookPostActivity">
 
 
@@ -18,7 +19,8 @@
             android:id="@+id/edit1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/bookName" />
+            android:hint="@string/bookName"
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,35 +29,43 @@
             <Spinner
                 android:id="@+id/s1"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/s2"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/profile_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-            <Button
-                android:id="@+id/camera_intent"
+            <EditText
+                android:id="@+id/edit11"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Camera"/>
+                android:layout_weight="1"
+                android:hint="phone Number"
+                android:inputType="textPhonetic|phone"
+                android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/gallery_intent"
+            <EditText
+                android:id="@+id/edit12"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Gallery"/>
-
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:hint="institute"
+                android:inputType="text" />
         </LinearLayout>
 
         <LinearLayout

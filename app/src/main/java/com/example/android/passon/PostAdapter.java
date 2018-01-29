@@ -83,7 +83,7 @@ private boolean tapCount=false;
 //                Toast.makeText(view.getContext(), "request sent", Toast.LENGTH_SHORT).show();
                 if (!tapCount) {
 //                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
-//                    changeData(post.getPosterId(), Main2Activity.mUserId);
+                    changeData(post.getPosterId(), new ChatHead(Main2Activity.mUserId,Main2Activity.mUser));
                     holder.request.setText("close");
                     holder.detail.setVisibility(View.VISIBLE);
                     tapCount = true;
@@ -103,10 +103,10 @@ private boolean tapCount=false;
         return Posts.size();
     }
 
-    public void changeData(String posteruid, final String requesterUid) {
+    public void changeData(String posteruid,final ChatHead requesterUid) {
 
         Log.i(posteruid, "standpoint re91");
-        Log.i(requesterUid, "standpoint re94");
+        Log.i(requesterUid.getUserId(), "standpoint re94");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

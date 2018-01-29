@@ -40,7 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseStorage mFirebaseStorage;
 
     private RecyclerView mRecyclerView;
-    public static RecyclerView.Adapter mAdapter;
+    private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     ArrayList<Chat> chats;

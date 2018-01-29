@@ -105,6 +105,9 @@ public class Main2Activity extends AppCompatActivity
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
         email = prefs.getString("Email", null);
+//        prefs.edit().putString("Email", email).apply();
+//        prefs.edit().putString("Password", password).apply();
+//        prefs.edit().putString("Username", username).apply();
         if (email == null) {
             Log.i("email is null", "standpoint m84");
             Intent intent = new Intent(this, LoginActivity.class);
@@ -169,10 +172,10 @@ public class Main2Activity extends AppCompatActivity
 
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post");
+        mPostDatabaseReference = mfirebaseDatabase.getReference().child("post1");
         mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
-        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request");
-        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user");
+        mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request1");
+        mUserDatabaseReference = mfirebaseDatabase.getReference().child("user1");
 //        mUserCountDatabaseReference = mfirebaseDatabase.getReference().child("userCount");
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -444,10 +447,10 @@ public class Main2Activity extends AppCompatActivity
                         Log.i("seems new", "point m558");
 
                         ArrayList<String> connected = new ArrayList<>();
-                        ArrayList<String> request = new ArrayList<>();
+                        ArrayList<ChatHead> request = new ArrayList<>();
                         connected.add("qwert");
-                        request.add("weert");
-                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request);
+                        request.add(new ChatHead("dcd","scs"));
+                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), currentUser.getEmail(), 2, "iitR", 123456789, connected, request);
                         mUserDatabaseReference.push().setValue(userInfo);
 //                    for (DataSnapshot child : dataSnapshot.getChildren()) {
 //                        count++;

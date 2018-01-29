@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/postpic"
     tools:context="com.example.android.passon.BookPostActivity">
 
 
@@ -18,6 +19,7 @@
             android:id="@+id/edit4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:hint="@string/bookName" />
 
         <LinearLayout
@@ -27,6 +29,7 @@
             <Spinner
                 android:id="@+id/s3"
                 android:layout_width="0dp"
+                android:textColor="@color/white"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />
@@ -34,11 +37,36 @@
             <Spinner
                 android:id="@+id/s4"
                 android:layout_width="0dp"
+                android:textColor="@color/white"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/profile_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
+            <EditText
+                android:id="@+id/edit11"
+                android:layout_width="0dp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="phone Number"
+                android:inputType="textPhonetic|number" />
+
+            <EditText
+                android:id="@+id/edit12"
+                android:layout_width="0dp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="institute"
+                android:inputType="text" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

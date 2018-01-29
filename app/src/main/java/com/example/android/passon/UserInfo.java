@@ -11,23 +11,22 @@ public class UserInfo {
 
     private String userName;
     private String userId;
-    private Uri dp;
+//    private Uri dp;
     private String emailId;
     private int rating;
     private String address;
     private int phoneNo;
     private int profileNo;
     private ArrayList<String> connectedUsers;
-    private ArrayList<String> connectionRequestUsers;
+    private ArrayList<ChatHead> connectionRequestUsers;
 
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid, Uri dp, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers,ArrayList requestededUsers) {
+    public UserInfo(int profileNo, String username, String userid, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers,ArrayList<ChatHead> requestededUsers) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
-        this.dp = dp;
         this.emailId = emailId;
         this.rating = rating;
         this.address = address;
@@ -35,11 +34,11 @@ public class UserInfo {
         this.connectedUsers = connectedUsers;
         this.connectionRequestUsers=requestededUsers;
     }
-    public ArrayList<String> getConnectionRequestUsers() {
+    public ArrayList<ChatHead> getConnectionRequestUsers() {
         return connectionRequestUsers;
     }
 
-    public void setConnectionRequestUsers(ArrayList<String> connectionRequestUsers) {
+    public void setConnectionRequestUsers(ArrayList<ChatHead> connectionRequestUsers) {
         this.connectionRequestUsers = connectionRequestUsers;
     }
     public String getAddress() {
@@ -79,13 +78,13 @@ public class UserInfo {
         this.userId = userId;
     }
 
-    public Uri getDp() {
-        return dp;
-    }
-
-    public void setDp(Uri dp) {
-        this.dp = dp;
-    }
+//    public Uri getDp() {
+//        return dp;
+//    }
+//
+//    public void setDp(Uri dp) {
+//        this.dp = dp;
+//    }
 
     public String getEmailId() {
         return emailId;
