@@ -41,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static RecyclerView.Adapter mAdapter;
     public static ChildEventListener mChildEventListenerProfile, mChildEventListenerProfileTest;
     public static DatabaseReference mChildUser;
-    ArrayList<ChatHead[]> chats;
+    ArrayList<ArrayList<ChatHead>> chats;
     ArrayList<String> chatsString;
 
     @Override

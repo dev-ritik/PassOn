@@ -25,7 +25,7 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
  */
 
 public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHolder> {
-    private ArrayList<ChatHead[]> chats;
+    private ArrayList<ArrayList<ChatHead>> chats;
     private boolean tapCount = false;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,7 +41,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         }
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead[]> chatHeads) {
+    public ChatNameAdapter(ArrayList<ArrayList<ChatHead>> chatHeads) {
         chats = chatHeads;
     }
 
@@ -57,10 +57,10 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     // create a new view
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final ChatHead[] chat = chats.get(position);
+        final ArrayList<ChatHead> chat = chats.get(position);
 //        Log.i("point Po53",Integer.toString(Posts.size()));
-        holder.requesterName.setText(chat[0]);
-        String[] wordArray = chat.getUsername().split(" ");
+        holder.requesterName.setText(chat.get(0).getUsername());
+        String[] wordArray = chat.get(0).getUsername().split(" ");
         StringBuilder sb = new StringBuilder();
 //        for(int i=0;i<wordArray.length;i++) sb.append(wordArray[0].charAt(0));
         for(String s:wordArray){
