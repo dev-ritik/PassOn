@@ -19,6 +19,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
@@ -112,7 +114,10 @@ private boolean tapCount=false;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
+                    Map<String, String> users = new HashMap<String, String>();
+                    users.put("aman", "chutia");
+                    child.getRef().child("connectionRequestUsers").push().setValue(users);
+//                    child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
                 }
             }
 
