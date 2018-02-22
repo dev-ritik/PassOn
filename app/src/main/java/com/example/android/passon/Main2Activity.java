@@ -117,6 +117,9 @@ public class Main2Activity extends AppCompatActivity
         naveUserName = (TextView) findViewById(R.id.nav_user_name);
         naveUserEmail = (TextView) findViewById(R.id.nav_user_id);
 
+//        naveUserName.setText(mUser);
+//        naveUserEmail.setText(mEmailId);
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.visions_viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
@@ -426,8 +429,6 @@ public class Main2Activity extends AppCompatActivity
             startActivity(intent);
         }
 
-        naveUserName.setText(mUser);
-        naveUserEmail.setText(mEmailId);
 
     }
 
