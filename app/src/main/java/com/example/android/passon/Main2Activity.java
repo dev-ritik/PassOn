@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -65,19 +66,8 @@ public class Main2Activity extends AppCompatActivity
     public static StorageReference mChatPhotosStorageReference;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-//    private RecyclerView mRecyclerViewPost, mRecyclerViewRequest;
-//    public static RecyclerView.Adapter mAdapterPost, mAdapterRequest;
-//    private RecyclerView.LayoutManager mLayoutManagerPost, mLayoutManagerRequest;
-//
-//    ArrayList<Post> posts;
-//    ArrayList<Post> requests;
-//    ArrayList<String> favouriteArrayList;
-
     public static ProgressBar mProgressBar;
     private LinearLayout mInputData;
-//    private EditText bookName, filter1, filter2;
-//    private Button postButton, requestButton;
-    private Boolean bookNameEnable = false, filter1Enable = false, filter2Enable = false, userExists = false;
     private String email;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -87,6 +77,8 @@ public class Main2Activity extends AppCompatActivity
     public static String mUser;
     public static Uri mUserProfile;
     private String mEmailId;
+    private TextView naveUserName,naveUserEmail;
+    private ImageView naveUserDp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +97,8 @@ public class Main2Activity extends AppCompatActivity
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
         email = prefs.getString("Email", null);
-//        prefs.edit().putString("Email", email).apply();
-//        prefs.edit().putString("Password", password).apply();
-//        prefs.edit().putString("Username", username).apply();
+
+
         if (email == null) {
             Log.i("email is null", "standpoint m84");
             Intent intent = new Intent(this, LoginActivity.class);
@@ -123,11 +114,8 @@ public class Main2Activity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mInputData = (LinearLayout) findViewById(R.id.inputData);
-//        bookName = (EditText) findViewById(R.id.edit1);
-//        filter1 = (EditText) findViewById(R.id.edit2);
-//        filter2 = (EditText) findViewById(R.id.edit3);
-//        postButton = (Button) findViewById(R.id.postButton);
-//        requestButton = (Button) findViewById(R.id.requestButton);
+        naveUserName = (TextView) findViewById(R.id.nav_user_name);
+        naveUserEmail = (TextView) findViewById(R.id.nav_user_id);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.visions_viewpager);
 
@@ -347,40 +335,6 @@ public class Main2Activity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main2, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        } else if (id == R.id.chat) {
-////        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
-//            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ChatActivity.class);
-//            intent.putExtra("person1", "ritik");
-//            intent.putExtra("person2", "kumar");
-//            startActivity(intent);
-//
-//        }else if (id == R.id.profile) {
-////        mUserProfile=mAuth.getCurrentUser().getPhotoUrl();
-//            Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ProfileActivity.class);
-//            intent.putExtra("email", mEmailId);
-//            startActivity(intent);
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -471,6 +425,9 @@ public class Main2Activity extends AppCompatActivity
             finish();
             startActivity(intent);
         }
+
+        naveUserName.setText(mUser);
+        naveUserEmail.setText(mEmailId);
 
     }
 

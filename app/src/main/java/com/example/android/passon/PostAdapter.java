@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.android.passon.Main2Activity.mPostDatabaseReference;
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
 /**
@@ -76,7 +77,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
         holder.bookName.setText(post.getBookName());
-//        holder.bookPic.setImageResource(R.drawable.pic);
         holder.time.setText(post.getTime());
         holder.phoneNo.setText(post.getPhonenumber());
         holder.institute.setText(post.getInstitute());
@@ -97,7 +97,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     tapCount = true;
                 } else {
                     if (post.getBookRequestUsers().contains(Main2Activity.mUserId)) {
-                        changeData(post.getPosterId(), Main2Activity.mUserId, Main2Activity.mUser);
+                        post.getBookRequestUsers().remove(Main2Activity.mUserId);
+                        changeData(post.getPosterId(),post.getTime(), Main2Activity.mUserId, Main2Activity.mUser,post.getBookRequestUsers());
                         Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                     }
                     tapCount = false;
@@ -117,7 +118,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void setData(String posteruid, String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "standpoint re91");
-        Log.i(username, "standpoint re94");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -135,8 +135,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-        Query query1 = mUserDatabaseReference.orderByChild("time").equalTo(time);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query1 = mPostDatabaseReference.orderByChild("time").equalTo(time);
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -152,10 +152,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    public void changeData(String posteruid, final String uid, final String username) {
+    public void changeData(String posteruid,String time, final String uid, final String username,final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "standpoint re140");
-        Log.i(username, "standpoint re141");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -164,6 +163,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     Map<String, Object> users = new HashMap<>();
                     users.put(uid, null);
                     child.getRef().child("connectionRequestUsers").updateChildren(users);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Query query1 = mPostDatabaseReference.orderByChild("time").equalTo(time);
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    child.getRef().child("bookRequestUsers").setValue(requestUsers);
                 }
             }
 
