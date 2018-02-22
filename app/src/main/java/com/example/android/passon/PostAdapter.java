@@ -30,10 +30,11 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<Post> Posts;
-private boolean tapCount=false;
+    private boolean tapCount = false;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
-        TextView bookName, filter1, filter2, time,posterName,phoneNo,institute;
+        TextView bookName, filter1, filter2, time, posterName, phoneNo, institute;
         CheckBox favouritePost;
         Button request;
         LinearLayout detail;
@@ -42,14 +43,14 @@ private boolean tapCount=false;
             super(view);
 //            bookPic = (ImageView) view.findViewById(R.id.bookPic);
             bookName = (TextView) view.findViewById(R.id.bookName);
-            phoneNo=(TextView)view.findViewById(R.id.edit11);
-            institute=(TextView)view.findViewById(R.id.edit12);
+            phoneNo = (TextView) view.findViewById(R.id.edit11);
+            institute = (TextView) view.findViewById(R.id.edit12);
             filter1 = (TextView) view.findViewById(R.id.filter1);
             filter2 = (TextView) view.findViewById(R.id.filter2);
             request = (Button) view.findViewById(R.id.request);
             time = (TextView) view.findViewById(R.id.time);
-            posterName=(TextView)view.findViewById(R.id.PosterName);
-            detail=(LinearLayout)view.findViewById(R.id.profile_info1);
+            posterName = (TextView) view.findViewById(R.id.PosterName);
+            detail = (LinearLayout) view.findViewById(R.id.profile_info1);
         }
     }
 
@@ -68,7 +69,7 @@ private boolean tapCount=false;
 
     // create a new view
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Post post = Posts.get(position);
 //        Log.i("point Po53",Integer.toString(Posts.size()));
         holder.posterName.setText(post.getPosterName());
@@ -82,15 +83,23 @@ private boolean tapCount=false;
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(view.getContext(), "request sent", Toast.LENGTH_SHORT).show();
+
+//                if (!post.getPosterId().equals(Main2Activity.mUserId))
                 if (!tapCount) {
 //                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
-                    changeData(post.getPosterId(), new ChatHead(Main2Activity.mUserId,Main2Activity.mUser));
+                    if (!post.getBookRequestUsers().contains(Main2Activity.mUserId)) {
+                        post.getBookRequestUsers().add(Main2Activity.mUserId);
+                        setData(post.getPosterId(),post.getTime(), Main2Activity.mUserId, Main2Activity.mUser,position,post.getBookRequestUsers());
+                        Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
+                    }
                     holder.request.setText("close");
                     holder.detail.setVisibility(View.VISIBLE);
                     tapCount = true;
                 } else {
-//                    Toast.makeText(view.getContext(), "Request cancelled", Toast.LENGTH_SHORT).show();
+                    if (post.getBookRequestUsers().contains(Main2Activity.mUserId)) {
+                        changeData(post.getPosterId(), Main2Activity.mUserId, Main2Activity.mUser);
+                        Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
+                    }
                     tapCount = false;
                     holder.request.setText("open");
                     holder.detail.setVisibility(View.GONE);
@@ -105,20 +114,56 @@ private boolean tapCount=false;
         return Posts.size();
     }
 
-    public void changeData(String posteruid,final ChatHead requesterUid) {
+    public void setData(String posteruid, String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "standpoint re91");
-        Log.i(requesterUid.getUserId(), "standpoint re94");
+        Log.i(username, "standpoint re94");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Map<String,Object> users = new HashMap<>();
-                    users.put("raj", "madar");
+                    Map<String, Object> users = new HashMap<>();
+                    users.put(uid, username);
                     child.getRef().child("connectionRequestUsers").updateChildren(users);
-//                    child.getRef().child("connectionRequestUsers").push().setValue(users);
-//                    child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Query query1 = mUserDatabaseReference.orderByChild("time").equalTo(time);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    child.getRef().child("bookRequestUsers").setValue(requestUsers);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void changeData(String posteruid, final String uid, final String username) {
+
+        Log.i(posteruid, "standpoint re140");
+        Log.i(username, "standpoint re141");
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Map<String, Object> users = new HashMap<>();
+                    users.put(uid, null);
+                    child.getRef().child("connectionRequestUsers").updateChildren(users);
                 }
             }
 

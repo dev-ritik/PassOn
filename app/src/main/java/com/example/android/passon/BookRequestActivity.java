@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.ArrayList;
+
 public class BookRequestActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private FirebaseDatabase mfirebaseDatabase;
@@ -62,7 +64,8 @@ public class BookRequestActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View view) {
                 if(!(bookName.getText().toString().equals("")||filter1.equals("")||filter2.equals("")||filter1.equals("Select Subject")||filter2.equals("Select Class"))) {
                     //pust post object to database
-                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId,Main2Activity.mUser, filter1, filter2, false,phoneNo.getText().toString(),institute.getText().toString());
+                    ArrayList<String> bookRequestUsers=new ArrayList<>();
+                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId,Main2Activity.mUser, filter1, filter2,bookRequestUsers, false,phoneNo.getText().toString(),institute.getText().toString());
 //                requests.add(post);
                     mRequestDatabaseReference.push().setValue(post);
                     bookName.setText("");

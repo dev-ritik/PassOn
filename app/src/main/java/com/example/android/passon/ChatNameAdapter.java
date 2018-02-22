@@ -58,7 +58,8 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final ChatHead chat = chats.get(position);
-//        Log.i("point Po53",Integer.toString(Posts.size()));
+
+        Log.i("point Po53",chat.getUserId());
         holder.requesterName.setText(chat.getUsername());
         String[] wordArray = chat.getUsername().split(" ");
         StringBuilder sb = new StringBuilder();

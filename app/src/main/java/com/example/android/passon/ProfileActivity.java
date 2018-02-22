@@ -190,25 +190,19 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Log.i("child", "point pa189");
-                    DatabaseReference abc= dataSnapshot.child("connectionRequestUsers").getRef();
+                    DatabaseReference abc = dataSnapshot.child("connectionRequestUsers").getRef();
                     abc.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 //                            ChatHead c1=dataSnapshot.getValue(ChatHead.class);
-                            Log.i("point pa199",dataSnapshot.toString());
-                            ChatHead asd1=new ChatHead(dataSnapshot.getKey(),dataSnapshot.getValue().toString());
-//                            Map<String,Object> users =(Map<String,Object>)dataSnapshot.getValue();
-//                            Map<String, Object> map = new HashMap<String, Object>();
-//
-//                            Set<Map.Entry<String, Object>> entrySet = users.entrySet();
-//
-//                            ArrayList<Map.Entry<String,Object>> listOfEntry = new ArrayList<Map.Entry<String,Object>>(entrySet);
-
-//                            chats.add((Map<String,Object>) dataSnapshot.getValue())
-                            Log.i("point pa220",dataSnapshot.toString());
-                            Log.i("point pa221",asd1.getUsername());
-                            Log.i("point pa221a",asd1.getUserId());
+                            Log.i("point pa199", dataSnapshot.toString());
+                            ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
+                            chats.add(asd1);
+                            mAdapter.notifyDataSetChanged();
+                            Log.i("point pa220", dataSnapshot.toString());
+                            Log.i("point pa221", asd1.getUsername());
+                            Log.i("point pa221a", asd1.getUserId());
                         }
 
                         @Override
@@ -235,7 +229,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                    chats.add(new ArrayList<ChatHead>(userInfo.getConnectionRequestUsers()));
 //                    ArrayList<ChatHead> ram1=(ArrayList<ChatHead>)userInfo.getConnectionRequestUsers();
 
-                    Log.i("point pa225","yess");
+                    Log.i("point pa225", "yess");
 
                 }
 

@@ -32,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -123,7 +124,9 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
             public void onClick(View view) {
                 if (!(bookName.getText().toString().equals("") || filter1.equals("") || filter2.equals("") || filter1.equals("Select Subject") || filter2.equals("Select Class"))) {
 //                    pust post object to database
-                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2, true,phoneNo.getText().toString(),institute.getText().toString());
+                    ArrayList<String> bookRequestUsers=new ArrayList<>();
+                    bookRequestUsers.add("ritik");
+                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2,bookRequestUsers, true,phoneNo.getText().toString(),institute.getText().toString());
 //                posts.add(post);
                     BooksFragment.mPostDatabaseReference.push().setValue(post);
                     bookName.setText("");

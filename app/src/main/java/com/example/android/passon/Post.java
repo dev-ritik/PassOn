@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Post {
 
-//    private String text;
+    //    private String text;
     private int index;
     private Uri bookPhotoUrl;
     private String bookName;
@@ -19,10 +19,38 @@ public class Post {
     private String posterName;
     private String filter1;
     private String filter2;
-//    private ArrayList<String> likedUsers;
-//    private ArrayList<String> unlikedUsers;
+    private ArrayList<String> bookRequestUsers;
     private String time;
     private boolean post;
+
+    public Post() {
+    }
+
+    public Post(int index, Uri photoUrl, String currentTime, String bookname, String posterId, String posterName, String filter1, String filter2,ArrayList<String> bookRequestUsers, boolean post, String phonenumber, String institute) {
+        this.index = index;
+        this.bookPhotoUrl = photoUrl;
+        this.time = currentTime;
+        this.bookName = bookname;
+        this.filter1 = filter1;
+        this.filter2 = filter2;
+        this.posterId = posterId;
+        this.posterName = posterName;
+        this.post = post;
+        this.institute = institute;
+        this.phonenumber = phonenumber;
+        this.bookRequestUsers=bookRequestUsers;
+
+    }
+    //    private ArrayList<String> unlikedUsers;
+
+    public ArrayList<String> getBookRequestUsers() {
+        return bookRequestUsers;
+    }
+
+    public void setBookRequestUsers(ArrayList<String> bookRequestUsers) {
+        this.bookRequestUsers = bookRequestUsers;
+    }
+
 
     public String getPhonenumber() {
         return phonenumber;
@@ -44,32 +72,7 @@ public class Post {
     private String institute;
 
 //
-    public Post(){
-    }
 
-    public Post(int index,Uri photoUrl, String currentTime, String bookname, String posterId,String posterName, String filter1,String filter2,boolean post,String phonenumber,String institute) {
-        this.index=index;
-        this.bookPhotoUrl = photoUrl;
-        this.time = currentTime;
-        this.bookName = bookname;
-        this.filter1 = filter1;
-        this.filter2 = filter2;
-        this.posterId = posterId;
-        this.posterName=posterName;
-        this.post=post;
-        this.institute=institute;
-        this.phonenumber=phonenumber;
-
-//        Log.i(posterId, "standpoint post43");
-////        Log.i(text, "standpoint post44");
-//        Log.i(photoUrl, "standpoint post45");
-//        Log.i(time, "standpoint post46");
-//        Log.i(saveIt.toString(), "standpoint post47");
-////        Log.i(likedUsers.toString(), "standpoint post48");
-////        Log.i(unlikedUsers.toString(), "standpoint post49");
-//        Log.i(bookName, "standpoint post50");
-
-    }
     public String getPosterName() {
         return posterName;
     }
@@ -113,7 +116,7 @@ public class Post {
         this.posterId = posterId;
     }
 
-//
+    //
     public Uri getBookPhotoUrl() {
         return bookPhotoUrl;
     }
@@ -130,19 +133,19 @@ public class Post {
         this.bookName = user;
     }
 
-    public void setFilter1(String filter1){
-        this.filter1=filter1;
+    public void setFilter1(String filter1) {
+        this.filter1 = filter1;
     }
 
-    public String getFilter1(){
+    public String getFilter1() {
         return filter1;
     }
 
-    public void setFilter2(String filter2){
-        this.filter2=filter2;
+    public void setFilter2(String filter2) {
+        this.filter2 = filter2;
     }
 
-    public String getFilter2(){
+    public String getFilter2() {
         return filter2;
     }
 
