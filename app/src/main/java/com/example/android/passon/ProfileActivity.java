@@ -29,6 +29,9 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 import static com.example.android.passon.Main2Activity.mUserId;
@@ -41,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static RecyclerView.Adapter mAdapter;
     public static ChildEventListener mChildEventListenerProfile, mChildEventListenerProfileTest;
     public static DatabaseReference mChildUser;
-    ArrayList<ArrayList<ChatHead>> chats;
+    ArrayList<ChatHead> chats;
     ArrayList<String> chatsString;
 
     @Override
@@ -147,17 +150,92 @@ public class ProfileActivity extends AppCompatActivity {
 //            mPostDatabaseReference = mfirebaseDatabase.getReference().child("post1");
             Log.i("dataSnapshot.toString()", "point 145");
 
+//            Query query = mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId);
+//            query.addChildEventListener(new ChildEventListener() {
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    Log.i("toString()", "point 151");
+//                    UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+//                    chats.add(new ArrayList<ChatHead>(userInfo.getConnectionRequestUsers()));
+//                    ArrayList<ChatHead> ram1=(ArrayList<ChatHead>)userInfo.getConnectionRequestUsers();
+//
+//                    Log.i("point 154",userInfo.getPhoneNo()+"");
+//                    Log.i("point 161",ram1.get(0).getUsername());
+//
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
             Query query = mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId);
+
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("toString()", "point 151");
-                    UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
-                    chats.add(new ArrayList<ChatHead>(userInfo.getConnectionRequestUsers()));
-                    ArrayList<ChatHead> ram1=(ArrayList<ChatHead>)userInfo.getConnectionRequestUsers();
+                    Log.i("child", "point pa189");
+                    DatabaseReference abc= dataSnapshot.child("connectionRequestUsers").getRef();
+                    abc.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                    Log.i("point 154",userInfo.getPhoneNo()+"");
-                    Log.i("point 161",ram1.get(0).getUsername());
+//                            ChatHead c1=dataSnapshot.getValue(ChatHead.class);
+                            Log.i("point pa199",dataSnapshot.toString());
+                            ChatHead asd1=new ChatHead(dataSnapshot.getKey(),dataSnapshot.getValue().toString());
+//                            Map<String,Object> users =(Map<String,Object>)dataSnapshot.getValue();
+//                            Map<String, Object> map = new HashMap<String, Object>();
+//
+//                            Set<Map.Entry<String, Object>> entrySet = users.entrySet();
+//
+//                            ArrayList<Map.Entry<String,Object>> listOfEntry = new ArrayList<Map.Entry<String,Object>>(entrySet);
+
+//                            chats.add((Map<String,Object>) dataSnapshot.getValue())
+                            Log.i("point pa220",dataSnapshot.toString());
+                            Log.i("point pa221",asd1.getUsername());
+                            Log.i("point pa221a",asd1.getUserId());
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+//                    UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+//                    chats.add(new ArrayList<ChatHead>(userInfo.getConnectionRequestUsers()));
+//                    ArrayList<ChatHead> ram1=(ArrayList<ChatHead>)userInfo.getConnectionRequestUsers();
+
+                    Log.i("point pa225","yess");
 
                 }
 
@@ -203,70 +281,70 @@ public class ProfileActivity extends AppCompatActivity {
 //                public void onDataChange(DataSnapshot dataSnapshot) {
 //                    for (DataSnapshot child : dataSnapshot.getChildren()) {
 //                        child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
-            if (mChildEventListenerProfile != null) {
-                Log.i("mChildEventLisrPro add", "standpoint pr142");
-            }
-
-            if (mChildEventListenerProfileTest == null) {
-                Log.i("mChildEvenProfe", "standpoint pr146");
-                mChildEventListenerProfileTest = new ChildEventListener() {//working with db after authentication
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.i("onchildadded", "standpoint pr150");
-//                         new UserInfo();
-                        Log.i(dataSnapshot.getValue().toString(), "standpoint pr156");
-                        Log.i(dataSnapshot.getChildren().toString(), "standpoint pr155");
-
-                        //attached to all added child(all past and future child)
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            Log.i(child.getValue().toString(), "standpoint pr157");
-                            //gives all datatypes and singley filled connection request users while giving doubley filled to be null
-//                            UserInfo userInfo = child.getValue(UserInfo.class);
-//                            UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
-//                        dataSnapshot.getChildren().toString()
-//                            Log.i(userInfo.getAddress(), "standpoint pr154");
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            List<Friends> list = new ArrayList<Friends>();
-//                            for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                                list.add(child.getValue(Friends.class));
-//                            }
-//                        }                    }
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        // changed content of a child
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        // child deleted
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                        //moved position of a child
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // error or permission denied
-                    }
-
-                };
-                mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId).getRef().child("connectionRequestUsers").addChildEventListener(mChildEventListenerProfileTest);
-                if (mChildEventListenerProfileTest != null) {
-                    Log.i("mChildEventLisrPro add", "standpoint pr183");
-//                Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
-//                query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            if (mChildEventListenerProfile != null) {
+//                Log.i("mChildEventLisrPro add", "standpoint pr142");
+//            }
+//
+//            if (mChildEventListenerProfileTest == null) {
+//                Log.i("mChildEvenProfe", "standpoint pr146");
+//                mChildEventListenerProfileTest = new ChildEventListener() {//working with db after authentication
 //                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        Log.i("onchildadded", "standpoint pr150");
+////                         new UserInfo();
+//                        Log.i(dataSnapshot.getValue().toString(), "standpoint pr156");
+//                        Log.i(dataSnapshot.getChildren().toString(), "standpoint pr155");
+//
+//                        //attached to all added child(all past and future child)
 //                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                            child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
+//                            Log.i(child.getValue().toString(), "standpoint pr157");
+//                            //gives all datatypes and singley filled connection request users while giving doubley filled to be null
+////                            UserInfo userInfo = child.getValue(UserInfo.class);
+////                            UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+////                        dataSnapshot.getChildren().toString()
+////                            Log.i(userInfo.getAddress(), "standpoint pr154");
+////                        public void onDataChange(DataSnapshot dataSnapshot) {
+////                            List<Friends> list = new ArrayList<Friends>();
+////                            for (DataSnapshot child: dataSnapshot.getChildren()) {
+////                                list.add(child.getValue(Friends.class));
+////                            }
+////                        }                    }
 //                        }
-                }
-            }
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                        // changed content of a child
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                        // child deleted
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                        //moved position of a child
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//                        // error or permission denied
+//                    }
+//
+//                };
+//                mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId).getRef().child("connectionRequestUsers").addChildEventListener(mChildEventListenerProfileTest);
+//                if (mChildEventListenerProfileTest != null) {
+//                    Log.i("mChildEventLisrPro add", "standpoint pr183");
+////                Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
+////                query.addListenerForSingleValueEvent(new ValueEventListener() {
+////                    @Override
+////                    public void onDataChange(DataSnapshot dataSnapshot) {
+////                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+////                            child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
+////                        }
+//                }
+//            }
         }
     }
 

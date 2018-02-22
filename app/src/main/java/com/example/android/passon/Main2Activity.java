@@ -449,11 +449,9 @@ public class Main2Activity extends AppCompatActivity
                         ArrayList<String> connected = new ArrayList<>();
                         ArrayList<ChatHead> request = new ArrayList<>();
                         connected.add("qwert");
-                        request.add(new ChatHead("dcd","scs"));
+//                        request.add(new ChatHead("dcd","scs"));
                         UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), currentUser.getEmail(), 2, "iitR", 123456789, connected, request);
                         mUserDatabaseReference.push().setValue(userInfo);
-//                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                        count++;
                     }
                     Log.i("point Ma396",Long.toString(count));
 //                    }

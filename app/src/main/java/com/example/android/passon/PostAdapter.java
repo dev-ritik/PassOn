@@ -114,9 +114,10 @@ private boolean tapCount=false;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Map<String, String> users = new HashMap<String, String>();
-                    users.put("aman", "chutia");
-                    child.getRef().child("connectionRequestUsers").push().setValue(users);
+                    Map<String,Object> users = new HashMap<>();
+                    users.put("raj", "madar");
+                    child.getRef().child("connectionRequestUsers").updateChildren(users);
+//                    child.getRef().child("connectionRequestUsers").push().setValue(users);
 //                    child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
                 }
             }
