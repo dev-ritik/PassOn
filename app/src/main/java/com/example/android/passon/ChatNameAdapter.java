@@ -97,6 +97,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         changeData(Main2Activity.mUserId, chat.getUserId());
                         Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                         dialogBox.setVisibility(View.INVISIBLE);
+
                     }
                 });
                 acceptButton.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +106,9 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         setData(Main2Activity.mUserId, chat.getUserId(),chat.getUsername());
                         Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
                         dialogBox.setVisibility(View.INVISIBLE);
-                        context.startActivity(new Intent(context,ChatActivity.class));
+                        Intent intent=new Intent(context,ChatActivity.class);
+                        intent.putExtra("person1",chat.getUsername());
+                        context.startActivity(intent);
 
                     }
                 });

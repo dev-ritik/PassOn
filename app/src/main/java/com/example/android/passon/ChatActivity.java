@@ -1,5 +1,6 @@
 package com.example.android.passon;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -45,10 +46,11 @@ public class ChatActivity extends AppCompatActivity {
 
     ArrayList<Chat> chats;
 
-//    private ProgressBar mProgressBar;
+    //    private ProgressBar mProgressBar;
     private LinearLayout mInputData;
     private EditText editChat;
-    private ImageButton photopickerButton,sendButton;
+    private ImageButton photopickerButton, sendButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String person1 = intent.getStringExtra("person1");
-        String person2 = intent.getStringExtra("person2");
+//        String person2 = intent.getStringExtra("person2");
 //        if (!backupCalledAlready) {
 //            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 //            backupCalledAlready = true;
@@ -66,14 +68,15 @@ public class ChatActivity extends AppCompatActivity {
 
         mFirebaseStorage = FirebaseStorage.getInstance();
 //        mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
-        mChatDatabaseReference = mfirebaseDatabase.getReference().child("ChatRoom").child(person1+person2);
+
+        mChatDatabaseReference = mfirebaseDatabase.getReference().child("ChatRoom").child(encrypting(person1,Main2Activity.mUser));
 
 //        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
 //        mProgressBar.setVisibility(View.INVISIBLE);
-        editChat=(EditText)findViewById(R.id.messageEditText);
-        sendButton=(ImageButton)findViewById(R.id.sendButtonChat);
-        photopickerButton=(ImageButton)findViewById(R.id.photoPickerButton);
+        editChat = (EditText) findViewById(R.id.messageEditText);
+        sendButton = (ImageButton) findViewById(R.id.sendButtonChat);
+        photopickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
         attachDatabaseListener();//take input from database
 
         chats = new ArrayList<>();
@@ -111,12 +114,12 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //pust post object to database
-                 Chat chat= new Chat(editChat.getText().toString(),calculateTime(),"Ritik");
+                Chat chat = new Chat(editChat.getText().toString(), calculateTime(), "Ritik");
                 mChatDatabaseReference.push().setValue(chat);
                 editChat.setText("");
             }
         });
-        
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -197,7 +200,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-        
+
         if (mChildEventListener == null) {
 //            Log.i("mChildEventListener", "standpoint CH298");
             mChildEventListener = new ChildEventListener() {//working with db after authentication
@@ -260,6 +263,13 @@ public class ChatActivity extends AppCompatActivity {
     public String calculateTime() {
         return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();
 
+    }
+
+    public String encrypting(String a, String b) {
+        int aa = a.hashCode();
+        int bb = a.hashCode();
+        if (aa < bb) return aa + "+" + bb;
+        else return bb + "+" + aa;
     }
 
 }
