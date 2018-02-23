@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +20,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.example.android.passon.Main2Activity.mPostDatabaseReference;
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
 /**
@@ -29,6 +33,10 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHolder> {
     private ArrayList<ChatHead> chats;
     private boolean tapCount = false;
+    private Context context;
+    private View dialogBox;
+    private TextView userName;
+    private ImageView cancelButton,acceptButton;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
@@ -36,15 +44,16 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 
         private ViewHolder(View view) {
             super(view);
-//
-//            bookName=(TextView)view.findViewById(R.id.bookName);
             requesterName = (TextView) view.findViewById(R.id.requestName);
             requesterInitials = (TextView) view.findViewById(R.id.initial);
+
         }
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead> chatHeads) {
+    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context,View dialogBox) {
         chats = chatHeads;
+        this.context = context;
+        this.dialogBox=dialogBox;
     }
 
     @Override
@@ -61,41 +70,101 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final ChatHead chat = chats.get(position);
 
-        Log.i("point Po53",chat.getUserId());
+        Log.i("point Po53", chat.getUserId());
         holder.requesterName.setText(chat.getUsername());
         String[] wordArray = chat.getUsername().split(" ");
         StringBuilder sb = new StringBuilder();
 //        for(int i=0;i<wordArray.length;i++) sb.append(wordArray[0].charAt(0));
-        for(String s:wordArray){
+        for (String s : wordArray) {
             sb.append(s.charAt(0));
-            Log.i(s,"point cna68");
         }
 
         holder.requesterInitials.setText(sb.toString());
         holder.requesterInitials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(context, "yupp", Toast.LENGTH_SHORT).show();
+                LinearLayout dialogBox1=(LinearLayout)dialogBox;
+                dialogBox1.setVisibility(View.VISIBLE);
+                userName=(TextView) dialogBox1.findViewById(R.id.userNameAccept);
+                cancelButton=(ImageView) dialogBox1.findViewById(R.id.cancelRequest);
+                acceptButton=(ImageView) dialogBox1.findViewById(R.id.acceptRequest);
+                userName.setText(chat.getUsername()+"sent you a donation request");
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        post.getBookRequestUsers().remove(Main2Activity.mUserId);
+                        changeData(Main2Activity.mUserId, chat.getUserId());
+                        Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
+                        dialogBox.setVisibility(View.INVISIBLE);
+                    }
+                });
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setData(Main2Activity.mUserId, chat.getUserId(),chat.getUsername());
+                        Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
+                        dialogBox.setVisibility(View.INVISIBLE);
+                        context.startActivity(new Intent(context,ChatActivity.class));
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void setData(String userId, final String acceptedId, final String acceptedName) {
+
+        Log.i(userId, "point cna114");
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Map<String, Object> users = new HashMap<>();
+                    users.put(acceptedId, acceptedName);
+                    child.getRef().child("connectedUsers").updateChildren(users);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        }
 
+//        Query query1 = mPostDatabaseReference.orderByChild("time").equalTo(time);
+//        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    child.getRef().child("bookRequestUsers").setValue(requestUsers);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+    }
 
     @Override
     public int getItemCount() {
         return chats.size();
     }
 
-    public void changeData(String posteruid, final String requesterUid) {
+    public void changeData(String userId, final String uid) {
 
-        Log.i(posteruid, "point cna72");
-        Log.i(requesterUid, "point cna73");
-        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
+        Log.i(userId, "point cna110");
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    child.getRef().child("connectionRequestUsers").push().setValue(requesterUid);
+                    Map<String, Object> users = new HashMap<>();
+                    users.put(uid, null);
+                    child.getRef().child("connectionRequestUsers").updateChildren(users);
                 }
             }
 
@@ -104,5 +173,22 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 
             }
         });
+
+//        Query query1 = mPostDatabaseReference.orderByChild("time").equalTo(time);
+//        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    child.getRef().child("bookRequestUsers").setValue(requestUsers);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
+
 }

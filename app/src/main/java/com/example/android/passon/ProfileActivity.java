@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 //import com.bumptech.glide.Glide;
@@ -46,6 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
     public static DatabaseReference mChildUser;
     ArrayList<ChatHead> chats;
     ArrayList<String> chatsString;
+    private LinearLayout requestDialog,contentProfile;
+    private TextView userName;
+    private ImageView cancelButton,acceptButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +64,26 @@ public class ProfileActivity extends AppCompatActivity {
 
 //        mChildUser= Main2Activity.mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId).
 
+
+
+        requestDialog=(LinearLayout)findViewById(R.id.requestDialog);
+        contentProfile=(LinearLayout)findViewById(R.id.contentProfile);
+//        userName=(TextView) findViewById(R.id.userName);
+//        cancelButton=(ImageView) findViewById(R.id.cancelRequest);
+//        acceptButton=(ImageView) findViewById(R.id.acceptRequest);
+
+        contentProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestDialog.setVisibility(View.INVISIBLE);
+            }
+        });
         mRecyclerView = (RecyclerView) findViewById(R.id.chatHead);
         chats = new ArrayList<>();
         chatsString = new ArrayList<String>();
-        mAdapter = new ChatNameAdapter(chats);
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mAdapter = new ChatNameAdapter(chats,ProfileActivity.this,findViewById(R.id.requestDialog));
 
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(horizontalLayoutManagaer);
