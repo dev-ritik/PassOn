@@ -112,6 +112,9 @@ public class ProfileActivity extends AppCompatActivity {
         removeDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setData(Main2Activity.mUserId,null);
+                dpChangeDialog.setVisibility(View.INVISIBLE);
+                layout_MainMenu.getForeground().setAlpha(0);
 
             }
         });
@@ -326,5 +329,24 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
         }
 
+    }
+
+    private void setData(String userId, final String dpLink) {
+
+        Log.i(userId, "point pa333");
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    child.getRef().child("connectedUsers").setValue(dpLink);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

@@ -38,7 +38,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     private Context context;
     private View dialogBox;
     private TextView userName;
-    private ImageView cancelButton,acceptButton,shareDetails;
+    private ImageView cancelButton, acceptButton, shareDetails;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
@@ -52,10 +52,10 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         }
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context,View dialogBox) {
+    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, View dialogBox) {
         chats = chatHeads;
         this.context = context;
-        this.dialogBox=dialogBox;
+        this.dialogBox = dialogBox;
     }
 
     @Override
@@ -86,13 +86,13 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "yupp", Toast.LENGTH_SHORT).show();
-                LinearLayout dialogBox1=(LinearLayout)dialogBox;
+                LinearLayout dialogBox1 = (LinearLayout) dialogBox;
                 dialogBox1.setVisibility(View.VISIBLE);
-                userName=(TextView) dialogBox1.findViewById(R.id.userNameAccept);
-                cancelButton=(ImageView) dialogBox1.findViewById(R.id.cancelRequest);
-                acceptButton=(ImageView) dialogBox1.findViewById(R.id.acceptRequest);
-                shareDetails=(ImageView)dialogBox1.findViewById(R.id.giveHelp);
-                userName.setText(chat.getUsername()+" sent you a donation request");
+                userName = (TextView) dialogBox1.findViewById(R.id.userNameAccept);
+                cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
+                acceptButton = (ImageView) dialogBox1.findViewById(R.id.acceptRequest);
+                shareDetails = (ImageView) dialogBox1.findViewById(R.id.giveHelp);
+                userName.setText(chat.getUsername() + " sent you a donation request");
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -113,11 +113,11 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                 acceptButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        setData(Main2Activity.mUserId, chat.getUserId(),chat.getUsername());
+                        setData(Main2Activity.mUserId, chat.getUserId(), chat.getUsername());
                         Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
                         dialogBox.setVisibility(View.INVISIBLE);
-                        Intent intent=new Intent(context,ChatActivity.class);
-                        intent.putExtra("person1",chat.getUsername());
+                        Intent intent = new Intent(context, ChatActivity.class);
+                        intent.putExtra("person1", chat.getUsername());
                         context.startActivity(intent);
 
                     }
@@ -126,7 +126,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         });
     }
 
-    public void setData(String userId, final String acceptedId, final String acceptedName) {
+    private void setData(String userId, final String acceptedId, final String acceptedName) {
 
         Log.i(userId, "point cna114");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
@@ -134,11 +134,15 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Map<String, Object> users = new HashMap<>();
-                    users.put(acceptedId, acceptedName);
-                    child.getRef().child("connectedUsers").updateChildren(users);
+                    Map<String, Object> userAdded = new HashMap<>();
+                    userAdded.put(acceptedId, acceptedName);
+                    child.getRef().child("connectedUsers").updateChildren(userAdded);
+                    Map<String, Object> userDeleted = new HashMap<>();
+                    userDeleted.put(acceptedId, null);
+                    child.getRef().child("connectionRequestUsers").updateChildren(userDeleted);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
