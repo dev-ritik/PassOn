@@ -42,7 +42,7 @@ import static com.example.android.passon.Main2Activity.mUserId;
 public class ProfileActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    public static RecyclerView.Adapter mAdapter;
+    public RecyclerView.Adapter mAdapter;
     public static ChildEventListener mChildEventListenerProfile, mChildEventListenerProfileTest;
     public static DatabaseReference mChildUser;
     ArrayList<ChatHead> chats;
@@ -77,8 +77,18 @@ public class ProfileActivity extends AppCompatActivity {
 //        mRecyclerView.setAdapter(mAdapter);
 //        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(ProfileActivity.this, LinearLayoutManager.HORIZONTAL, false);
 //        mRecyclerView.setLayoutManager(horizontalLayoutManagaer);
+
         TextView userName = (TextView) findViewById(R.id.userName);
+
         ImageView profilePic = (ImageView) findViewById(R.id.profile_image);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
         if (Main2Activity.mUser != null) {
             userName.setText(Main2Activity.mUser);
         } else {

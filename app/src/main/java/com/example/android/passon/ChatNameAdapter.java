@@ -32,11 +32,10 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
 public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHolder> {
     private ArrayList<ChatHead> chats;
-    private boolean tapCount = false;
     private Context context;
     private View dialogBox;
     private TextView userName;
-    private ImageView cancelButton,acceptButton;
+    private ImageView cancelButton,acceptButton,shareDetails;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
@@ -89,7 +88,8 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                 userName=(TextView) dialogBox1.findViewById(R.id.userNameAccept);
                 cancelButton=(ImageView) dialogBox1.findViewById(R.id.cancelRequest);
                 acceptButton=(ImageView) dialogBox1.findViewById(R.id.acceptRequest);
-                userName.setText(chat.getUsername()+"sent you a donation request");
+                shareDetails=(ImageView)dialogBox1.findViewById(R.id.giveHelp);
+                userName.setText(chat.getUsername()+" sent you a donation request");
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -97,7 +97,14 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         changeData(Main2Activity.mUserId, chat.getUserId());
                         Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                         dialogBox.setVisibility(View.INVISIBLE);
+                        NotificationActivity.mAdapter.notifyDataSetChanged();
+                    }
+                });
 
+                shareDetails.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(view.getContext(), "shared", Toast.LENGTH_SHORT).show();
                     }
                 });
                 acceptButton.setOnClickListener(new View.OnClickListener() {
