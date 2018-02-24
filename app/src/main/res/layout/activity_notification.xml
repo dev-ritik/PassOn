@@ -6,47 +6,54 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.passon.ProfileActivity">
 
-    <LinearLayout
-        android:id="@+id/contentProfile"
+    <FrameLayout
+        android:id="@+id/notificationActivityScreen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="5dp"
-        android:theme="@android:style/Theme.Translucent">
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/shape_window_dim">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="connection request"
-            android:textColor="@color/black" />
+        <LinearLayout
+            android:id="@+id/contentProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:theme="@android:style/Theme.Translucent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/requestedUsers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            android:transcriptMode="alwaysScroll"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/chat_head" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="connection request"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="connection request"
-            android:textColor="@color/black" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/requestedUsers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                android:transcriptMode="alwaysScroll"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/chat_head" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/connectedUsers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            android:transcriptMode="alwaysScroll"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/chat_head" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="connected users"
+                android:textColor="@color/black" />
 
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/connectedUsers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                android:transcriptMode="alwaysScroll"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/chat_head" />
+
+        </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/requestDialog"

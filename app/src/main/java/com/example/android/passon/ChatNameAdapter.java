@@ -36,9 +36,9 @@ adapter to select whom to chat
 public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHolder> {
     private ArrayList<ChatHead> chats;
     private Context context;
-    private View dialogBox;
-    private TextView userName;
-    private ImageView cancelButton, acceptButton, shareDetails;
+    private LinearLayout dialogBox1;
+    private TextView userName, userNameConnection;
+    private ImageView cancelButton, acceptButton, shareDetails, deleteConnection, chatConnection;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
@@ -52,16 +52,16 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         }
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, View dialogBox) {
+    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, LinearLayout dialogBox) {
         chats = chatHeads;
         this.context = context;
-        this.dialogBox = dialogBox;
+        this.dialogBox1 = dialogBox;
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context) {
-        chats = chatHeads;
-        this.context = context;
-    }
+//    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context) {
+//        chats = chatHeads;
+//        this.context = context;
+//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -78,6 +78,14 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         final ChatHead chat = chats.get(position);
 
         Log.i("point Po53", chat.getUserId());
+
+        if (dialogBox1.equals(NotificationActivity.requestDialog))
+            Log.i("point cna82", "equal");
+        else Log.i("point cna83", "not equal");
+        if (dialogBox1.equals(NotificationActivity.connectionDialog))
+            Log.i("point cna85", "equal");
+        else Log.i("point cna86", "not equal");
+
         holder.requesterName.setText(chat.getUsername());
         String[] wordArray = chat.getUsername().split(" ");
         StringBuilder sb = new StringBuilder();
@@ -91,42 +99,75 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "yupp", Toast.LENGTH_SHORT).show();
-                LinearLayout dialogBox1 = (LinearLayout) dialogBox;
-                dialogBox1.setVisibility(View.VISIBLE);
-                userName = (TextView) dialogBox1.findViewById(R.id.userNameAccept);
-                cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
-                acceptButton = (ImageView) dialogBox1.findViewById(R.id.acceptRequest);
-                shareDetails = (ImageView) dialogBox1.findViewById(R.id.giveHelp);
-                userName.setText(chat.getUsername() + " sent you a donation request");
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+//                LinearLayout dialogBox1 = (LinearLayout) dialogBox;
+
+                if (dialogBox1.equals(NotificationActivity.requestDialog)) {
+                    Log.i("point cna105","requestDialog");
+                    dialogBox1.setVisibility(View.VISIBLE);
+                    userName = (TextView) dialogBox1.findViewById(R.id.userNameAccept);
+                    cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
+                    acceptButton = (ImageView) dialogBox1.findViewById(R.id.acceptRequest);
+                    shareDetails = (ImageView) dialogBox1.findViewById(R.id.giveHelp);
+                    userName.setText(chat.getUsername() + " sent you a donation request");
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 //                        post.getBookRequestUsers().remove(Main2Activity.mUserId);
-                        changeData(Main2Activity.mUserId, chat.getUserId());
-                        Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
-                        dialogBox.setVisibility(View.INVISIBLE);
-                        NotificationActivity.mAdapterRequest.notifyDataSetChanged();
-                    }
-                });
+                            changeData(Main2Activity.mUserId, chat.getUserId());
+                            Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
+                            dialogBox1.setVisibility(View.INVISIBLE);
+                            NotificationActivity.mAdapterRequest.notifyDataSetChanged();
+                        }
+                    });
 
-                shareDetails.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(view.getContext(), "shared", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                acceptButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setData(Main2Activity.mUserId, chat.getUserId(), chat.getUsername());
-                        Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
-                        dialogBox.setVisibility(View.INVISIBLE);
-                        Intent intent = new Intent(context, ChatActivity.class);
-                        intent.putExtra("person1", chat.getUsername());
-                        context.startActivity(intent);
+                    shareDetails.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(view.getContext(), "shared", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    acceptButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            setData(Main2Activity.mUserId, chat.getUserId(), chat.getUsername());
+                            dialogBox1.setVisibility(View.INVISIBLE);
+                            Intent intent = new Intent(context, ChatActivity.class);
+                            intent.putExtra("person1", chat.getUserId());
+                            context.startActivity(intent);
 
-                    }
-                });
+                        }
+                    });
+                }
+
+                if (dialogBox1.equals(NotificationActivity.connectionDialog)) {
+                    Log.i("point cna143","connectionDialog");
+
+                    dialogBox1.setVisibility(View.VISIBLE);
+                    userNameConnection = (TextView) dialogBox1.findViewById(R.id.userNameConnection);
+                    deleteConnection = (ImageView) dialogBox1.findViewById(R.id.deleteConnection);
+                    chatConnection = (ImageView) dialogBox1.findViewById(R.id.chatConnection);
+
+                    userNameConnection.setText("chat with "+chat.getUsername());
+                    deleteConnection.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            changeData(Main2Activity.mUserId, chat.getUserId());
+                            Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+                            dialogBox1.setVisibility(View.INVISIBLE);
+                            NotificationActivity.mAdapterConnected.notifyDataSetChanged();
+                        }
+                    });
+                    chatConnection.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialogBox1.setVisibility(View.INVISIBLE);
+                            Intent intent = new Intent(context, ChatActivity.class);
+                            intent.putExtra("person1", chat.getUserId());
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+
             }
         });
     }

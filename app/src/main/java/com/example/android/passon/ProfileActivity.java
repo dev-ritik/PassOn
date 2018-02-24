@@ -105,6 +105,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        layout_MainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dpChangeDialog.setVisibility(View.INVISIBLE);
+                layout_MainMenu.getForeground().setAlpha(0);
+            }
+        });
         removeDp=(ImageView)findViewById(R.id.removeDp);
         galleryDp=(ImageView)findViewById(R.id.galleryDp);
         cameraDp=(ImageView)findViewById(R.id.cameraDp);

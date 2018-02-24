@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,8 +30,8 @@ public class NotificationActivity extends AppCompatActivity {
     public static RecyclerView.Adapter mAdapterRequest, mAdapterConnected;
     ArrayList<ChatHead> requests;
     ArrayList<ChatHead> connections;
-    private LinearLayout requestDialog,connectionDialog;
-
+    public static LinearLayout requestDialog, connectionDialog;
+    private FrameLayout notificationActivityScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +41,36 @@ public class NotificationActivity extends AppCompatActivity {
         requestDialog = (LinearLayout) findViewById(R.id.requestDialog);
         connectionDialog = (LinearLayout) findViewById(R.id.connectionDialog);
 
+        notificationActivityScreen = (FrameLayout) findViewById(R.id.notificationActivityScreen);
+        notificationActivityScreen.getForeground().setAlpha(0);
+
         mRecyclerViewRequest = (RecyclerView) findViewById(R.id.requestedUsers);
         mRecyclerViewConnected = (RecyclerView) findViewById(R.id.connectedUsers);
+
+        mRecyclerViewRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notificationActivityScreen.getForeground().setAlpha(120);
+            }
+        });
+        mRecyclerViewConnected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notificationActivityScreen.getForeground().setAlpha(120);
+            }
+        });
+        notificationActivityScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestDialog.setVisibility(View.INVISIBLE);
+                connectionDialog.setVisibility(View.INVISIBLE);
+            }
+        });
         requests = new ArrayList<>();
         connections = new ArrayList<>();
-        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, findViewById(R.id.requestDialog));
-        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, findViewById(R.id.connectionDialog));
+        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, requestDialog);
+
+        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, connectionDialog);
 
 //        mRecyclerViewRequest.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
@@ -52,7 +78,7 @@ public class NotificationActivity extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManagaerRequest = new LinearLayoutManager(NotificationActivity.this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewRequest.setLayoutManager(horizontalLayoutManagaerRequest);
 
-        mRecyclerViewConnected.setAdapter(mAdapterRequest);
+        mRecyclerViewConnected.setAdapter(mAdapterConnected);
         LinearLayoutManager horizontalLayoutManagaerConnected = new LinearLayoutManager(NotificationActivity.this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerViewConnected.setLayoutManager(horizontalLayoutManagaerConnected);
 
@@ -68,7 +94,6 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 //                            ChatHead c1=dataSnapshot.getValue(ChatHead.class);
-                        Log.i("point na71", dataSnapshot.toString());
                         ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
                         requests.add(asd1);
                         mAdapterRequest.notifyDataSetChanged();
@@ -107,10 +132,8 @@ public class NotificationActivity extends AppCompatActivity {
                         Log.i("point na107", dataSnapshot.toString());
                         ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
                         connections.add(asd1);
-                        mAdapterRequest.notifyDataSetChanged();
-                        Log.i("point na111", dataSnapshot.toString());
+                        mAdapterConnected.notifyDataSetChanged();
                         Log.i("point na112", asd1.getUsername());
-                        Log.i("point na113a", asd1.getUserId());
                     }
 
                     @Override
