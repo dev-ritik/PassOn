@@ -129,8 +129,9 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     acceptButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            setData(Main2Activity.mUserId, chat.getUserId(), chat.getUsername());
+                            setDataMe(Main2Activity.mUserId, chat.getUserId(), chat.getUsername());
                             dialogBox1.setVisibility(View.INVISIBLE);
+//                            setDataRequester(Main2Activity.mUserId,chat.getUserId(),Main2Activity.mUser);
                             Intent intent = new Intent(context, ChatActivity.class);
                             intent.putExtra("person1", chat.getUserId());
                             context.startActivity(intent);
@@ -172,7 +173,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         });
     }
 
-    private void setData(String userId, final String acceptedId, final String acceptedName) {
+    private void setDataMe(String userId, final String acceptedId, final String acceptedName) {
 
         Log.i(userId, "point cna114");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
@@ -212,10 +213,28 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 //        });
     }
 
-    @Override
-    public int getItemCount() {
-        return chats.size();
+    public void setDataRequester(final String myId, final String requesterID, final String myName) {
+
+        Log.i(requesterID, "point cna217");
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(requesterID);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Map<String, Object> userAdded = new HashMap<>();
+                    userAdded.put(myId, myName);
+                    child.getRef().child("connectedUsers").updateChildren(userAdded);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
 
     public void changeData(String userId, final String uid) {
 
@@ -253,5 +272,8 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 //            }
 //        });
     }
-
+    @Override
+    public int getItemCount() {
+        return chats.size();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.android.passon;
 
 import android.net.Uri;
+
 import java.util.ArrayList;
 
 /**
@@ -15,7 +16,7 @@ public class UserInfo {
 
     private String userName;
     private String userId;
-//    private Uri dp;
+    //    private Uri dp;
     private String emailId;
     private int rating;
     private String address;
@@ -23,11 +24,12 @@ public class UserInfo {
     private int profileNo;
     private ArrayList<String> connectedUsers;
     private ArrayList<ChatHead> connectionRequestUsers;
+    private ArrayList<String> notifications;
 
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers,ArrayList<ChatHead> requestededUsers) {
+    public UserInfo(int profileNo, String username, String userid, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers, ArrayList<ChatHead> requestededUsers, ArrayList<String> notifications) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
@@ -36,8 +38,20 @@ public class UserInfo {
         this.address = address;
         this.phoneNo = phoneNo;
         this.connectedUsers = connectedUsers;
-        this.connectionRequestUsers=requestededUsers;
+        this.connectionRequestUsers = requestededUsers;
+        this.notifications = notifications;
+
     }
+
+
+    public ArrayList<String> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(ArrayList<String> notifications) {
+        this.notifications = notifications;
+    }
+
     public ArrayList<ChatHead> getConnectionRequestUsers() {
         return connectionRequestUsers;
     }
@@ -45,6 +59,7 @@ public class UserInfo {
     public void setConnectionRequestUsers(ArrayList<ChatHead> connectionRequestUsers) {
         this.connectionRequestUsers = connectionRequestUsers;
     }
+
     public String getAddress() {
         return address;
     }
