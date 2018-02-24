@@ -30,6 +30,9 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
  * Created by ritik on 25-01-2018.
  */
 
+/*
+adapter to select whom to chat
+ */
 public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHolder> {
     private ArrayList<ChatHead> chats;
     private Context context;

@@ -16,6 +16,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/*
+This class handles backend of taking users info via navigation drawer item
+ */
+
 public class GetIDActivity extends AppCompatActivity {
 
     EditText mobNo;

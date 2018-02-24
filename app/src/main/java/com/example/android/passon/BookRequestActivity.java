@@ -20,6 +20,9 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
+/* This class handles backend of book request via fab and pushes to db
+
+ */
 public class BookRequestActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private FirebaseDatabase mfirebaseDatabase;

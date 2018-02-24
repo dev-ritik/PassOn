@@ -7,6 +7,9 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/*
+This class handles deleting infinite firebase nodes
+ */
 public class MainActivity extends AppCompatActivity {
     public static DatabaseReference mUserDatabaseReference;
     private FirebaseDatabase mfirebaseDatabase;

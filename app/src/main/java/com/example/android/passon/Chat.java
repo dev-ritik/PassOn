@@ -4,6 +4,10 @@ package com.example.android.passon;
  * Created by ritik on 26-01-2018.
  */
 
+/*
+This class is the chat message object
+ */
+
 public class Chat {
     private String chatMessage;
     private String time;

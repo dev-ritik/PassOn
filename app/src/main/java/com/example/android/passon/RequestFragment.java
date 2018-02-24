@@ -9,14 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -26,6 +24,12 @@ import java.util.Iterator;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+/*
+This class handles backend of requests input from db
+serves as main screen data
+ */
+
 public class RequestFragment extends Fragment {
 
     public static RecyclerView mRecyclerViewRequest;
@@ -76,8 +80,8 @@ public class RequestFragment extends Fragment {
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
                     requests.add(post);
-                    if (BooksFragment.mAdapterPost != null) {
-                        BooksFragment.mAdapterPost.notifyDataSetChanged();
+                    if (PostFragment.mAdapterPost != null) {
+                        PostFragment.mAdapterPost.notifyDataSetChanged();
                     }
                     if(RequestFragment.mAdapterRequest!=null) {
                         RequestFragment.mAdapterRequest.notifyDataSetChanged();
@@ -105,7 +109,7 @@ public class RequestFragment extends Fragment {
                         Log.i(Integer.toString(requests.size()), "point m311");
                     }
                     Log.i(Integer.toString(requests.size()), "point m389");
-                    BooksFragment.mAdapterPost.notifyDataSetChanged();
+                    PostFragment.mAdapterPost.notifyDataSetChanged();
                     RequestFragment.mAdapterRequest.notifyDataSetChanged();
 
                 }

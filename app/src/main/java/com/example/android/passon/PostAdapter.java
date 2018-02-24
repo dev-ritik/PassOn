@@ -29,6 +29,9 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
  * Created by ritik on 25-01-2018.
  */
 
+/*
+adapter to show posts in the mainscreen via data from PostFragment adapter
+ */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<Post> Posts;
     private boolean tapCount = false;

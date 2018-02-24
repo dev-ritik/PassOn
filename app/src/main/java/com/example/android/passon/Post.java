@@ -8,7 +8,9 @@ import java.util.ArrayList;
 /**
  * Created by ritik on 25-01-2018.
  */
-
+/*
+object for post and request handling
+ */
 public class Post {
 
     //    private String text;

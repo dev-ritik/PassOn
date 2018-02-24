@@ -28,7 +28,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
 
-
+/*
+This class handles backend of register activity
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     // Constants

@@ -1,41 +1,33 @@
 package com.example.android.passon;
 
-import android.*;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
+/* This class handles backend of book post via fab and pushes to db
+
+ */
 public class BookPostActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final int CHOOSE_CAMERA_RESULT = 1;
@@ -128,7 +120,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
                     bookRequestUsers.add("ritik");
                     Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2,bookRequestUsers, true,phoneNo.getText().toString(),institute.getText().toString());
 //                posts.add(post);
-                    BooksFragment.mPostDatabaseReference.push().setValue(post);
+                    PostFragment.mPostDatabaseReference.push().setValue(post);
                     bookName.setText("");
                     filter1 = "";
                     filter2 = "";
@@ -178,7 +170,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
 //                                Log.i("sucess","point L170");
 //                                Post post = new Post(1, downloadUrl, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2, true);
 ////                posts.add(post);
-//                                BooksFragment.mPostDatabaseReference.push().setValue(post);
+//                                PostFragment.mPostDatabaseReference.push().setValue(post);
 //                                startActivity(new Intent(BookPostActivity.this, Main2Activity.class));
 //                            }
 //                        });

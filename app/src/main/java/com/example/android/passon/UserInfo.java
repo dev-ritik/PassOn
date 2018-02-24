@@ -7,6 +7,10 @@ import java.util.ArrayList;
  * Created by ritik on 26-01-2018.
  */
 
+/*
+object to store all user related information
+ */
+
 public class UserInfo {
 
     private String userName;

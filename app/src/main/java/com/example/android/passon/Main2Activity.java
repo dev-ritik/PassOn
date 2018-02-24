@@ -51,6 +51,9 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/*
+This class handles backend all firebase reference, user node updating, navigation drawer handling
+ */
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String ANONYMOUS = "anonymous";
@@ -78,7 +81,6 @@ public class Main2Activity extends AppCompatActivity
     public static Uri mUserProfile;
     private String mEmailId;
     private TextView naveUserName,naveUserEmail;
-    private ImageView naveUserDp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

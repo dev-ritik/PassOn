@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -26,13 +25,18 @@ import java.util.Iterator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BooksFragment extends Fragment {
+
+/*
+This class handles backend of posts input from db
+serves as main screen data
+ */
+public class PostFragment extends Fragment {
 
 
     private FirebaseDatabase mfirebaseDatabase;
     public static DatabaseReference mPostDatabaseReference;
     public static DatabaseReference mUserDatabaseReference;
-    public static ChildEventListener mChildEventListenerPost,mChildEventListenerRequest;//to listen the changes in db
+    public static ChildEventListener mChildEventListenerPost, mChildEventListenerRequest;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
     public static StorageReference mChatPhotosStorageReference;
     public static ArrayList<Post> posts;
@@ -41,7 +45,7 @@ public class BooksFragment extends Fragment {
     public static RecyclerView.Adapter mAdapterPost;
     public static RecyclerView.LayoutManager mLayoutManagerPost;
 
-    public BooksFragment() {
+    public PostFragment() {
         // Required empty public constructor
     }
 
@@ -61,7 +65,7 @@ public class BooksFragment extends Fragment {
         mLayoutManagerPost = new LinearLayoutManager(rootView.getContext());
         mRecyclerViewPost.setLayoutManager(mLayoutManagerPost);
         attachDatabaseListener();
-        Log.i("BooksFrag",mAdapterPost.getItemCount()+ "");
+        Log.i("BooksFrag", mAdapterPost.getItemCount() + "");
         return rootView;
 
     }
@@ -80,7 +84,7 @@ public class BooksFragment extends Fragment {
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
         posts.clear();
-        mAdapterPost.notifyItemRangeRemoved(0, BooksFragment.mAdapterPost.getItemCount());
+        mAdapterPost.notifyItemRangeRemoved(0, PostFragment.mAdapterPost.getItemCount());
     }
 
     private void attachDatabaseListener() {
@@ -113,14 +117,14 @@ public class BooksFragment extends Fragment {
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
                     posts.add(post);
-                    if (BooksFragment.mAdapterPost != null) {
-                        BooksFragment.mAdapterPost.notifyDataSetChanged();
+                    if (PostFragment.mAdapterPost != null) {
+                        PostFragment.mAdapterPost.notifyDataSetChanged();
                     }
                     if (RequestFragment.mAdapterRequest != null) {
                         RequestFragment.mAdapterRequest.notifyDataSetChanged();
                     }
                     Log.i(Integer.toString(posts.size()), "point m295");
-//                    Log.i(Integer.toString(BooksFragment.mAdapterPost.getItemCount()), "point m420");
+//                    Log.i(Integer.toString(PostFragment.mAdapterPost.getItemCount()), "point m420");
 //                    Log.i(Integer.toString(RequestFragment.mAdapterRequest.getItemCount()), "point m421");
 
                 }
@@ -142,7 +146,7 @@ public class BooksFragment extends Fragment {
                         Log.i(Integer.toString(posts.size()), "point m311");
                     }
                     Log.i(Integer.toString(posts.size()), "point m389");
-                    BooksFragment.mAdapterPost.notifyDataSetChanged();
+                    PostFragment.mAdapterPost.notifyDataSetChanged();
                     RequestFragment.mAdapterRequest.notifyDataSetChanged();
 
                 }

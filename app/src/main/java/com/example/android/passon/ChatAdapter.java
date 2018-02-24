@@ -21,6 +21,9 @@ import static android.view.Gravity.RIGHT;
  * Created by ritik on 26-01-2018.
  */
 
+/*
+adapter to display chat messages
+ */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private ArrayList<Chat> Chats;
 

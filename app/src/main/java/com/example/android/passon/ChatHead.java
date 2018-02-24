@@ -4,6 +4,9 @@ package com.example.android.passon;
  * Created by ritik on 29/1/18.
  */
 
+/*
+object for chat selection menu
+ */
 public class ChatHead {
     private String userId;
     private String username;

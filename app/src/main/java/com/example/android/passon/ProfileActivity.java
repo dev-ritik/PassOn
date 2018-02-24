@@ -39,6 +39,9 @@ import static com.example.android.passon.Main2Activity.mUserId;
 
 //import static com.example.android.passon.MainActivity.mUserId;
 
+/*
+This class handles backend of profile related stuff
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;

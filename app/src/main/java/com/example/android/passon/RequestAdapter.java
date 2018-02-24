@@ -27,6 +27,10 @@ import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
  * Created by ritik on 25-01-2018.
  */
 
+/*
+adapter to display request objects on mainscreen via data from request fragment
+ */
+
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder> {
     private ArrayList<Post> Posts;
     private boolean tapCount=false;

@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+/*
+This class handles backend of send_feedack item in navigation drawer
+ */
 public class SendFeedbackActivity extends AppCompatActivity {
 
     @Override

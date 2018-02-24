@@ -34,6 +34,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * Created by Eon on 01/26/2018.
  */
 
+/*
+This class handles backend of login activity and handling it with firebase auth object
+ */
 public class LoginActivity extends AppCompatActivity {
 
     // TODO: Add member variables here:

@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
+/*
+This class handles backend of all user to user interaction
+ */
 public class NotificationActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;

@@ -32,6 +32,10 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/*
+This class handles backend of chat activity and db data fetching
+makes unique chat room for each pair of users
+ */
 public class ChatActivity extends AppCompatActivity {
     static boolean backupCalledAlready = false;
 

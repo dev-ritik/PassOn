@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by ashutoshchaubey on 28/01/18.
  */
 
+/*
+This class handles backend of swiping fragment in main screen
+ */
 public class PassOnFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private String tabTitles[] = new String[] { "Books","Requests" };
@@ -24,7 +27,7 @@ public class PassOnFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position==0) {
-            return new BooksFragment();
+            return new PostFragment();
         }else{
             return new RequestFragment();
         }
