@@ -26,10 +26,9 @@ public class NotificationActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerViewRequest, mRecyclerViewConnected;
     public static RecyclerView.Adapter mAdapterRequest, mAdapterConnected;
-    //    public ChildEventListener mChildEventListenerProfile, mChildEventListenerProfileTest;
     ArrayList<ChatHead> requests;
     ArrayList<ChatHead> connections;
-    private LinearLayout requestDialog;
+    private LinearLayout requestDialog,connectionDialog;
 
 
     @Override
@@ -38,13 +37,14 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
 
         requestDialog = (LinearLayout) findViewById(R.id.requestDialog);
+        connectionDialog = (LinearLayout) findViewById(R.id.connectionDialog);
 
         mRecyclerViewRequest = (RecyclerView) findViewById(R.id.requestedUsers);
         mRecyclerViewConnected = (RecyclerView) findViewById(R.id.connectedUsers);
         requests = new ArrayList<>();
         connections = new ArrayList<>();
         mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, findViewById(R.id.requestDialog));
-        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, findViewById(R.id.requestDialog));
+        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, findViewById(R.id.connectionDialog));
 
 //        mRecyclerViewRequest.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
@@ -61,20 +61,20 @@ public class NotificationActivity extends AppCompatActivity {
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.i("child", "point pa189");
+                Log.i("child", "point na64");
                 DatabaseReference requestChild = dataSnapshot.child("connectionRequestUsers").getRef();
                 requestChild.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 //                            ChatHead c1=dataSnapshot.getValue(ChatHead.class);
-                        Log.i("point pa199", dataSnapshot.toString());
+                        Log.i("point na71", dataSnapshot.toString());
                         ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
                         requests.add(asd1);
                         mAdapterRequest.notifyDataSetChanged();
-                        Log.i("point pa220", dataSnapshot.toString());
-                        Log.i("point pa221", asd1.getUsername());
-                        Log.i("point pa221a", asd1.getUserId());
+                        Log.i("point na75", dataSnapshot.toString());
+                        Log.i("point na76", asd1.getUsername());
+                        Log.i("point na77", asd1.getUserId());
                     }
 
                     @Override
@@ -104,13 +104,13 @@ public class NotificationActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                        Log.i("point pa199", dataSnapshot.toString());
+                        Log.i("point na107", dataSnapshot.toString());
                         ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
                         connections.add(asd1);
                         mAdapterRequest.notifyDataSetChanged();
-                        Log.i("point pa220", dataSnapshot.toString());
-                        Log.i("point pa221", asd1.getUsername());
-                        Log.i("point pa221a", asd1.getUserId());
+                        Log.i("point na111", dataSnapshot.toString());
+                        Log.i("point na112", asd1.getUsername());
+                        Log.i("point na113a", asd1.getUserId());
                     }
 
                     @Override
@@ -163,7 +163,7 @@ public class NotificationActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        System.out.println("standpoint pr112");
+        System.out.println("point na166");
 //        if (mChildEventListenerProfile != null) {
 //            Log.i(mChildEventListenerProfile.toString(), "standpoint pr114");
 //            mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId).getRef().child("connectionRequestUsers").removeEventListener(mChildEventListenerProfile);

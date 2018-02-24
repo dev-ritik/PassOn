@@ -58,6 +58,11 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         this.dialogBox = dialogBox;
     }
 
+    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context) {
+        chats = chatHeads;
+        this.context = context;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
@@ -100,7 +105,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         changeData(Main2Activity.mUserId, chat.getUserId());
                         Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                         dialogBox.setVisibility(View.INVISIBLE);
-                        NotificationActivity.mAdapter.notifyDataSetChanged();
+                        NotificationActivity.mAdapterRequest.notifyDataSetChanged();
                     }
                 });
 
