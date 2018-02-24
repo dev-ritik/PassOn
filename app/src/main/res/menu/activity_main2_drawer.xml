@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_account_circle"
             android:title="Profile" />
         <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_account_circle"
+            android:title="Notification" />
+        <item
             android:id="@+id/nav_id_card"
             android:icon="@drawable/ic_credit_card"
             android:title="Upload ID Card" />

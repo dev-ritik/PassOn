@@ -224,6 +224,8 @@ public class Main2Activity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_id_card) {
             startActivity(new Intent(Main2Activity.this, GetIDActivity.class));
+        }else if (id == R.id.nav_notifications) {
+            startActivity(new Intent(Main2Activity.this,NotificationActivity.class));
         } else if (id == R.id.nav_transactions) {
 
         } else if (id == R.id.nav_logout) {
@@ -317,145 +319,6 @@ public class Main2Activity extends AppCompatActivity
 //            Log.i(mChildEventListenerPost.toString(), "point m355");
     }
 
-
-//    private void attachDatabaseListener() {
-//        mPostDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
-//                mProgressBar.setVisibility(View.INVISIBLE);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//
-////        if (mChildEventListenerPost != null) {
-////            Log.i(mChildEventListenerPost.toString(), "point m293");
-////        }
-//        if (mChildEventListenerPost == null) {
-//            Log.i("mChildEventListenerPost", "standpoint 298");
-//            mChildEventListenerPost = new ChildEventListener() {//working with db after authentication
-//                @Override
-//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                    Log.i("onchildadded", "point M114");
-////                    Log.i(Integer.toString(posts.size()), "point m289");
-//
-//                    //attached to all added child(all past and future child)
-//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-//                    posts.add(post);
-//                    mAdapterPost.notifyDataSetChanged();
-//                    mAdapterRequest.notifyDataSetChanged();
-////                    Log.i(Integer.toString(posts.size()), "point m295");
-////                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m420");
-////                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m421");
-//
-//                }
-//
-//                @Override
-//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                    // changed content of a child
-//                    Log.i("child changed", "point m370");
-//                }
-//
-//                @Override
-//                public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                    // child deleted
-//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-//
-//                    for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
-//                        if (iterator.next().getTime() == post.getTime())
-//                            iterator.remove();
-//                        Log.i(Integer.toString(posts.size()), "point m311");
-//                    }
-//                    Log.i(Integer.toString(posts.size()), "point m389");
-//                    mAdapterPost.notifyDataSetChanged();
-//                    mAdapterRequest.notifyDataSetChanged();
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//                    //moved position of a child
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    // error or permission denied
-//                }
-//            };
-//            mPostDatabaseReference.addChildEventListener(mChildEventListenerPost);
-//            Log.i("child addeddd", "point m610");
-//        }
-//        if (mChildEventListenerRequest == null) {
-////            Log.i("mChildEventListenerPost", "standpoint 298");
-//            mChildEventListenerRequest = new ChildEventListener() {//working with db after authentication
-//                @Override
-//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                    Log.i("onchildadded", "point M114");
-////                    Log.i(Integer.toString(requests.size()), "point m289");
-//
-//                    //attached to all added child(all past and future child)
-//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-//                    requests.add(post);
-//                    mAdapterPost.notifyDataSetChanged();
-//                    mAdapterRequest.notifyDataSetChanged();
-//                    Log.i(Integer.toString(requests.size()), "point m295");
-//                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m473");
-//                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m474");
-//
-//                }
-//
-//                @Override
-//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                    // changed content of a child
-//                    Log.i("child changed", "point m370");
-//                }
-//
-//                @Override
-//                public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                    // child deleted
-//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-//
-//                    for (Iterator<Post> iterator = requests.iterator(); iterator.hasNext(); ) {
-//                        if (iterator.next().getTime() == post.getTime())
-//                            iterator.remove();
-//                        Log.i(Integer.toString(requests.size()), "point m311");
-//                    }
-//                    Log.i(Integer.toString(requests.size()), "point m389");
-//                    mAdapterPost.notifyDataSetChanged();
-//                    mAdapterRequest.notifyDataSetChanged();
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//                    //moved position of a child
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    // error or permission denied
-//                }
-//            };
-//            mRequestDatabaseReference.addChildEventListener(mChildEventListenerRequest);
-//            Log.i("child addeddd", "point m610");
-//        }
-//
-//    }
-//
-//    private void detachDatabaseReadListener() {
-//        if (mChildEventListenerPost != null)
-//            mPostDatabaseReference.removeEventListener(mChildEventListenerPost);
-//        mChildEventListenerPost = null;
-//        if (mChildEventListenerRequest != null)
-//            mPostDatabaseReference.removeEventListener(mChildEventListenerRequest);
-//        mChildEventListenerRequest = null;
-//    }
 
     public String calculateTime() {
         return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();
