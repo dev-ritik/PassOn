@@ -224,9 +224,7 @@ public class Main2Activity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), com.example.android.passon.ProfileActivity.class);
             intent.putExtra("email", mEmailId);
             startActivity(intent);
-        } else if (id == R.id.nav_id_card) {
-            startActivity(new Intent(Main2Activity.this, GetIDActivity.class));
-        }else if (id == R.id.nav_notifications) {
+        } else if (id == R.id.nav_notifications) {
             startActivity(new Intent(Main2Activity.this,NotificationActivity.class));
         } else if (id == R.id.nav_transactions) {
 

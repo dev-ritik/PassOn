@@ -40,10 +40,6 @@
             android:parentActivityName=".Main2Activity"
             android:theme="@style/AppTheme.WithActionBar" />
         <activity
-            android:name=".GetIDActivity"
-            android:parentActivityName=".Main2Activity"
-            android:theme="@style/AppTheme.WithActionBar" />
-        <activity
             android:name=".SendFeedbackActivity"
             android:parentActivityName=".Main2Activity"
             android:theme="@style/AppTheme.WithActionBar" />
