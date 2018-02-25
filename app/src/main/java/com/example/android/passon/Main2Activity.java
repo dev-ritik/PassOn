@@ -285,7 +285,7 @@ public class Main2Activity extends AppCompatActivity
                         connected.add("qwert");
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), currentUser.getEmail(), 2, "iitR", 123456789, connected, request,notifications);
+                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(),null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request,notifications);
                         mUserDatabaseReference.push().setValue(userInfo);
                     }
                     Log.i("point Ma396",Long.toString(count));

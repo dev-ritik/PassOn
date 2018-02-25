@@ -16,7 +16,7 @@ public class UserInfo {
 
     private String userName;
     private String userId;
-    //    private Uri dp;
+    private String dpUrl;
     private String emailId;
     private int rating;
     private String address;
@@ -29,10 +29,11 @@ public class UserInfo {
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid, String emailId, int rating, String address, int phoneNo, ArrayList connectedUsers, ArrayList<ChatHead> requestededUsers, ArrayList<String> notifications) {
+    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, int rating, String address, int phoneNo, ArrayList<String> connectedUsers, ArrayList<ChatHead> requestededUsers, ArrayList<String> notifications) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
+        this.dpUrl=photoUrl;
         this.emailId = emailId;
         this.rating = rating;
         this.address = address;
@@ -97,13 +98,13 @@ public class UserInfo {
         this.userId = userId;
     }
 
-//    public Uri getDp() {
-//        return dp;
-//    }
-//
-//    public void setDp(Uri dp) {
-//        this.dp = dp;
-//    }
+    public String getdpUrl() {
+        return dpUrl;
+    }
+
+    public void setdpUrl(String dpUrl) {
+        this.dpUrl = dpUrl;
+    }
 
     public String getEmailId() {
         return emailId;

@@ -1,5 +1,7 @@
 package com.example.android.passon;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Movie;
 import android.graphics.Rect;
@@ -15,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Transformation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -75,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
     RelativeLayout dpChangeDialog;
     Uri tempuri;
     public static File file;
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
+
+        View view = this.getCurrentFocus();
+        if (view != null) {
+        }
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setTitle("Profile");
@@ -99,7 +107,12 @@ public class ProfileActivity extends AppCompatActivity {
         contentProfile = (LinearLayout) findViewById(R.id.contentProfile);
         displayPicture = (ImageView) findViewById(R.id.profile_image);
         TextView userName = (TextView) findViewById(R.id.userName);
-
+//        userName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         dpChangeDialog = (RelativeLayout) findViewById(R.id.dpChangeDialog);
 
@@ -109,18 +122,13 @@ public class ProfileActivity extends AppCompatActivity {
         displayPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 dpChangeDialog.setVisibility(View.VISIBLE);
                 layout_MainMenu.getForeground().setAlpha(120);
             }
         });
 
-//        layout_MainMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dpChangeDialog.setVisibility(View.INVISIBLE);
-//                layout_MainMenu.getForeground().setAlpha(0);
-//            }
-//        });
         removeDp = (ImageView) findViewById(R.id.removeDp);
         galleryDp = (ImageView) findViewById(R.id.galleryDp);
         cameraDp = (ImageView) findViewById(R.id.cameraDp);
@@ -263,7 +271,6 @@ public class ProfileActivity extends AppCompatActivity {
                     getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
 
                     //Uri is originalUri which can be converted to string
-
                     // code for inserting in database
                 }
                 break;
@@ -295,11 +302,7 @@ public class ProfileActivity extends AppCompatActivity {
 //return true so that its child work else vic-e-versa
         int x = Math.round(ev.getX());
         int y = Math.round(ev.getY());
-//        for (int i = 0; i < 2; i++) {
-//            if (isBackground(x, y, ev.)) {
-//                return true;
-//            }
-//    }
+//
         Log.i("x ", x + "");
         Log.i("y ", y + "");
 
@@ -324,23 +327,25 @@ public class ProfileActivity extends AppCompatActivity {
         loc.top = location[1];
         loc.right = loc.left + dpChangeDialog.getWidth();
         loc.bottom = loc.top + dpChangeDialog.getHeight();
+
 //        Log.i("point pa224 left",loc.left+"");
 //        Log.i("point pa225 right",loc.right+"");
 //        Log.i("point pa226 top",loc.top+"");
 //        Log.i("point pa227 bottom",loc.bottom+"");
 //        Log.i("point pa228 height",loc.height()+"");
 //        Log.i("point pa229 width",loc.width()+"");
+
 //        Log.i("dl x left",dpChangeDialog.getLeft()+"");
 //        Log.i("dl x right",dpChangeDialog.getRight()+"");
 //        Log.i("dl y top",dpChangeDialog.getTop()+"");
 //        Log.i("dl y bottom",dpChangeDialog.getBottom()+"");
 
-        Log.i("point pa332", (x > loc.left) + "");
-        Log.i("point pa333", (x < loc.right) + "");
-        Log.i("point pa334", (y < loc.top) + "");
-        Log.i("point pa335", (y > loc.bottom) + "");
-        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
-        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
+//        Log.i("point pa332", (x > loc.left) + "");
+//        Log.i("point pa333", (x < loc.right) + "");
+//        Log.i("point pa334", (y < loc.top) + "");
+//        Log.i("point pa335", (y > loc.bottom) + "");
+//        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
+//        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
         if (((x < loc.left) || (x > loc.right) || (y < loc.top) || (y > loc.bottom)) && dpChangeDialog.getVisibility() == View.VISIBLE) {
 //            Log.i("point pa337", "false");
             dpChangeDialog.setVisibility(View.INVISIBLE);
@@ -351,7 +356,6 @@ public class ProfileActivity extends AppCompatActivity {
             return true;
         }
 
-//        return super.dispatchTouchEvent(ev);
     }
 
 }
