@@ -22,7 +22,7 @@ import static android.view.Gravity.RIGHT;
  */
 
 /*
-adapter to display chat messages
+adapter to display notification for navigation drawer menu item
  */
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
     private ArrayList<String> notices;
