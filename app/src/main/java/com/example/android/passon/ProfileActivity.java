@@ -2,6 +2,7 @@ package com.example.android.passon;
 
 import android.content.Intent;
 import android.graphics.Movie;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,7 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<String> chatsString;
     private LinearLayout requestDialog, contentProfile;
     private TextView userName;
-    private ImageView displayPicture, acceptButton,removeDp,galleryDp,cameraDp;
+    private ImageView displayPicture, acceptButton, removeDp, galleryDp, cameraDp;
     EditText mobNo;
     Button galleryIntent, cameraIntent;
     FrameLayout layout_MainMenu;
@@ -107,26 +109,27 @@ public class ProfileActivity extends AppCompatActivity {
         displayPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            dpChangeDialog.setVisibility(View.VISIBLE);
-            layout_MainMenu.getForeground().setAlpha(120);
+                dpChangeDialog.setVisibility(View.VISIBLE);
+                layout_MainMenu.getForeground().setAlpha(120);
             }
         });
 
-        layout_MainMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dpChangeDialog.setVisibility(View.INVISIBLE);
-                layout_MainMenu.getForeground().setAlpha(0);
-            }
-        });
-        removeDp=(ImageView)findViewById(R.id.removeDp);
-        galleryDp=(ImageView)findViewById(R.id.galleryDp);
-        cameraDp=(ImageView)findViewById(R.id.cameraDp);
+//        layout_MainMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dpChangeDialog.setVisibility(View.INVISIBLE);
+//                layout_MainMenu.getForeground().setAlpha(0);
+//            }
+//        });
+        removeDp = (ImageView) findViewById(R.id.removeDp);
+        galleryDp = (ImageView) findViewById(R.id.galleryDp);
+        cameraDp = (ImageView) findViewById(R.id.cameraDp);
 
         removeDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setData(Main2Activity.mUserId,null);
+                setData(Main2Activity.mUserId, null);
+                Toast.makeText(ProfileActivity.this, "removed", Toast.LENGTH_SHORT).show();
                 dpChangeDialog.setVisibility(View.INVISIBLE);
                 layout_MainMenu.getForeground().setAlpha(0);
 
@@ -180,16 +183,16 @@ public class ProfileActivity extends AppCompatActivity {
         TextView emailId = (TextView) findViewById(R.id.email);
         emailId.setText(email);
 
-        mobNo=(EditText)findViewById(R.id.mobile_no);
-        galleryIntent=(Button)findViewById(R.id.gallery_intent1);
-        cameraIntent=(Button)findViewById(R.id.camera_intent1);
+        mobNo = (EditText) findViewById(R.id.mobile_no);
+        galleryIntent = (Button) findViewById(R.id.gallery_intent1);
+        cameraIntent = (Button) findViewById(R.id.camera_intent1);
 
         cameraIntent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(mobNo.getText().toString().equals(""))) {
+                if (!(mobNo.getText().toString().equals(""))) {
                     Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    Log.i("point pa220","camera" );
+                    Log.i("point pa220", "camera");
 
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                     file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "IMG_" + timeStamp + ".jpg");
@@ -197,8 +200,8 @@ public class ProfileActivity extends AppCompatActivity {
                     i.putExtra(MediaStore.EXTRA_OUTPUT, tempuri);
                     i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
                     startActivityForResult(i, CHOOSE_CAMERA_RESULT1);
-                }else{
-                    Toast.makeText(ProfileActivity.this,"Please update mobile number first",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Please update mobile number first", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -206,17 +209,19 @@ public class ProfileActivity extends AppCompatActivity {
         galleryIntent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(mobNo.getText().toString().equals(""))) {
-                    Log.i("point pa238","gallery" );
+                if (!(mobNo.getText().toString().equals(""))) {
+                    Log.i("point pa238", "gallery");
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("image/jpeg");
                     startActivityForResult(intent, GALLERY_RESULT2);
-                }else{
-                    Toast.makeText(ProfileActivity.this,"Please update mobile number first",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Please update mobile number first", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
     }
 
     @Override
@@ -236,11 +241,12 @@ public class ProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         if (null == imageReturnedIntent) return;
         Uri originalUri = null;
-        switch(requestCode) {
+        switch (requestCode) {
             case CHOOSE_CAMERA_RESULT1:
-                if(resultCode == RESULT_OK){
-                    if(file.exists()){
-                        Toast.makeText(this,"The image was saved at "+file.getAbsolutePath(),Toast.LENGTH_LONG).show();;
+                if (resultCode == RESULT_OK) {
+                    if (file.exists()) {
+                        Toast.makeText(this, "The image was saved at " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                        ;
                     }
                     //Uri is at variable tempuri which can be converted to string
 
@@ -249,7 +255,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 break;
             case GALLERY_RESULT2:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     originalUri = imageReturnedIntent.getData();
                     final int takeFlags = imageReturnedIntent.getFlags()
                             & (Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -286,33 +292,66 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.i("point pa289","dispatch event");
-//        switch (ev.getAtion()) {
-//            case MotionEvent.ACTION_DOWN:
-//                mDownX = ev.getX();
-//                mDownY = ev.getY();
-//                mSwiping = false;
-//                break;
-//            case MotionEvent.ACTION_CANCEL:
-//            case MotionEvent.ACTION_UP:
-//                if(mSwiping) {
-//                    swipeScreen(); //if action recognized as swipe then swipe
-//                }
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                float x = ev.getX();
-//                float y = ev.getY();
-//                float xDelta = Math.abs(x - mDownX);
-//                float yDelta = Math.abs(y - mDownY);
-//
-//                if (yDelta > mSlop && yDelta / 2 > xDelta) {
-//                    mSwiping = true;
-//                    return true;
-//                }
-//                break;
-//        }
+//return true so that its child work else vic-e-versa
+        int x = Math.round(ev.getX());
+        int y = Math.round(ev.getY());
+//        for (int i = 0; i < 2; i++) {
+//            if (isBackground(x, y, ev.)) {
+//                return true;
+//            }
+//    }
+        Log.i("x ", x + "");
+        Log.i("y ", y + "");
 
-        return super.dispatchTouchEvent(ev);
+        Log.i("point up", super.dispatchTouchEvent(ev) + "");
+        Log.i("point op", isBackground(x, y) + "");
+
+
+        return isBackground(x, y);
+//        return super.dispatchTouchEvent(ev);
+
+    }
+
+    public boolean isBackground(int x, int y) {
+
+
+        Rect loc = new Rect();
+        int[] location = new int[2];
+
+        dpChangeDialog.getLocationOnScreen(location);
+
+        loc.left = location[0];
+        loc.top = location[1];
+        loc.right = loc.left + dpChangeDialog.getWidth();
+        loc.bottom = loc.top + dpChangeDialog.getHeight();
+//        Log.i("point pa224 left",loc.left+"");
+//        Log.i("point pa225 right",loc.right+"");
+//        Log.i("point pa226 top",loc.top+"");
+//        Log.i("point pa227 bottom",loc.bottom+"");
+//        Log.i("point pa228 height",loc.height()+"");
+//        Log.i("point pa229 width",loc.width()+"");
+//        Log.i("dl x left",dpChangeDialog.getLeft()+"");
+//        Log.i("dl x right",dpChangeDialog.getRight()+"");
+//        Log.i("dl y top",dpChangeDialog.getTop()+"");
+//        Log.i("dl y bottom",dpChangeDialog.getBottom()+"");
+
+        Log.i("point pa332", (x > loc.left) + "");
+        Log.i("point pa333", (x < loc.right) + "");
+        Log.i("point pa334", (y < loc.top) + "");
+        Log.i("point pa335", (y > loc.bottom) + "");
+        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
+        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
+        if (((x < loc.left) || (x > loc.right) || (y < loc.top) || (y > loc.bottom)) && dpChangeDialog.getVisibility() == View.VISIBLE) {
+//            Log.i("point pa337", "false");
+            dpChangeDialog.setVisibility(View.INVISIBLE);
+            layout_MainMenu.getForeground().setAlpha(0);
+            return false;
+        } else {
+//            Log.i("point pa337", "true");
+            return true;
+        }
+
+//        return super.dispatchTouchEvent(ev);
     }
 
 }
