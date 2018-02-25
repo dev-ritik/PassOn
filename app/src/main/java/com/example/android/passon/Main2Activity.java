@@ -63,8 +63,8 @@ public class Main2Activity extends AppCompatActivity
     public static DatabaseReference mPostDatabaseReference;
     public static DatabaseReference mRequestDatabaseReference;
     public static DatabaseReference mUserDatabaseReference;
-//    public static DatabaseReference mUserCountDatabaseReference;
-    public static ChildEventListener mChildEventListenerPost, mChildEventListenerRequest;//to listen the changes in db
+    //    public static DatabaseReference mUserCountDatabaseReference;
+    public static ChildEventListener mUserEventListener;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
     public static StorageReference mChatPhotosStorageReference;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -76,11 +76,15 @@ public class Main2Activity extends AppCompatActivity
     private GoogleSignInClient mGoogleSignInClient;
     private long count = 0;
 
+    public static ArrayList<UserInfo> userInfos;
+
+    public static UserInfo userInfo;
+
     public static String mUserId;
     public static String mUser;
     public static Uri mUserProfile;
     private String mEmailId;
-    private TextView naveUserName,naveUserEmail;
+    private TextView naveUserName, naveUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +92,8 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
 
         mUserId = ANONYMOUS;
-        mUser=ANONYMOUS;
-        mUserProfile=null;
+        mUser = ANONYMOUS;
+        mUserProfile = null;
         mEmailId = "";
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -100,6 +104,7 @@ public class Main2Activity extends AppCompatActivity
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
         email = prefs.getString("Email", null);
 
+        Log.i("point ma107", "reached");
 
         if (email == null) {
             Log.i("email is null", "standpoint m84");
@@ -115,6 +120,8 @@ public class Main2Activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        userInfos = new ArrayList<>();
+
         mInputData = (LinearLayout) findViewById(R.id.inputData);
         naveUserName = (TextView) findViewById(R.id.nav_user_name);
         naveUserEmail = (TextView) findViewById(R.id.nav_user_id);
@@ -125,7 +132,7 @@ public class Main2Activity extends AppCompatActivity
         ViewPager viewPager = (ViewPager) findViewById(R.id.visions_viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
-        PassOnFragmentPagerAdapter adapter = new PassOnFragmentPagerAdapter(getSupportFragmentManager(),Main2Activity.this);
+        PassOnFragmentPagerAdapter adapter = new PassOnFragmentPagerAdapter(getSupportFragmentManager(), Main2Activity.this);
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
@@ -153,6 +160,7 @@ public class Main2Activity extends AppCompatActivity
             }
         });
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -175,6 +183,7 @@ public class Main2Activity extends AppCompatActivity
 //        mRecyclerViewPost = (RecyclerView) findViewById(R.id.post_recycler_view);
 //        mRecyclerViewRequest = (RecyclerView) findViewById(R.id.request_recycler_view);
         mProgressBar.setVisibility(View.INVISIBLE);
+
 
 //        mAuthStateListener = new FirebaseAuth.AuthStateListener()
 //        {
@@ -202,6 +211,97 @@ public class Main2Activity extends AppCompatActivity
 //                }
 //            }
 //        };
+
+
+        if (mUserEventListener == null) {
+            Log.i("mUserEventListener", "point ma212");
+            mUserEventListener = new ChildEventListener() {//working with db after authentication
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.i("onchildadded", "point M114");
+
+                    //attached to all added child(all past and future child)
+                    UserInfo userInfo1 = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
+                    userInfos.add(userInfo1);
+
+                    Log.i(Integer.toString(userInfos.size()), "point m228");
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    // changed content of a child
+                    Log.i("child changed", "point m235");
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    // child deleted
+//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+//
+//                    for (Iterator<UserInfo> iterator = userInfos.iterator(); iterator.hasNext(); ) {
+//                        if (iterator.next().getTime() == post.getTime())
+//                            iterator.remove();
+//                        Log.i(Integer.toString(posts.size()), "point m311");
+//                    }
+//                    Log.i(Integer.toString(posts.size()), "point m389");
+//                    PostFragment.mAdapterPost.notifyDataSetChanged();
+//                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    //moved position of a child
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // error or permission denied
+                }
+            };
+            mUserDatabaseReference.addChildEventListener(mUserEventListener);
+            Log.i("child addeddd", "point m265");
+        }
+
+//        Query query1 = mUserDatabaseReference.orderByChild("userId").equalTo(mUserId);
+//        Log.i("point ma271", mUserId);
+//        Log.i("point ma272", "here");
+//        query1.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Log.i("point ma308", "child added");
+//                Log.i(Integer.toString(userInfos.size()), "point m274");
+//
+//                //attached to all added child(all past and future child)
+//                userInfo = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
+//
+//                Log.i(userInfo.getPhoneNo() + "", "point m279");
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
     }
 
     @Override
@@ -225,15 +325,15 @@ public class Main2Activity extends AppCompatActivity
             intent.putExtra("email", mEmailId);
             startActivity(intent);
         } else if (id == R.id.nav_notifications) {
-            startActivity(new Intent(Main2Activity.this,NotificationActivity.class));
+            startActivity(new Intent(Main2Activity.this, NotificationActivity.class));
         } else if (id == R.id.nav_transactions) {
 
         } else if (id == R.id.nav_logout) {
             logout();
-        } else if(id==R.id.nav_app_info){
-            startActivity(new Intent(Main2Activity.this,AppInfoActivity.class));
-        } else if (id==R.id.nav_user_feedback){
-            startActivity(new Intent(Main2Activity.this,SendFeedbackActivity.class));
+        } else if (id == R.id.nav_app_info) {
+            startActivity(new Intent(Main2Activity.this, AppInfoActivity.class));
+        } else if (id == R.id.nav_user_feedback) {
+            startActivity(new Intent(Main2Activity.this, SendFeedbackActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -266,16 +366,16 @@ public class Main2Activity extends AppCompatActivity
         Log.i("point m373", "" + (currentUser == null));
         if (currentUser != null) {
             //user is signed
-            mUser=currentUser.getDisplayName();
-            mUserId=currentUser.getUid();
-            mEmailId=currentUser.getEmail();
+            mUser = currentUser.getDisplayName();
+            mUserId = currentUser.getUid();
+            mEmailId = currentUser.getEmail();
             Log.i(currentUser.getUid(), "point m376");
             Query query = mUserDatabaseReference.orderByChild("userId").equalTo(currentUser.getUid());
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     count = dataSnapshot.getChildrenCount();
-                    if(count==0) {
+                    if (count == 0) {
                         Log.i(currentUser.getUid(), "standpoint m570");
                         Log.i("seems new", "point m558");
 
@@ -285,11 +385,11 @@ public class Main2Activity extends AppCompatActivity
                         connected.add("qwert");
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(),null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request,notifications);
+                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request, notifications);
                         mUserDatabaseReference.push().setValue(userInfo);
                     }
-                    Log.i("point Ma396",Long.toString(count));
-//                    }
+
+                    Log.i("point Ma396", Long.toString(count));
                 }
 
                 @Override
@@ -299,8 +399,44 @@ public class Main2Activity extends AppCompatActivity
             });
 //            if(count==mUserDatabaseReference.)
             Log.i("seems new", "point m462");
+            Log.i("point ma271", mUserId);
+            Log.i("point ma272", "here");
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.i("point ma308", "child added");
+                    Log.i(Integer.toString(userInfos.size()), "point m274");
 
-        } else{
+                    //attached to all added child(all past and future child)
+                    userInfo = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
+
+                    Log.i(userInfo.getPhoneNo() + "", "point m279");
+
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        } else {
             Log.i("current user is null", "standpoint m389");
             Intent intent = new Intent(this, LoginActivity.class);
             finish();
@@ -330,7 +466,7 @@ public class Main2Activity extends AppCompatActivity
     public void logout() {
         FirebaseAuth.getInstance().signOut();
         mUserId = ANONYMOUS;
-        mUser=ANONYMOUS;
+        mUser = ANONYMOUS;
         mEmailId = "";
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {

@@ -33,6 +33,7 @@ import android.widget.Toast;
 //import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Transformation;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -107,18 +108,15 @@ public class ProfileActivity extends AppCompatActivity {
         contentProfile = (LinearLayout) findViewById(R.id.contentProfile);
         displayPicture = (ImageView) findViewById(R.id.profile_image);
         TextView userName = (TextView) findViewById(R.id.userName);
-//        userName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
         dpChangeDialog = (RelativeLayout) findViewById(R.id.dpChangeDialog);
 
-//        layout_MainMenu.onInterceptTouchEvent()
+        if (!Main2Activity.userInfo.getdpUrl().equals(null)) {
 
-
+            Glide.with(displayPicture.getContext())
+                    .load(Main2Activity.userInfo.getdpUrl())
+                    .into(displayPicture);
+        }
         displayPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,7 +284,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    child.getRef().child("connectedUsers").setValue(dpLink);
+                    child.getRef().child("dpUrl").setValue(dpLink);
                 }
             }
 
