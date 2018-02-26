@@ -62,15 +62,15 @@
 
                 <RatingBar
                     android:id="@+id/ratingProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/email"
-                    android:theme="@style/RatingBar"
+                    android:layout_centerHorizontal="true"
+                    android:isIndicator="true"
+                    android:numStars="5"
                     android:rating="0"
                     android:stepSize="0.5"
-                    android:numStars="5"
-                    android:isIndicator="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/RatingBar" />
 
             </RelativeLayout>
 
@@ -175,6 +175,12 @@
         </LinearLayout>
 
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/backgroundButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/dpChangeDialog"
@@ -318,5 +324,6 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+
 
 </RelativeLayout>

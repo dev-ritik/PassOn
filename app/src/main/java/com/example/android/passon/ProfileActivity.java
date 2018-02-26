@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<String> chatsString;
     private LinearLayout requestDialog, contentProfile, dpSelectionLayout, dpSelectedLayout;
     private TextView userName;
-    private ImageView displayPicture, acceptButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp;
+    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp;
     EditText mobNo;
     Button galleryIntent, cameraIntent;
     FrameLayout layout_MainMenu;
@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static File file;
     InputMethodManager imm;
     private Uri selectedImageUri, downloadUrl;
-    boolean ref = true;
+    boolean ref = false;
 
 
     @Override
@@ -129,6 +129,7 @@ public class ProfileActivity extends AppCompatActivity {
         cameraDp = (ImageView) findViewById(R.id.cameraDp);
         updateDp = (ImageView) findViewById(R.id.updateDp);
         rejectdp = (ImageView) findViewById(R.id.rejectPic);
+        backgroundButton = (ImageView) findViewById(R.id.backgroundButton);
 
         ratingProfile = (RatingBar) findViewById(R.id.ratingProfile);
         String[] rating = Main2Activity.userInfo.getRating().split("\\+");
@@ -140,6 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
                 imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 dpChangeDialog.setVisibility(View.VISIBLE);
+                backgroundButton.setVisibility(View.VISIBLE);
                 layout_MainMenu.getForeground().setAlpha(120);
             }
         });
@@ -206,6 +208,26 @@ public class ProfileActivity extends AppCompatActivity {
                 downloadUrl = null;
             }
         });
+
+        dpChangeDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("point pa215","pic clicked");
+
+            }
+        });
+        backgroundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dpChangeDialog.setVisibility(View.INVISIBLE);
+                backgroundButton.setVisibility(View.INVISIBLE);
+                layout_MainMenu.getForeground().setAlpha(0);
+                Log.i("point pa218","bb clicked");
+            }
+        });
+
+
+
         if (Main2Activity.userInfo.getdpUrl().length() != 0) {
 
 //            Glide.with(displayPicture.getContext())
@@ -366,72 +388,75 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-//return true so that its child work else vic-e-versa
-        int x = Math.round(ev.getX());
-        int y = Math.round(ev.getY());
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+////return true so that its child work else vic-e-versa
+//        int x = Math.round(ev.getX());
+//        int y = Math.round(ev.getY());
+////
+//        Log.i("x ", x + "");
+//        Log.i("y ", y + "");
+////
+//        Log.i("point up", super.dispatchTouchEvent(ev) + "");
+//        Log.i("point op", isBackground(x, y) + "");
 //
-        Log.i("x ", x + "");
-        Log.i("y ", y + "");
 //
-        Log.i("point up", super.dispatchTouchEvent(ev) + "");
-        Log.i("point op", isBackground(x, y) + "");
-
-
-//        return isBackground(x, y);
-
-//        return super.dispatchTouchEvent(ev);
-        if(ref){
-            ref=false;
-        }else ref=true;
-        Log.i("point pa386", ref + "");
-        return ref;
-
-    }
-
-    public boolean isBackground(int x, int y) {
-
-
-        Rect loc = new Rect();
-        int[] location = new int[2];
-
-        dpChangeDialog.getLocationOnScreen(location);
-
-        loc.left = location[0];
-        loc.top = location[1];
-        loc.right = loc.left + dpChangeDialog.getWidth();
-        loc.bottom = loc.top + dpChangeDialog.getHeight();
-
-//        Log.i("point pa224 left",loc.left+"");
-//        Log.i("point pa225 right",loc.right+"");
-//        Log.i("point pa226 top",loc.top+"");
-//        Log.i("point pa227 bottom",loc.bottom+"");
-//        Log.i("point pa228 height",loc.height()+"");
-//        Log.i("point pa229 width",loc.width()+"");
-
-        Log.i("dl x left", dpChangeDialog.getLeft() + "");
-        Log.i("dl x right", dpChangeDialog.getRight() + "");
-        Log.i("dl y top", dpChangeDialog.getTop() + "");
-        Log.i("dl y bottom", dpChangeDialog.getBottom() + "");
-
-        Log.i("point pa332", (x > loc.left) + "");
-        Log.i("point pa333", (x < loc.right) + "");
-        Log.i("point pa334", (y < loc.top) + "");
-        Log.i("point pa335", (y > loc.bottom) + "");
-        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
-        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
-        if (((x < loc.left) || (x > loc.right) || (y < loc.top) || (y > loc.bottom)) && dpChangeDialog.getVisibility() == View.VISIBLE) {
-//            Log.i("point pa337", "false");
-            dpChangeDialog.setVisibility(View.INVISIBLE);
-            layout_MainMenu.getForeground().setAlpha(0);
-            return false;
-        } else {
-//            Log.i("point pa337", "true");
-            return true;
-        }
-
-    }
+////        return isBackground(x, y);
+//
+////        return super.dispatchTouchEvent(ev);
+////        if(ref){
+////            ref=false;
+////        }else ref=true;
+//
+//        boolean a=layout_MainMenu.onInterceptTouchEvent(ev);
+//        layout_MainMenu.dispatchTouchEvent(ev);
+//        Log.i("point pa386", ref + "");
+//        return ref;
+//
+//    }
+//
+//    public boolean isBackground(int x, int y) {
+//
+//
+//        Rect loc = new Rect();
+//        int[] location = new int[2];
+//
+//        dpChangeDialog.getLocationOnScreen(location);
+//
+//        loc.left = location[0];
+//        loc.top = location[1];
+//        loc.right = loc.left + dpChangeDialog.getWidth();
+//        loc.bottom = loc.top + dpChangeDialog.getHeight();
+//
+////        Log.i("point pa224 left",loc.left+"");
+////        Log.i("point pa225 right",loc.right+"");
+////        Log.i("point pa226 top",loc.top+"");
+////        Log.i("point pa227 bottom",loc.bottom+"");
+////        Log.i("point pa228 height",loc.height()+"");
+////        Log.i("point pa229 width",loc.width()+"");
+//
+////        Log.i("dl x left", dpChangeDialog.getLeft() + "");
+////        Log.i("dl x right", dpChangeDialog.getRight() + "");
+////        Log.i("dl y top", dpChangeDialog.getTop() + "");
+////        Log.i("dl y bottom", dpChangeDialog.getBottom() + "");
+//
+//        Log.i("point pa332", (x > loc.left) + "");
+//        Log.i("point pa333", (x < loc.right) + "");
+//        Log.i("point pa334", (y < loc.top) + "");
+//        Log.i("point pa335", (y > loc.bottom) + "");
+//        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
+//        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
+//        if (((x < loc.left) || (x > loc.right) || (y < loc.top) || (y > loc.bottom)) && dpChangeDialog.getVisibility() == View.VISIBLE) {
+////            Log.i("point pa337", "false");
+//            dpChangeDialog.setVisibility(View.INVISIBLE);
+//            layout_MainMenu.getForeground().setAlpha(0);
+//            return false;
+//        } else {
+////            Log.i("point pa337", "true");
+//            return true;
+//        }
+//
+//    }
 
 }
 
