@@ -213,56 +213,61 @@ public class Main2Activity extends AppCompatActivity
 //        };
 
 
-        if (mUserEventListener == null) {
-            Log.i("mUserEventListener", "point ma212");
-            mUserEventListener = new ChildEventListener() {//working with db after authentication
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("onchildadded", "point M114");
-
-                    //attached to all added child(all past and future child)
-                    UserInfo userInfo1 = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
-                    userInfos.add(userInfo1);
-
-                    Log.i(Integer.toString(userInfos.size()), "point m228");
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    // changed content of a child
-                    Log.i("child changed", "point m235");
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    // child deleted
-//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+//        if (mUserEventListener == null) {
+//            Log.i("mUserEventListener", "point ma212");
+//            mUserEventListener = new ChildEventListener() {//working with db after authentication
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    Log.i("onchildadded", "point M114");
+//                    Log.i("point ma221", dataSnapshot.getChildrenCount() + "");
+//                    Log.i("point ma222", dataSnapshot.toString());
+//                    Log.i("point ma222a", dataSnapshot.getValue().toString());
+//                    Log.i("point ma223", dataSnapshot.getChildren().toString());
 //
-//                    for (Iterator<UserInfo> iterator = userInfos.iterator(); iterator.hasNext(); ) {
-//                        if (iterator.next().getTime() == post.getTime())
-//                            iterator.remove();
-//                        Log.i(Integer.toString(posts.size()), "point m311");
-//                    }
-//                    Log.i(Integer.toString(posts.size()), "point m389");
-//                    PostFragment.mAdapterPost.notifyDataSetChanged();
-//                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
+//                    //attached to all added child(all past and future child)
+//                    UserInfo userInfo1 = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
+//                    userInfos.add(userInfo1);
+//
+//                    Log.i(Integer.toString(userInfos.size()), "point m228");
+//
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                    // changed content of a child
+//                    Log.i("child changed", "point m235");
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                    // child deleted
+////                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+////
+////                    for (Iterator<UserInfo> iterator = userInfos.iterator(); iterator.hasNext(); ) {
+////                        if (iterator.next().getTime() == post.getTime())
+////                            iterator.remove();
+////                        Log.i(Integer.toString(posts.size()), "point m311");
+////                    }
+////                    Log.i(Integer.toString(posts.size()), "point m389");
+////                    PostFragment.mAdapterPost.notifyDataSetChanged();
+////                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                    //moved position of a child
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // error or permission denied
+//                }
+//            };
+//            mUserDatabaseReference.addChildEventListener(mUserEventListener);
+//            Log.i("child addeddd", "point m265");
+//        }
 
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    //moved position of a child
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // error or permission denied
-                }
-            };
-            mUserDatabaseReference.addChildEventListener(mUserEventListener);
-            Log.i("child addeddd", "point m265");
-        }
 
 //        Query query1 = mUserDatabaseReference.orderByChild("userId").equalTo(mUserId);
 //        Log.i("point ma271", mUserId);
@@ -385,7 +390,7 @@ public class Main2Activity extends AppCompatActivity
                         connected.add("qwert");
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2, "iitR", 123456789, connected, request, notifications);
+                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2, "iitR", 123456789, connected, request, notifications);
                         mUserDatabaseReference.push().setValue(userInfo);
                     }
 

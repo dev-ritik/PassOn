@@ -111,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         dpChangeDialog = (RelativeLayout) findViewById(R.id.dpChangeDialog);
 
-        if (!Main2Activity.userInfo.getdpUrl().equals(null)) {
+        if (Main2Activity.userInfo.getdpUrl().length()!=0) {
 
             Glide.with(displayPicture.getContext())
                     .load(Main2Activity.userInfo.getdpUrl())
