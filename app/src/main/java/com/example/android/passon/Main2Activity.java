@@ -66,7 +66,7 @@ public class Main2Activity extends AppCompatActivity
     //    public static DatabaseReference mUserCountDatabaseReference;
     public static ChildEventListener mUserEventListener;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
-    public static StorageReference mChatPhotosStorageReference;
+    public static StorageReference mBookPhotosStorageReference,mDpPhotosStorageReference;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     public static ProgressBar mProgressBar;
@@ -174,7 +174,8 @@ public class Main2Activity extends AppCompatActivity
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
         mPostDatabaseReference = mfirebaseDatabase.getReference().child("post1");
-        mChatPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
+        mBookPhotosStorageReference = mFirebaseStorage.getReference("book_photos");
+        mDpPhotosStorageReference = mFirebaseStorage.getReference("dp_photos");
         mRequestDatabaseReference = mfirebaseDatabase.getReference().child("request1");
         mUserDatabaseReference = mfirebaseDatabase.getReference().child("user1");
 //        mUserCountDatabaseReference = mfirebaseDatabase.getReference().child("userCount");
@@ -390,7 +391,7 @@ public class Main2Activity extends AppCompatActivity
                         connected.add("qwert");
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2, "iitR", 123456789, connected, request, notifications);
+                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2+"+"+2, "iitR", 123456789, connected, request, notifications);
                         mUserDatabaseReference.push().setValue(userInfo);
                     }
 

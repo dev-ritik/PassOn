@@ -3,11 +3,13 @@ package com.example.android.passon;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Movie;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,18 +74,24 @@ public class ProfileActivity extends AppCompatActivity {
     public static DatabaseReference mChildUser;
     ArrayList<ChatHead> chats;
     ArrayList<String> chatsString;
-    private LinearLayout requestDialog, contentProfile;
+    private LinearLayout requestDialog, contentProfile, dpSelectionLayout, dpSelectedLayout;
     private TextView userName;
-    private ImageView displayPicture, acceptButton, removeDp, galleryDp, cameraDp;
+    private ImageView displayPicture, acceptButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp;
     EditText mobNo;
     Button galleryIntent, cameraIntent;
     FrameLayout layout_MainMenu;
     private static final int CHOOSE_CAMERA_RESULT1 = 1;
     private static final int GALLERY_RESULT2 = 2;
+    private static final int DP_PHOTO_PICKER = 3;
+    RatingBar ratingProfile;
+
     RelativeLayout dpChangeDialog;
     Uri tempuri;
     public static File file;
     InputMethodManager imm;
+    private Uri selectedImageUri, downloadUrl;
+    boolean ref = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,22 +113,27 @@ public class ProfileActivity extends AppCompatActivity {
 
 //        requestDialog = (LinearLayout) findViewById(R.id.requestDialog);
 
-
+        Log.i("point pa113", "oncreate");
         layout_MainMenu = (FrameLayout) findViewById(R.id.mainmenu);
         layout_MainMenu.getForeground().setAlpha(0);
 
         contentProfile = (LinearLayout) findViewById(R.id.contentProfile);
+        dpChangeDialog = (RelativeLayout) findViewById(R.id.dpChangeDialog);
+        dpSelectedLayout = (LinearLayout) findViewById(R.id.dpSelectedLayout);
+        dpSelectionLayout = (LinearLayout) findViewById(R.id.dpSelectionLayout);
+
         displayPicture = (ImageView) findViewById(R.id.profile_image);
         TextView userName = (TextView) findViewById(R.id.userName);
+        removeDp = (ImageView) findViewById(R.id.removeDp);
+        galleryDp = (ImageView) findViewById(R.id.galleryDp);
+        cameraDp = (ImageView) findViewById(R.id.cameraDp);
+        updateDp = (ImageView) findViewById(R.id.updateDp);
+        rejectdp = (ImageView) findViewById(R.id.rejectPic);
 
-        dpChangeDialog = (RelativeLayout) findViewById(R.id.dpChangeDialog);
+        ratingProfile = (RatingBar) findViewById(R.id.ratingProfile);
+        String[] rating = Main2Activity.userInfo.getRating().split("\\+");
+        ratingProfile.setRating(Integer.parseInt(rating[0]) / Integer.parseInt(rating[1]));
 
-        if (Main2Activity.userInfo.getdpUrl().length()!=0) {
-
-            Glide.with(displayPicture.getContext())
-                    .load(Main2Activity.userInfo.getdpUrl())
-                    .into(displayPicture);
-        }
         displayPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,10 +143,6 @@ public class ProfileActivity extends AppCompatActivity {
                 layout_MainMenu.getForeground().setAlpha(120);
             }
         });
-
-        removeDp = (ImageView) findViewById(R.id.removeDp);
-        galleryDp = (ImageView) findViewById(R.id.galleryDp);
-        cameraDp = (ImageView) findViewById(R.id.cameraDp);
 
         removeDp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,35 +158,60 @@ public class ProfileActivity extends AppCompatActivity {
         galleryDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedImageUri != null) {
-                    Log.i(selectedImageUri.toString(), "point pa152");
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    StorageReference photoREf = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
-                    photoREf.putFile(selectedImageUri).addOnSuccessListener(MainActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        //                    upload file to firebase onsucess of upload
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
-                            Log.i(selectedImageUri.toString(),"point pa163");
-//                            mProgressBar.setVisibility(View.INVISIBLE);
-                            imageView.setImageResource(0);
-                            Post post = new Post(mMessageEditText.getText().toString().trim(), downloadUrl.toString(), calculateTime(), mUsername, likers, unlikers, favouriteArrayList);
-                            downloadUrl = null;
-                            selectedImageUri = null;
-                        }
-                    });
-                }else {
-                    Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
-                }
+
+                // TODO: Fire an intent to show an image picker
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpej");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), DP_PHOTO_PICKER);
             }
         });
-
         cameraDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
+
         });
+        updateDp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedImageUri != null) {
+                    Log.i(selectedImageUri.toString(), "point pa152");
+//                    mProgressBar.setVisibility(View.VISIBLE);
+                    StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+                    photoREf.putFile(selectedImageUri).addOnSuccessListener(ProfileActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        //                    upload file to firebase onsucess of upload
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
+                            Log.i(selectedImageUri.toString(), "point pa163");
+//                            mProgressBar.setVisibility(View.INVISIBLE);
+                            displayPicture.setImageResource(0);
+                            setData(Main2Activity.mUserId, downloadUrl.toString());
+                            downloadUrl = null;
+                            selectedImageUri = null;
+                        }
+                    });
+                } else {
+                    Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        rejectdp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedImageUri = null;
+                downloadUrl = null;
+            }
+        });
+        if (Main2Activity.userInfo.getdpUrl().length() != 0) {
+
+//            Glide.with(displayPicture.getContext())
+//                    .load(Main2Activity.userInfo.getdpUrl())
+//                    .into(displayPicture);
+        }
         if (Main2Activity.mUser != null) {
             userName.setText(Main2Activity.mUser);
         } else {
@@ -253,6 +288,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {//signing prosses result called before onResume
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DP_PHOTO_PICKER && resultCode == RESULT_OK) {
+
+            selectedImageUri = data.getData();
+            Log.i(selectedImageUri.toString(), "point pa286");
+            displayPicture.setImageURI(selectedImageUri);
+
+        }
+
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         System.out.println("standpoint pr112");
@@ -264,39 +313,39 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        if (null == imageReturnedIntent) return;
-        Uri originalUri = null;
-        switch (requestCode) {
-            case CHOOSE_CAMERA_RESULT1:
-                if (resultCode == RESULT_OK) {
-                    if (file.exists()) {
-                        Toast.makeText(this, "The image was saved at " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                        ;
-                    }
-                    //Uri is at variable tempuri which can be converted to string
-
-                    // code for inserting in database
-                }
-
-                break;
-            case GALLERY_RESULT2:
-                if (resultCode == RESULT_OK) {
-                    originalUri = imageReturnedIntent.getData();
-                    final int takeFlags = imageReturnedIntent.getFlags()
-                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
-
-                    //Uri is originalUri which can be converted to string
-                    // code for inserting in database
-                }
-                break;
-        }
-
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+//        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+//        if (null == imageReturnedIntent) return;
+//        Uri originalUri = null;
+//        switch (requestCode) {
+//            case CHOOSE_CAMERA_RESULT1:
+//                if (resultCode == RESULT_OK) {
+//                    if (file.exists()) {
+//                        Toast.makeText(this, "The image was saved at " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+//                        ;
+//                    }
+//                    //Uri is at variable tempuri which can be converted to string
+//
+//                    // code for inserting in database
+//                }
+//
+//                break;
+//            case GALLERY_RESULT2:
+//                if (resultCode == RESULT_OK) {
+//                    originalUri = imageReturnedIntent.getData();
+//                    final int takeFlags = imageReturnedIntent.getFlags()
+//                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                    getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
+//
+//                    //Uri is originalUri which can be converted to string
+//                    // code for inserting in database
+//                }
+//                break;
+//        }
+//
+//    }
 
     private void setData(String userId, final String dpLink) {
 
@@ -325,13 +374,19 @@ public class ProfileActivity extends AppCompatActivity {
 //
         Log.i("x ", x + "");
         Log.i("y ", y + "");
-
+//
         Log.i("point up", super.dispatchTouchEvent(ev) + "");
         Log.i("point op", isBackground(x, y) + "");
 
 
-        return isBackground(x, y);
+//        return isBackground(x, y);
+
 //        return super.dispatchTouchEvent(ev);
+        if(ref){
+            ref=false;
+        }else ref=true;
+        Log.i("point pa386", ref + "");
+        return ref;
 
     }
 
@@ -355,17 +410,17 @@ public class ProfileActivity extends AppCompatActivity {
 //        Log.i("point pa228 height",loc.height()+"");
 //        Log.i("point pa229 width",loc.width()+"");
 
-//        Log.i("dl x left",dpChangeDialog.getLeft()+"");
-//        Log.i("dl x right",dpChangeDialog.getRight()+"");
-//        Log.i("dl y top",dpChangeDialog.getTop()+"");
-//        Log.i("dl y bottom",dpChangeDialog.getBottom()+"");
+        Log.i("dl x left", dpChangeDialog.getLeft() + "");
+        Log.i("dl x right", dpChangeDialog.getRight() + "");
+        Log.i("dl y top", dpChangeDialog.getTop() + "");
+        Log.i("dl y bottom", dpChangeDialog.getBottom() + "");
 
-//        Log.i("point pa332", (x > loc.left) + "");
-//        Log.i("point pa333", (x < loc.right) + "");
-//        Log.i("point pa334", (y < loc.top) + "");
-//        Log.i("point pa335", (y > loc.bottom) + "");
-//        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
-//        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
+        Log.i("point pa332", (x > loc.left) + "");
+        Log.i("point pa333", (x < loc.right) + "");
+        Log.i("point pa334", (y < loc.top) + "");
+        Log.i("point pa335", (y > loc.bottom) + "");
+        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
+        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
         if (((x < loc.left) || (x > loc.right) || (y < loc.top) || (y > loc.bottom)) && dpChangeDialog.getVisibility() == View.VISIBLE) {
 //            Log.i("point pa337", "false");
             dpChangeDialog.setVisibility(View.INVISIBLE);
@@ -379,3 +434,23 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 }
+
+
+//    Uri uri = profile.getProfilePictureUri(28, 28);
+//    com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+//            .cornerRadiusDp(30)
+//            .oval(false)
+//            .build();
+//        Picasso.with(this)
+//                .load(uri)
+//                .placeholder(R.drawable.icon_profile_empty)
+//                .transform(transformation)
+//                .into(accountButton);
+//.into(myImage,  new ImageLoadedCallback(progressBar) {
+//@Override
+//public void onSuccess() {
+//        if (this.progressBar != null) {
+//        this.progressBar.setVisibility(View.GONE);
+//        }
+//        }
+//        });

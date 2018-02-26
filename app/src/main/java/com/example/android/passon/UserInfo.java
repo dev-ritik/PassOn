@@ -18,7 +18,8 @@ public class UserInfo {
     private String userId;
     private String dpUrl;
     private String emailId;
-    private int rating;
+    private String rating;
+    //total marks+"+"+total people rated
     private String address;
     private int phoneNo;
     private int profileNo;
@@ -29,7 +30,7 @@ public class UserInfo {
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, int rating, String address, int phoneNo, ArrayList<String> connectedUsers, ArrayList<ChatHead> requestededUsers, ArrayList<String> notifications) {
+    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, String rating, String address, int phoneNo, ArrayList<String> connectedUsers, ArrayList<ChatHead> requestededUsers, ArrayList<String> notifications) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
@@ -114,11 +115,11 @@ public class UserInfo {
         this.emailId = emailId;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 

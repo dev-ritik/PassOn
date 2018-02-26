@@ -19,30 +19,6 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="3dp"
-                    android:layout_weight="1"
-                    android:background="@color/cardview_shadow_end_color" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="3dp"
-                    android:layout_weight="20"
-                    android:background="@color/common_google_signin_btn_text_dark_focused"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="3dp"
-                    android:layout_weight="1"
-                    android:background="@color/cardview_shadow_end_color" />
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -51,11 +27,11 @@
 
                 <ImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:src="@mipmap/icon_profile_empty" />
 
                 <TextView
@@ -84,7 +60,44 @@
                     android:textStyle="italic"
                     tools:text="nij" />
 
+                <RatingBar
+                    android:id="@+id/ratingProfile"
+                    android:layout_below="@+id/email"
+                    android:theme="@style/RatingBar"
+                    android:rating="0"
+                    android:stepSize="0.5"
+                    android:numStars="5"
+                    android:isIndicator="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="@color/cardview_shadow_end_color" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="20"
+                    android:background="@color/common_google_signin_btn_text_dark_focused"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="@color/cardview_shadow_end_color" />
+            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -173,9 +186,10 @@
         android:layout_marginTop="50dp"
         android:background="@mipmap/icon_profile_empty"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <LinearLayout
+            android:id="@+id/dpSelectionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -251,6 +265,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/dpSelectedLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -287,7 +302,7 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/UpdateDp"
+                    android:id="@+id/updateDp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
