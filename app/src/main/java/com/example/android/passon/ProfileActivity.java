@@ -34,12 +34,15 @@ import android.widget.Toast;
 //import com.squareup.picasso.Transformation;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 
@@ -145,7 +148,26 @@ public class ProfileActivity extends AppCompatActivity {
         galleryDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (selectedImageUri != null) {
+                    Log.i(selectedImageUri.toString(), "point pa152");
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    StorageReference photoREf = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+                    photoREf.putFile(selectedImageUri).addOnSuccessListener(MainActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        //                    upload file to firebase onsucess of upload
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
+                            Log.i(selectedImageUri.toString(),"point pa163");
+//                            mProgressBar.setVisibility(View.INVISIBLE);
+                            imageView.setImageResource(0);
+                            Post post = new Post(mMessageEditText.getText().toString().trim(), downloadUrl.toString(), calculateTime(), mUsername, likers, unlikers, favouriteArrayList);
+                            downloadUrl = null;
+                            selectedImageUri = null;
+                        }
+                    });
+                }else {
+                    Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

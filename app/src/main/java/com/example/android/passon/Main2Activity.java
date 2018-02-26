@@ -382,7 +382,7 @@ public class Main2Activity extends AppCompatActivity
                     count = dataSnapshot.getChildrenCount();
                     if (count == 0) {
                         Log.i(currentUser.getUid(), "standpoint m570");
-                        Log.i("seems new", "point m558");
+//                        Log.i("seems new", "point m558");
 
                         ArrayList<String> connected = new ArrayList<>();
                         ArrayList<String> notifications = new ArrayList<>();
@@ -394,7 +394,7 @@ public class Main2Activity extends AppCompatActivity
                         mUserDatabaseReference.push().setValue(userInfo);
                     }
 
-                    Log.i("point Ma396", Long.toString(count));
+//                    Log.i("point Ma396", Long.toString(count));
                 }
 
                 @Override
@@ -403,9 +403,9 @@ public class Main2Activity extends AppCompatActivity
                 }
             });
 //            if(count==mUserDatabaseReference.)
-            Log.i("seems new", "point m462");
-            Log.i("point ma271", mUserId);
-            Log.i("point ma272", "here");
+//            Log.i("seems new", "point m462");
+//            Log.i("point ma271", mUserId);
+//            Log.i("point ma272", "here");
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
