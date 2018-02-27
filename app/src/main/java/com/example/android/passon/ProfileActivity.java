@@ -77,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static DatabaseReference mChildUser;
     private LinearLayout requestDialog, contentProfile, dpSelectionLayout, dpSelectedLayout;
     private TextView userName;
-    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp, dialogProfileOriginal,dialogProfileChanged;
+    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp, dialogProfileOriginal, dialogProfileChanged;
     EditText mobNo;
     Button galleryIntent, cameraIntent;
     FrameLayout layout_MainMenu;
@@ -94,7 +94,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri selectedImageUri, downloadUrl, clickedImageUri;
     boolean ref = false;
     Bitmap dpCameraimage;
-
+    com.squareup.picasso.Transformation transformationSuccessDp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +139,10 @@ public class ProfileActivity extends AppCompatActivity {
         ratingProfile = (RatingBar) findViewById(R.id.ratingProfile);
         String[] rating = Main2Activity.userInfo.getRating().split("\\+");
         ratingProfile.setRating(Integer.parseInt(rating[0]) / Integer.parseInt(rating[1]));
+
+        transformationSuccessDp = new RoundedTransformationBuilder()
+                .oval(true)
+                .build();
 
         displayPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +205,11 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (selectedImageUri != null) {
                     Log.i(selectedImageUri.toString(), "point pa152");
+
+                    dpChangeDialog.setVisibility(View.INVISIBLE);
+                    dpSelectionLayout.setVisibility(View.VISIBLE);
+                    dpSelectedLayout.setVisibility(View.INVISIBLE);
+                    backgroundButton.setVisibility(View.INVISIBLE);
 //                    mProgressBar.setVisibility(View.VISIBLE);
                     StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
                     photoREf.putFile(selectedImageUri).addOnSuccessListener(ProfileActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -215,25 +224,30 @@ public class ProfileActivity extends AppCompatActivity {
 
                             //progress bar
                             layout_MainMenu.getForeground().setAlpha(0);
-                            dpChangeDialog.setVisibility(View.INVISIBLE);
-                            dpSelectionLayout.setVisibility(View.VISIBLE);
-                            dpSelectedLayout.setVisibility(View.INVISIBLE);
 
-                            com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-                                    .cornerRadiusDp(30)
-                                    .oval(false)
-                                    .build();
+
                             Picasso.with(ProfileActivity.this)
                                     .load(selectedImageUri)
-                                    .placeholder(R.mipmap.icon_profile_empty)
-                                    .transform(transformation)
+//                                    .placeholder(R.mipmap.icon_profile_empty)
+                                    .fit()
+                                    .centerCrop()
+                                    .error(R.drawable.error)
+                                    .transform(transformationSuccessDp)
                                     .into(displayPicture, new com.squareup.picasso.Callback() {
                                         @Override
                                         public void onSuccess() {
                                             Log.i("point pa333", "sucess");
+
+                                            Picasso.with(ProfileActivity.this)
+                                                    .load(selectedImageUri)
+//                                                    .placeholder(R.mipmap.icon_profile_empty)
+                                                    .fit()
+                                                    .centerCrop()
+                                                    .error(R.drawable.error)
+                                                    .transform(transformationSuccessDp)
+                                                    .into(dialogProfileOriginal);
                                             downloadUrl = null;
                                             selectedImageUri = null;
-
                                         }
 
                                         @Override
@@ -267,6 +281,10 @@ public class ProfileActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    dpChangeDialog.setVisibility(View.INVISIBLE);
+                    dpSelectionLayout.setVisibility(View.VISIBLE);
+                    dpSelectedLayout.setVisibility(View.INVISIBLE);
+                    backgroundButton.setVisibility(View.INVISIBLE);
 
                     // Tell the media scanner about the new file so that it is
                     // immediately available to the user.
@@ -276,40 +294,45 @@ public class ProfileActivity extends AppCompatActivity {
                                     Log.i("point pa289", "Scanned " + path + ":");
                                     Log.i("point pa290", "uri=" + uri);
                                     clickedImageUri = uri;
-//                                    layout_MainMenu.getForeground().setAlpha(0);
-//                                    dpChangeDialog.setVisibility(View.INVISIBLE);
-//                                    dpSelectionLayout.setVisibility(View.VISIBLE);
-//                                    dpSelectedLayout.setVisibility(View.INVISIBLE);
 
                                     StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(uri.getLastPathSegment());
-                                    photoREf.putFile(selectedImageUri).addOnSuccessListener(ProfileActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    photoREf.putFile(clickedImageUri).addOnSuccessListener(ProfileActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         //                    upload file to firebase onsucess of upload
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                             downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
-                                            Log.i(selectedImageUri.toString(), "point pa303");
+                                            Log.i(cameraDp.toString(), "point pa300");
 //                            mProgressBar.setVisibility(View.INVISIBLE);
                                             displayPicture.setImageResource(0);
                                             setData(Main2Activity.mUserId, downloadUrl.toString());
 
                                             //progress bar
-                                            layout_MainMenu.getForeground().setAlpha(0);
-                                            dpChangeDialog.setVisibility(View.INVISIBLE);
-                                            dpSelectionLayout.setVisibility(View.VISIBLE);
-                                            dpSelectedLayout.setVisibility(View.INVISIBLE);
 
-                                            com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-                                                    .cornerRadiusDp(30)
-                                                    .oval(false)
-                                                    .build();
+//                                            com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+//                                                    .cornerRadiusDp(30)
+//                                                    .oval(false)
+//                                                    .build();
                                             Picasso.with(ProfileActivity.this)
                                                     .load(uri)
-                                                    .placeholder(R.mipmap.icon_profile_empty)
-                                                    .transform(transformation)
+//                                                    .placeholder(R.mipmap.icon_profile_empty)
+                                                    .fit()
+                                                    .centerCrop()
+                                                    .error(R.drawable.error)
+                                                    .transform(transformationSuccessDp)
                                                     .into(displayPicture, new com.squareup.picasso.Callback() {
                                                         @Override
                                                         public void onSuccess() {
                                                             Log.i("point pa325", "sucess");
+                                                            layout_MainMenu.getForeground().setAlpha(0);
+                                                            Picasso.with(ProfileActivity.this)
+                                                                    .load(clickedImageUri)
+//                                                                    .placeholder(R.mipmap.icon_profile_empty)
+                                                                    .fit()
+                                                                    .centerCrop()
+                                                                    .error(R.drawable.error)
+                                                                    .transform(transformationSuccessDp)
+                                                                    .into(dialogProfileOriginal);
+
                                                             downloadUrl = null;
                                                             clickedImageUri = null;
 
@@ -335,7 +358,8 @@ public class ProfileActivity extends AppCompatActivity {
                     dpChangeDialog.setVisibility(View.INVISIBLE);
                     dpSelectionLayout.setVisibility(View.VISIBLE);
                     dpSelectedLayout.setVisibility(View.INVISIBLE);
-                    
+                    backgroundButton.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
@@ -353,6 +377,7 @@ public class ProfileActivity extends AppCompatActivity {
                 dpChangeDialog.setVisibility(View.INVISIBLE);
                 dpSelectionLayout.setVisibility(View.VISIBLE);
                 dpSelectedLayout.setVisibility(View.INVISIBLE);
+                backgroundButton.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -366,27 +391,27 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
-        backgroundButton.setOnClickListener(new View.OnClickListener()
-
-        {
+        backgroundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Picasso.with(ProfileActivity.this)
+                        .load(Main2Activity.userInfo.getdpUrl())
+//                        .placeholder(R.mipmap.icon_profile_empty)
+                        .fit()
+                        .centerCrop()
+                        .error(R.drawable.error)
+                        .transform(transformationSuccessDp)
+                        .into(dialogProfileChanged);
                 dpChangeDialog.setVisibility(View.INVISIBLE);
                 backgroundButton.setVisibility(View.INVISIBLE);
                 layout_MainMenu.getForeground().setAlpha(0);
+                dialogProfileOriginal.setVisibility(View.VISIBLE);
+                dialogProfileChanged.setVisibility(View.INVISIBLE);
                 Log.i("point pa218", "bb clicked");
             }
         });
 
 
-//        if (Main2Activity.userInfo.getdpUrl().length() != 0) {
-//
-////            Glide.with(displayPicture.getContext())
-////                    .load(Main2Activity.userInfo.getdpUrl())
-////                    .into(displayPicture);
-//
-//
-//        }
         if (Main2Activity.mUser != null)
 
         {
@@ -407,23 +432,65 @@ public class ProfileActivity extends AppCompatActivity {
 //                    .into(displayPicture);
 
 //                displayPicture.setImageURI(MainActivity.mUserProfile);
-                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-                        .cornerRadiusDp(30)
-                        .oval(false)
-                        .build();
+//                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+////                        .cornerRadiusDp(30)
+//                        .oval(true)
+//                        .build();
                 Picasso.with(ProfileActivity.this)
                         .load(Main2Activity.userInfo.getdpUrl())
-                        .transform(transformation)
-                        .into(displayPicture);
+                        .fit()
+                        .centerCrop()
+                        .error(R.drawable.error)
+                        .transform(transformationSuccessDp)
+                        .into(displayPicture, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("point pa426", "sucess");
+                            }
+
+                            @Override
+                            public void onError() {
+                                Log.i("point pa432", "error");
+
+                            }
+                        });
+                Picasso.with(ProfileActivity.this)
+                        .load(Main2Activity.userInfo.getdpUrl())
+                        .fit()
+                        .centerCrop()
+                        .error(R.drawable.error)
+                        .transform(transformationSuccessDp)
+                        .into(dialogProfileOriginal, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("point pa441", "sucess");
+                            }
+
+                            @Override
+                            public void onError() {
+                                Log.i("point pa447", "error");
+
+                            }
+                        });
 
                 Picasso.with(ProfileActivity.this)
                         .load(Main2Activity.userInfo.getdpUrl())
-                        .transform(transformation)
-                        .into(dialogProfileOriginal);
-                Picasso.with(ProfileActivity.this)
-                        .load(Main2Activity.userInfo.getdpUrl())
-                        .transform(transformation)
-                        .into(dialogProfileChanged);
+                        .fit()
+                        .centerCrop()
+                        .error(R.drawable.error)
+                        .transform(transformationSuccessDp)
+                        .into(dialogProfileChanged, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("point pa", "sucess");
+                            }
+
+                            @Override
+                            public void onError() {
+                                Log.i("point pa", "error");
+
+                            }
+                        });
             } else {
 //                Log.i("profile pic=null", "standpoint pr75");
 
@@ -507,14 +574,16 @@ public class ProfileActivity extends AppCompatActivity {
                 dpSelectedLayout.setVisibility(View.VISIBLE);
                 dialogProfileOriginal.setVisibility(View.INVISIBLE);
                 dialogProfileChanged.setVisibility(View.VISIBLE);
-                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-                        .cornerRadiusDp(30)
-                        .oval(false)
-                        .build();
+//                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+//                        .oval(false)
+//                        .build();
                 Picasso.with(this)
                         .load(selectedImageUri)
-                        .placeholder(R.mipmap.icon_profile_empty)
-                        .transform(transformation)
+//                        .placeholder(R.mipmap.icon_profile_empty)
+                        .error(R.drawable.error)
+                        .transform(transformationSuccessDp)
+                        .fit()
+                        .centerCrop()
                         .into(dialogProfileChanged, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
@@ -682,23 +751,3 @@ public class ProfileActivity extends AppCompatActivity {
 //    }
 
 }
-
-
-//    Uri uri = profile.getProfilePictureUri(28, 28);
-//    com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-//            .cornerRadiusDp(30)
-//            .oval(false)
-//            .build();
-//        Picasso.with(this)
-//                .load(uri)
-//                .placeholder(R.drawable.icon_profile_empty)
-//                .transform(transformation)
-//                .into(accountButton);
-//.into(myImage,  new ImageLoadedCallback(progressBar) {
-//@Override
-//public void onSuccess() {
-//        if (this.progressBar != null) {
-//        this.progressBar.setVisibility(View.GONE);
-//        }
-//        }
-//        });
