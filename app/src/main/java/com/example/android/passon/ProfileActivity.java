@@ -231,6 +231,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                                    .placeholder(R.mipmap.icon_profile_empty)
                                     .fit()
                                     .centerCrop()
+                                    .placeholder(R.drawable.loading_small)
                                     .error(R.drawable.error)
                                     .transform(transformationSuccessDp)
                                     .into(displayPicture, new com.squareup.picasso.Callback() {
@@ -242,6 +243,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                     .load(selectedImageUri)
 //                                                    .placeholder(R.mipmap.icon_profile_empty)
                                                     .fit()
+                                                    .placeholder(R.drawable.loading_big)
                                                     .centerCrop()
                                                     .error(R.drawable.error)
                                                     .transform(transformationSuccessDp)
@@ -314,7 +316,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                                                    .build();
                                             Picasso.with(ProfileActivity.this)
                                                     .load(uri)
-//                                                    .placeholder(R.mipmap.icon_profile_empty)
+                                                    .placeholder(R.drawable.loading_small)
                                                     .fit()
                                                     .centerCrop()
                                                     .error(R.drawable.error)
@@ -326,7 +328,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                             layout_MainMenu.getForeground().setAlpha(0);
                                                             Picasso.with(ProfileActivity.this)
                                                                     .load(clickedImageUri)
-//                                                                    .placeholder(R.mipmap.icon_profile_empty)
+                                                                    .placeholder(R.drawable.loading_big)
                                                                     .fit()
                                                                     .centerCrop()
                                                                     .error(R.drawable.error)
@@ -399,6 +401,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                        .placeholder(R.mipmap.icon_profile_empty)
                         .fit()
                         .centerCrop()
+                        .placeholder(R.drawable.loading_big)
                         .error(R.drawable.error)
                         .transform(transformationSuccessDp)
                         .into(dialogProfileChanged);
@@ -427,9 +430,6 @@ public class ProfileActivity extends AppCompatActivity {
         {
             if (Main2Activity.userInfo.getdpUrl() != null) {
                 Log.i(Main2Activity.userInfo.getdpUrl(), "point pa271");
-//            Glide.with(displayPicture.getContext())
-//                    .load(MainActivity.mUserProfile)
-//                    .into(displayPicture);
 
 //                displayPicture.setImageURI(MainActivity.mUserProfile);
 //                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
@@ -438,6 +438,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                        .build();
                 Picasso.with(ProfileActivity.this)
                         .load(Main2Activity.userInfo.getdpUrl())
+                        .placeholder(R.drawable.loading_small)
                         .fit()
                         .centerCrop()
                         .error(R.drawable.error)
@@ -459,6 +460,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .fit()
                         .centerCrop()
                         .error(R.drawable.error)
+                        .placeholder(R.drawable.loading_big)
                         .transform(transformationSuccessDp)
                         .into(dialogProfileOriginal, new com.squareup.picasso.Callback() {
                             @Override
@@ -477,6 +479,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .load(Main2Activity.userInfo.getdpUrl())
                         .fit()
                         .centerCrop()
+                        .placeholder(R.drawable.loading_big)
                         .error(R.drawable.error)
                         .transform(transformationSuccessDp)
                         .into(dialogProfileChanged, new com.squareup.picasso.Callback() {
@@ -579,7 +582,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                        .build();
                 Picasso.with(this)
                         .load(selectedImageUri)
-//                        .placeholder(R.mipmap.icon_profile_empty)
+                        .placeholder(R.drawable.loading_big)
                         .error(R.drawable.error)
                         .transform(transformationSuccessDp)
                         .fit()
