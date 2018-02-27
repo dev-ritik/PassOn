@@ -3,9 +3,12 @@ package com.example.android.passon;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Movie;
 import android.graphics.Rect;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -51,6 +54,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +62,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
@@ -84,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int CHOOSE_CAMERA_RESULT1 = 1;
     private static final int GALLERY_RESULT2 = 2;
     private static final int DP_PHOTO_PICKER = 3;
+    private static final int DP_PHOTO_CLICKER = 4;
     RatingBar ratingProfile;
 
     RelativeLayout dpChangeDialog;
@@ -92,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
     InputMethodManager imm;
     private Uri selectedImageUri, downloadUrl;
     boolean ref = false;
+    Bitmap dpCameraimage;
 
 
     @Override
@@ -175,6 +182,20 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (getPackageManager().hasSystemFeature(
+                        PackageManager.FEATURE_CAMERA)) {
+                    Log.i("point pa178", "camera");
+
+//                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+//                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "IMG_" + timeStamp + ".jpg");
+//                tempuri = Uri.fromFile(file);
+//                i.putExtra(MediaStore.EXTRA_OUTPUT, tempuri);
+//                i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+                    startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), DP_PHOTO_CLICKER);
+                } else {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.camera_not_supported), Toast.LENGTH_SHORT).show();
+                }
+
             }
 
         });
@@ -182,7 +203,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedImageUri != null) {
+                /*if (selectedImageUri != null) {
                     Log.i(selectedImageUri.toString(), "point pa152");
 //                    mProgressBar.setVisibility(View.VISIBLE);
                     StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
@@ -238,10 +259,44 @@ public class ProfileActivity extends AppCompatActivity {
                     dpSelectionLayout.setVisibility(View.VISIBLE);
                     dpSelectedLayout.setVisibility(View.INVISIBLE);
                 }
+                */
+                if (dpCameraimage != null) {
+                    String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+                    File myDir = new File(root + "/saved_images");
+                    myDir.mkdirs();
+                    Random generator = new Random();
+                    int n = 10000;
+                    n = generator.nextInt(n);
+                    String fname = "Image-" + n + ".jpg";
+                    File file1 = new File(myDir, fname);
+                    if (file1.exists())
+                        file1.delete();
+                    try {
+                        FileOutputStream out = new FileOutputStream(file1);
+                        dpCameraimage.compress(Bitmap.CompressFormat.JPEG, 10, out);
+                        out.flush();
+                        out.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    // Tell the media scanner about the new file so that it is
+                    // immediately available to the user.
+                    MediaScannerConnection.scanFile(ProfileActivity.this, new String[]{file1.toString()}, null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                public void onScanCompleted(String path, Uri uri) {
+                                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                                    Log.i("ExternalStorage", "-> uri=" + uri);
+                                }
+                            });
+                }
             }
         });
 
-        rejectdp.setOnClickListener(new View.OnClickListener() {
+        rejectdp.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 selectedImageUri = null;
@@ -254,7 +309,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        dpChangeDialog.setOnClickListener(new View.OnClickListener() {
+        dpChangeDialog.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 Log.i("point pa215", "pic clicked");
@@ -262,7 +319,9 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
-        backgroundButton.setOnClickListener(new View.OnClickListener() {
+        backgroundButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 dpChangeDialog.setVisibility(View.INVISIBLE);
@@ -281,13 +340,19 @@ public class ProfileActivity extends AppCompatActivity {
 //
 //
 //        }
-        if (Main2Activity.mUser != null) {
+        if (Main2Activity.mUser != null)
+
+        {
             userName.setText(Main2Activity.mUser);
-        } else {
+        } else
+
+        {
             userName.setVisibility(View.GONE);
         }
 
-        try {
+        try
+
+        {
             if (Main2Activity.userInfo.getdpUrl() != null) {
                 Log.i(Main2Activity.userInfo.getdpUrl(), "point pa271");
 //            Glide.with(displayPicture.getContext())
@@ -313,7 +378,10 @@ public class ProfileActivity extends AppCompatActivity {
 
                 displayPicture.setImageResource(R.mipmap.icon_profile_empty);
             }
-        } catch (Exception e) {
+        } catch (
+                Exception e)
+
+        {
             displayPicture.setImageResource(R.mipmap.icon_profile_empty);
             Log.i("point pa292", "error in dp loading");
         }
@@ -321,11 +389,21 @@ public class ProfileActivity extends AppCompatActivity {
         TextView emailId = (TextView) findViewById(R.id.email);
         emailId.setText(email);
 
-        mobNo = (EditText) findViewById(R.id.mobile_no);
-        galleryIntent = (Button) findViewById(R.id.gallery_intent1);
-        cameraIntent = (Button) findViewById(R.id.camera_intent1);
+        mobNo = (EditText)
 
-        cameraIntent.setOnClickListener(new View.OnClickListener() {
+                findViewById(R.id.mobile_no);
+
+        galleryIntent = (Button)
+
+                findViewById(R.id.gallery_intent1);
+
+        cameraIntent = (Button)
+
+                findViewById(R.id.camera_intent1);
+
+        cameraIntent.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 if (!(mobNo.getText().toString().equals(""))) {
@@ -344,7 +422,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        galleryIntent.setOnClickListener(new View.OnClickListener() {
+        galleryIntent.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 if (!(mobNo.getText().toString().equals(""))) {
@@ -399,6 +479,18 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         }
+        if (requestCode == DP_PHOTO_CLICKER) {
+            if (resultCode == RESULT_OK) {
+                dpSelectionLayout.setVisibility(View.INVISIBLE);
+                dpSelectedLayout.setVisibility(View.VISIBLE);
+                dpCameraimage = (Bitmap) data.getExtras().get("data");
+                dialogProfile.setImageBitmap(dpCameraimage);
+            }
+
+        } else {
+            Toast.makeText(this, "error in clicking picture", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
