@@ -47,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -76,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<String> chatsString;
     private LinearLayout requestDialog, contentProfile, dpSelectionLayout, dpSelectedLayout;
     private TextView userName;
-    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp;
+    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp, dialogProfile;
     EditText mobNo;
     Button galleryIntent, cameraIntent;
     FrameLayout layout_MainMenu;
@@ -130,6 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateDp = (ImageView) findViewById(R.id.updateDp);
         rejectdp = (ImageView) findViewById(R.id.rejectPic);
         backgroundButton = (ImageView) findViewById(R.id.backgroundButton);
+        dialogProfile = (ImageView) findViewById(R.id.dialogProfile);
 
         ratingProfile = (RatingBar) findViewById(R.id.ratingProfile);
         String[] rating = Main2Activity.userInfo.getRating().split("\\+");
@@ -193,7 +195,29 @@ public class ProfileActivity extends AppCompatActivity {
                             setData(Main2Activity.mUserId, downloadUrl.toString());
                             downloadUrl = null;
                             selectedImageUri = null;
+
+                            com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+                                    .cornerRadiusDp(30)
+                                    .oval(false)
+                                    .build();
+                            Picasso.with(ProfileActivity.this)
+                                    .load(selectedImageUri)
+                                    .placeholder(R.mipmap.icon_profile_empty)
+                                    .transform(transformation)
+                                    .into(displayPicture, new com.squareup.picasso.Callback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.i("point pa333", "sucess");
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.i("point pa338", "error");
+
+                                        }
+                                    });
                         }
+
                     });
                 } else {
                     Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
@@ -212,7 +236,8 @@ public class ProfileActivity extends AppCompatActivity {
         dpChangeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("point pa215","pic clicked");
+                Log.i("point pa215", "pic clicked");
+                // must for making clicks not to go to background switch
 
             }
         });
@@ -222,18 +247,17 @@ public class ProfileActivity extends AppCompatActivity {
                 dpChangeDialog.setVisibility(View.INVISIBLE);
                 backgroundButton.setVisibility(View.INVISIBLE);
                 layout_MainMenu.getForeground().setAlpha(0);
-                Log.i("point pa218","bb clicked");
+                Log.i("point pa218", "bb clicked");
             }
         });
 
 
-
-        if (Main2Activity.userInfo.getdpUrl().length() != 0) {
-
-//            Glide.with(displayPicture.getContext())
-//                    .load(Main2Activity.userInfo.getdpUrl())
-//                    .into(displayPicture);
-        }
+//        if (Main2Activity.userInfo.getdpUrl().length() != 0) {
+//
+////            Glide.with(displayPicture.getContext())
+////                    .load(Main2Activity.userInfo.getdpUrl())
+////                    .into(displayPicture);
+//        }
         if (Main2Activity.mUser != null) {
             userName.setText(Main2Activity.mUser);
         } else {
@@ -313,20 +337,45 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {//signing prosses result called before onResume
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == DP_PHOTO_PICKER && resultCode == RESULT_OK) {
+        if (requestCode == DP_PHOTO_PICKER) {
+            if (resultCode == RESULT_OK) {
 
-            selectedImageUri = data.getData();
-            Log.i(selectedImageUri.toString(), "point pa286");
-            displayPicture.setImageURI(selectedImageUri);
+                selectedImageUri = data.getData();
+                Log.i(selectedImageUri.toString(), "point pa286");
+//            displayPicture.setImageURI(selectedImageUri);
+                dpSelectionLayout.setVisibility(View.INVISIBLE);
+                dpSelectedLayout.setVisibility(View.VISIBLE);
+                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+                        .cornerRadiusDp(30)
+                        .oval(false)
+                        .build();
+                Picasso.with(this)
+                        .load(selectedImageUri)
+                        .placeholder(R.mipmap.icon_profile_empty)
+                        .transform(transformation)
+                        .into(dialogProfile, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("point pa357", "sucess");
+                            }
+
+                            @Override
+                            public void onError() {
+                                Log.i("point pa362", "error");
+
+                            }
+                        });
+            } else {
+                Toast.makeText(this, "error in getting picture", Toast.LENGTH_SHORT).show();
+            }
 
         }
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        System.out.println("standpoint pr112");
+        System.out.println("point pr112");
     }
 
     @Override
