@@ -82,7 +82,7 @@ public class Main2Activity extends AppCompatActivity
 
     public static String mUserId;
     public static String mUser;
-    public static Uri mUserProfile;
+//    public static Uri mUserProfile;
     private String mEmailId;
     private TextView naveUserName, naveUserEmail;
 
@@ -93,7 +93,7 @@ public class Main2Activity extends AppCompatActivity
 
         mUserId = ANONYMOUS;
         mUser = ANONYMOUS;
-        mUserProfile = null;
+//        mUserProfile = null;
         mEmailId = "";
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

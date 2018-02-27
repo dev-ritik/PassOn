@@ -170,6 +170,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), DP_PHOTO_PICKER);
             }
         });
+
         cameraDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,6 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         });
+
         updateDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,8 +195,12 @@ public class ProfileActivity extends AppCompatActivity {
 //                            mProgressBar.setVisibility(View.INVISIBLE);
                             displayPicture.setImageResource(0);
                             setData(Main2Activity.mUserId, downloadUrl.toString());
-                            downloadUrl = null;
-                            selectedImageUri = null;
+
+                            //progress bar
+                            layout_MainMenu.getForeground().setAlpha(0);
+                            dpChangeDialog.setVisibility(View.INVISIBLE);
+                            dpSelectionLayout.setVisibility(View.VISIBLE);
+                            dpSelectedLayout.setVisibility(View.INVISIBLE);
 
                             com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
                                     .cornerRadiusDp(30)
@@ -208,11 +214,17 @@ public class ProfileActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess() {
                                             Log.i("point pa333", "sucess");
+                                            downloadUrl = null;
+                                            selectedImageUri = null;
+
                                         }
 
                                         @Override
                                         public void onError() {
                                             Log.i("point pa338", "error");
+                                            downloadUrl = null;
+                                            selectedImageUri = null;
+
 
                                         }
                                     });
@@ -221,6 +233,10 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 } else {
                     Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    layout_MainMenu.getForeground().setAlpha(0);
+                    dpChangeDialog.setVisibility(View.INVISIBLE);
+                    dpSelectionLayout.setVisibility(View.VISIBLE);
+                    dpSelectedLayout.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -230,6 +246,11 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 selectedImageUri = null;
                 downloadUrl = null;
+
+                layout_MainMenu.getForeground().setAlpha(0);
+                dpChangeDialog.setVisibility(View.INVISIBLE);
+                dpSelectionLayout.setVisibility(View.VISIBLE);
+                dpSelectedLayout.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -257,6 +278,8 @@ public class ProfileActivity extends AppCompatActivity {
 ////            Glide.with(displayPicture.getContext())
 ////                    .load(Main2Activity.userInfo.getdpUrl())
 ////                    .into(displayPicture);
+//
+//
 //        }
         if (Main2Activity.mUser != null) {
             userName.setText(Main2Activity.mUser);
@@ -265,8 +288,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         try {
-            if (Main2Activity.mUserProfile != null) {
-                Log.i(Main2Activity.mUserProfile.toString(), "standpoint pr60");
+            if (Main2Activity.userInfo.getdpUrl() != null) {
+                Log.i(Main2Activity.userInfo.getdpUrl(), "point pa271");
 //            Glide.with(displayPicture.getContext())
 //                    .load(MainActivity.mUserProfile)
 //                    .into(displayPicture);
@@ -277,9 +300,14 @@ public class ProfileActivity extends AppCompatActivity {
                         .oval(false)
                         .build();
                 Picasso.with(ProfileActivity.this)
-                        .load(Main2Activity.mUserProfile.toString())
+                        .load(Main2Activity.userInfo.getdpUrl())
                         .transform(transformation)
                         .into(displayPicture);
+
+                Picasso.with(ProfileActivity.this)
+                        .load(Main2Activity.userInfo.getdpUrl())
+                        .transform(transformation)
+                        .into(dialogProfile);
             } else {
 //                Log.i("profile pic=null", "standpoint pr75");
 
@@ -287,6 +315,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             displayPicture.setImageResource(R.mipmap.icon_profile_empty);
+            Log.i("point pa292", "error in dp loading");
         }
 
         TextView emailId = (TextView) findViewById(R.id.email);
