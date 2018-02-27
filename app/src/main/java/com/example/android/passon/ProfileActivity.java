@@ -62,7 +62,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
@@ -74,15 +73,11 @@ This class handles backend of profile related stuff
  */
 public class ProfileActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    public RecyclerView.Adapter mAdapter;
     public static ChildEventListener mChildEventListenerProfile, mChildEventListenerProfileTest;
     public static DatabaseReference mChildUser;
-    ArrayList<ChatHead> chats;
-    ArrayList<String> chatsString;
     private LinearLayout requestDialog, contentProfile, dpSelectionLayout, dpSelectedLayout;
     private TextView userName;
-    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp, dialogProfile;
+    private ImageView displayPicture, backgroundButton, removeDp, galleryDp, cameraDp, updateDp, rejectdp, dialogProfileOriginal,dialogProfileChanged;
     EditText mobNo;
     Button galleryIntent, cameraIntent;
     FrameLayout layout_MainMenu;
@@ -96,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
     Uri tempuri;
     public static File file;
     InputMethodManager imm;
-    private Uri selectedImageUri, downloadUrl;
+    private Uri selectedImageUri, downloadUrl, clickedImageUri;
     boolean ref = false;
     Bitmap dpCameraimage;
 
@@ -138,7 +133,8 @@ public class ProfileActivity extends AppCompatActivity {
         updateDp = (ImageView) findViewById(R.id.updateDp);
         rejectdp = (ImageView) findViewById(R.id.rejectPic);
         backgroundButton = (ImageView) findViewById(R.id.backgroundButton);
-        dialogProfile = (ImageView) findViewById(R.id.dialogProfile);
+        dialogProfileOriginal = (ImageView) findViewById(R.id.dialogProfileOriginal);
+        dialogProfileChanged = (ImageView) findViewById(R.id.dialogProfileChanged);
 
         ratingProfile = (RatingBar) findViewById(R.id.ratingProfile);
         String[] rating = Main2Activity.userInfo.getRating().split("\\+");
@@ -193,7 +189,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
                     startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), DP_PHOTO_CLICKER);
                 } else {
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.camera_not_supported), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "camera not found", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -203,7 +199,7 @@ public class ProfileActivity extends AppCompatActivity {
         updateDp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (selectedImageUri != null) {
+                if (selectedImageUri != null) {
                     Log.i(selectedImageUri.toString(), "point pa152");
 //                    mProgressBar.setVisibility(View.VISIBLE);
                     StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
@@ -252,28 +248,19 @@ public class ProfileActivity extends AppCompatActivity {
                         }
 
                     });
-                } else {
-                    Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
-                    layout_MainMenu.getForeground().setAlpha(0);
-                    dpChangeDialog.setVisibility(View.INVISIBLE);
-                    dpSelectionLayout.setVisibility(View.VISIBLE);
-                    dpSelectedLayout.setVisibility(View.INVISIBLE);
-                }
-                */
-                if (dpCameraimage != null) {
+                } else if (dpCameraimage != null) {
                     String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
                     File myDir = new File(root + "/saved_images");
                     myDir.mkdirs();
-                    Random generator = new Random();
-                    int n = 10000;
-                    n = generator.nextInt(n);
-                    String fname = "Image-" + n + ".jpg";
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+
+                    String fname = "Image-" + timeStamp + ".jpg";
                     File file1 = new File(myDir, fname);
                     if (file1.exists())
                         file1.delete();
                     try {
                         FileOutputStream out = new FileOutputStream(file1);
-                        dpCameraimage.compress(Bitmap.CompressFormat.JPEG, 10, out);
+                        dpCameraimage.compress(Bitmap.CompressFormat.JPEG, 100, out);
                         out.flush();
                         out.close();
                     } catch (Exception e) {
@@ -285,11 +272,70 @@ public class ProfileActivity extends AppCompatActivity {
                     // immediately available to the user.
                     MediaScannerConnection.scanFile(ProfileActivity.this, new String[]{file1.toString()}, null,
                             new MediaScannerConnection.OnScanCompletedListener() {
-                                public void onScanCompleted(String path, Uri uri) {
-                                    Log.i("ExternalStorage", "Scanned " + path + ":");
-                                    Log.i("ExternalStorage", "-> uri=" + uri);
+                                public void onScanCompleted(String path, final Uri uri) {
+                                    Log.i("point pa289", "Scanned " + path + ":");
+                                    Log.i("point pa290", "uri=" + uri);
+                                    clickedImageUri = uri;
+//                                    layout_MainMenu.getForeground().setAlpha(0);
+//                                    dpChangeDialog.setVisibility(View.INVISIBLE);
+//                                    dpSelectionLayout.setVisibility(View.VISIBLE);
+//                                    dpSelectedLayout.setVisibility(View.INVISIBLE);
+
+                                    StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(uri.getLastPathSegment());
+                                    photoREf.putFile(selectedImageUri).addOnSuccessListener(ProfileActivity.this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        //                    upload file to firebase onsucess of upload
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
+                                            Log.i(selectedImageUri.toString(), "point pa303");
+//                            mProgressBar.setVisibility(View.INVISIBLE);
+                                            displayPicture.setImageResource(0);
+                                            setData(Main2Activity.mUserId, downloadUrl.toString());
+
+                                            //progress bar
+                                            layout_MainMenu.getForeground().setAlpha(0);
+                                            dpChangeDialog.setVisibility(View.INVISIBLE);
+                                            dpSelectionLayout.setVisibility(View.VISIBLE);
+                                            dpSelectedLayout.setVisibility(View.INVISIBLE);
+
+                                            com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
+                                                    .cornerRadiusDp(30)
+                                                    .oval(false)
+                                                    .build();
+                                            Picasso.with(ProfileActivity.this)
+                                                    .load(uri)
+                                                    .placeholder(R.mipmap.icon_profile_empty)
+                                                    .transform(transformation)
+                                                    .into(displayPicture, new com.squareup.picasso.Callback() {
+                                                        @Override
+                                                        public void onSuccess() {
+                                                            Log.i("point pa325", "sucess");
+                                                            downloadUrl = null;
+                                                            clickedImageUri = null;
+
+                                                        }
+
+                                                        @Override
+                                                        public void onError() {
+                                                            Log.i("point pa333a", "error");
+                                                            downloadUrl = null;
+                                                            clickedImageUri = null;
+
+
+                                                        }
+                                                    });
+                                        }
+
+                                    });
                                 }
                             });
+                } else {
+                    Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    layout_MainMenu.getForeground().setAlpha(0);
+                    dpChangeDialog.setVisibility(View.INVISIBLE);
+                    dpSelectionLayout.setVisibility(View.VISIBLE);
+                    dpSelectedLayout.setVisibility(View.INVISIBLE);
+                    
                 }
             }
         });
@@ -301,7 +347,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 selectedImageUri = null;
                 downloadUrl = null;
-
+                dialogProfileOriginal.setVisibility(View.VISIBLE);
+                dialogProfileChanged.setVisibility(View.INVISIBLE);
                 layout_MainMenu.getForeground().setAlpha(0);
                 dpChangeDialog.setVisibility(View.INVISIBLE);
                 dpSelectionLayout.setVisibility(View.VISIBLE);
@@ -372,7 +419,11 @@ public class ProfileActivity extends AppCompatActivity {
                 Picasso.with(ProfileActivity.this)
                         .load(Main2Activity.userInfo.getdpUrl())
                         .transform(transformation)
-                        .into(dialogProfile);
+                        .into(dialogProfileOriginal);
+                Picasso.with(ProfileActivity.this)
+                        .load(Main2Activity.userInfo.getdpUrl())
+                        .transform(transformation)
+                        .into(dialogProfileChanged);
             } else {
 //                Log.i("profile pic=null", "standpoint pr75");
 
@@ -454,6 +505,8 @@ public class ProfileActivity extends AppCompatActivity {
 //            displayPicture.setImageURI(selectedImageUri);
                 dpSelectionLayout.setVisibility(View.INVISIBLE);
                 dpSelectedLayout.setVisibility(View.VISIBLE);
+                dialogProfileOriginal.setVisibility(View.INVISIBLE);
+                dialogProfileChanged.setVisibility(View.VISIBLE);
                 com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
                         .cornerRadiusDp(30)
                         .oval(false)
@@ -462,7 +515,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .load(selectedImageUri)
                         .placeholder(R.mipmap.icon_profile_empty)
                         .transform(transformation)
-                        .into(dialogProfile, new com.squareup.picasso.Callback() {
+                        .into(dialogProfileChanged, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
                                 Log.i("point pa357", "sucess");
@@ -483,14 +536,14 @@ public class ProfileActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 dpSelectionLayout.setVisibility(View.INVISIBLE);
                 dpSelectedLayout.setVisibility(View.VISIBLE);
+                dialogProfileOriginal.setVisibility(View.INVISIBLE);
+                dialogProfileChanged.setVisibility(View.VISIBLE);
                 dpCameraimage = (Bitmap) data.getExtras().get("data");
-                dialogProfile.setImageBitmap(dpCameraimage);
+                dialogProfileChanged.setImageBitmap(dpCameraimage);
+            } else {
+                Toast.makeText(this, "error in clicking picture", Toast.LENGTH_SHORT).show();
             }
-
-        } else {
-            Toast.makeText(this, "error in clicking picture", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override

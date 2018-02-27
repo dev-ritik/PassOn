@@ -76,4 +76,5 @@
         <item>Competitive</item>
         <item>Others</item>
     </string-array>
+    <string name="camera_not_supported">camera not found</string>
 </resources>
