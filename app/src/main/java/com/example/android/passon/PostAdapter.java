@@ -121,7 +121,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return Posts.size();
     }
 
-    public void setData(String posteruid, String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
+    public void setData(String posteruid, final String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "standpoint re91");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
@@ -129,16 +129,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    final HashMap<String, Object> users = new HashMap<>();
-                    users.put(uid, username);
-                    child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    final Map<String, Object> users = new HashMap<>();
+                    users.put(time, new ChatHead(uid,username));
+//                    child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    child.getRef().child("connectionRequestUsers").updateChildren(users)
+
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("point pat137", "completed changing");
                             if (Main2Activity.userInfo.getConnectionRequestUsers() == null)
                                 Main2Activity.userInfo.setConnectionRequestUsers(users);
                             else
-                                Main2Activity.userInfo.getConnectionRequestUsers().put(uid, username);
+                                Main2Activity.userInfo.getConnectionRequestUsers().put(time,new ChatHead(uid,username));
                         }
                     });
 
@@ -168,7 +171,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    public void changeData(String posteruid, String time, final String uid, final String username, final ArrayList<String> requestUsers) {
+    public void changeData(String posteruid, final String time, final String uid, final String username, final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "standpoint re140");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
@@ -176,13 +179,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    HashMap<String, Object> users = new HashMap<>();
-                    users.put(uid, null);
+                    Map<String, Object> users = new HashMap<>();
+                    users.put(time,new ChatHead(uid, null));
                     child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("point pat181", "completed changing");
-                            Main2Activity.userInfo.getConnectionRequestUsers().put(uid, null);
+                            Main2Activity.userInfo.getConnectionRequestUsers().put(time,new ChatHead(uid, null));
                         }
                     });
                 }

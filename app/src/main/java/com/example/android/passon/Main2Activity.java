@@ -295,13 +295,9 @@ public class Main2Activity extends AppCompatActivity
                         Log.i(currentUser.getUid(), "standpoint m570");
 //                        Log.i("seems new", "point m558");
 
-//                        ArrayList<HashMap<String, Object>> connected = new ArrayList<>();
                         ArrayList<String> notifications = new ArrayList<>();
-//                        ArrayList<HashMap<String, Object>> request = new ArrayList<>();
-                        HashMap<String, Object> connected = new HashMap<>();
-//                        users.put("india", "china");
-//                        users.put("ritik","agarwal");
-                        HashMap<String, Object> requested = new HashMap<>();
+                        Map<String, Object> connected = new HashMap<>();
+                        Map<String, Object> requested = new HashMap<>();
 
 //                        connected.add(users);
                         notifications.add("asdfghj d g dfgdg");
@@ -310,7 +306,6 @@ public class Main2Activity extends AppCompatActivity
                         mUserDatabaseReference.push().setValue(userInfoNew);
                     }
 
-//                    Log.i("point Ma396", Long.toString(count));
                 }
 
                 @Override

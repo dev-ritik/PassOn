@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
@@ -30,6 +32,9 @@ public class NotificationActivity extends AppCompatActivity {
     public static RecyclerView.Adapter mAdapterRequest, mAdapterConnected, mAdapterNotice;
     public static ArrayList<ChatHead> requests;
     public static ArrayList<ChatHead> connections;
+    public static ArrayList<String> timeRequests;
+    public static ArrayList<String> timeConnections;
+
     ArrayList<String> notices;
     public static LinearLayout requestDialog, connectionDialog;
     private FrameLayout notificationActivityScreen;
@@ -96,11 +101,13 @@ public class NotificationActivity extends AppCompatActivity {
         });
         requests = new ArrayList<>();
         connections = new ArrayList<>();
+        timeConnections = new ArrayList<>();
+        timeRequests = new ArrayList<>();
         notices = new ArrayList<>();
 
-        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, requestDialog, notificationActivityScreen, backgroundButtonNotification);
+        mAdapterRequest = new ChatNameAdapter(requests, timeRequests, NotificationActivity.this, requestDialog, notificationActivityScreen, backgroundButtonNotification);
 
-        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, connectionDialog, notificationActivityScreen, backgroundButtonNotification);
+        mAdapterConnected = new ChatNameAdapter(connections, timeConnections, NotificationActivity.this, connectionDialog, notificationActivityScreen, backgroundButtonNotification);
 
 //        mRecyclerViewRequest.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
@@ -131,11 +138,18 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 //                            ChatHead c1=dataSnapshot.getValue(ChatHead.class);
-                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
-                        requests.add(asd1);
+                        Map<String, Object> asdf = new HashMap<>();
+
+                        asdf.put(dataSnapshot.getKey(), dataSnapshot.getValue());
+                        ChatHead c1 = dataSnapshot.getValue(ChatHead.class);
+
+                        requests.add(c1);
+                        timeRequests.add(dataSnapshot.getKey());
+//                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
+//                        requests.add(asd1);
                         mAdapterRequest.notifyDataSetChanged();
 //                        Log.i("point na75", dataSnapshot.toString());
-                        Log.i("point na76", asd1.getUsername());
+                        Log.i("point na76", dataSnapshot.getKey());
 //                        Log.i("point na77", asd1.getUserId());
                     }
 
@@ -166,11 +180,21 @@ public class NotificationActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                        Log.i("point na107", dataSnapshot.toString());
-                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
-                        connections.add(asd1);
+//                        Log.i("point na107", dataSnapshot.toString());
+//                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
+//                        connections.add(asd1);
+//                        mAdapterConnected.notifyDataSetChanged();
+//                        Log.i("point na112", asd1.getUsername());
+
+                        Map<String, Object> asdf = new HashMap<>();
+                        asdf.put(dataSnapshot.getKey(), dataSnapshot.getValue());
+                        connections.add((ChatHead) asdf.get(dataSnapshot.getKey()));
+                        timeConnections.add(dataSnapshot.getKey());
+//                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
+//                        requests.add(asd1);
                         mAdapterConnected.notifyDataSetChanged();
-                        Log.i("point na112", asd1.getUsername());
+//                        Log.i("point na75", dataSnapshot.toString());
+                        Log.i("point na195", dataSnapshot.getKey());
                     }
 
                     @Override

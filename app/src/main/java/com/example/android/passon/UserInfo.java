@@ -11,7 +11,7 @@ import java.util.Map;
  */
 
 /*
-object to store all user related information
+Object to store all user related information
  */
 
 public class UserInfo {
@@ -25,14 +25,14 @@ public class UserInfo {
     private String address;
     private int phoneNo;
     private int profileNo;
-    private HashMap<String, Object> connectedUsers;
-    private HashMap<String, Object> connectionRequestUsers;
+    private Map<String, Object> connectedUsers;
+    private Map<String, Object> connectionRequestUsers;
     private ArrayList<String> notifications;
 
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, String rating, String address, int phoneNo, HashMap<String, Object> connectedUsers, HashMap<String, Object> requestededUsers, ArrayList<String> notifications) {
+    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, String rating, String address, int phoneNo,Map<String, Object> connectedUsers, Map<String, Object> requestededUsers, ArrayList<String> notifications) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
@@ -56,11 +56,11 @@ public class UserInfo {
         this.notifications = notifications;
     }
 
-    public HashMap<String, Object> getConnectionRequestUsers() {
+    public Map<String, Object> getConnectionRequestUsers() {
         return connectionRequestUsers;
     }
 
-    public void setConnectionRequestUsers(HashMap<String, Object> connectionRequestUsers) {
+    public void setConnectionRequestUsers(Map<String, Object> connectionRequestUsers) {
         this.connectionRequestUsers = connectionRequestUsers;
     }
 
@@ -69,11 +69,11 @@ public class UserInfo {
     }
 
 
-    public HashMap<String, Object> getConnectedUsers() {
+    public Map<String, Object> getConnectedUsers() {
         return connectedUsers;
     }
 
-    public void setConnectedUsers(HashMap<String, Object> connectedUsers) {
+    public void setConnectedUsers(Map<String, Object> connectedUsers) {
         this.connectedUsers = connectedUsers;
     }
 
