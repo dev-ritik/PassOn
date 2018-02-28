@@ -87,7 +87,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         final ChatHead chat = chats.get(position);
         final String time = times.get(position);
 
-        Log.i("point Po53", chat.getUserId());
+        Log.i("point cna90", chat.getUserId());
 
         if (dialogBox1.equals(NotificationActivity.requestDialog))
             Log.i("point cna82", "equal");
@@ -198,7 +198,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     }
 
 
-    private void setDataMe(String userId, final String acceptedId, final String acceptedName, String time) {
+    private void setDataMe(String userId, final String acceptedId, final String acceptedName, final String time) {
 //switches a person from request to connection
         Log.i(userId, "point cna114");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
@@ -207,13 +207,15 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     final HashMap<String, Object> userAdded = new HashMap<>();
-                    userAdded.put(acceptedId, acceptedName);
+                    userAdded.put(time, new ChatHead(acceptedId, acceptedName));
                     child.getRef().child("connectedUsers").updateChildren(userAdded).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("point cna208", "completed changing");
 //                            NotificationActivity.connections.add(new ChatHead(acceptedId, acceptedName));
 //                            NotificationActivity.mAdapterConnected.notifyDataSetChanged();
+                            backgroundButton.setVisibility(View.INVISIBLE);
+                            screen.getForeground().setAlpha(0);
                             if (Main2Activity.userInfo.getConnectedUsers() == null)
                                 Main2Activity.userInfo.setConnectedUsers(userAdded);
                             else
@@ -222,7 +224,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 
                     });
                     HashMap<String, Object> userDeleted = new HashMap<>();
-                    userDeleted.put(acceptedId, null);
+                    userDeleted.put(time, null);
                     child.getRef().child("connectionRequestUsers").updateChildren(userDeleted).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -230,9 +232,12 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 //                            NotificationActivity.requests.remove(new ChatHead(acceptedId, acceptedName));
 //                            NotificationActivity.mAdapterRequest.notifyDataSetChanged();
                             Main2Activity.userInfo.getConnectionRequestUsers().put(acceptedId, null);
+                            backgroundButton.setVisibility(View.INVISIBLE);
+                            screen.getForeground().setAlpha(0);
                         }
                     });
                 }
+
             }
 
             @Override
@@ -284,7 +289,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     }
 
 
-    public void changeData(final String node, String userId, final String peopleUid, final String peopleName,final String time) {
+    public void changeData(final String node, String userId, final String peopleUid, final String peopleName, final String time) {
 //deletes a request or connection
         Log.i(userId, "point cna110");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
@@ -302,11 +307,17 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 //                                NotificationActivity.connections.remove(new ChatHead(peopleUid, peopleName));
 //                                NotificationActivity.mAdapterConnected.notifyDataSetChanged();
                                 Main2Activity.userInfo.getConnectedUsers().put(peopleName, null);
+                                backgroundButton.setVisibility(View.INVISIBLE);
+                                screen.getForeground().setAlpha(0);
                             } else {
 //                                NotificationActivity.requests.remove(new ChatHead(peopleUid, peopleName));
 //                                NotificationActivity.mAdapterRequest.notifyDataSetChanged();
                                 Main2Activity.userInfo.getConnectionRequestUsers().put(peopleName, null);
+                                backgroundButton.setVisibility(View.INVISIBLE);
+                                screen.getForeground().setAlpha(0);
                             }
+                            NotificationActivity.mAdapterRequest.notifyDataSetChanged();
+                            NotificationActivity.mAdapterConnected.notifyDataSetChanged();
                         }
                     });
                 }
@@ -328,6 +339,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     ArrayList<String> requesters = (ArrayList<String>) child.child("bookRequestUsers").getValue();
                     requesters.remove(peopleUid);
                     child.getRef().child("bookRequestUsers").setValue(requesters);
+                    PostFragment.mAdapterPost.notifyDataSetChanged();
                 }
             }
 

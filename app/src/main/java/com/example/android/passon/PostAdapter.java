@@ -86,6 +86,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.time.setText(post.getTime());
         holder.phoneNo.setText(post.getPhonenumber());
         holder.institute.setText(post.getInstitute());
+        if(post.getBookRequestUsers().contains(Main2Activity.mUserId)){
+            holder.request.setText("close");
+            holder.detail.setVisibility(View.VISIBLE);
+            tapCount=true;
+        }
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +185,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Map<String, Object> users = new HashMap<>();
-                    users.put(time,new ChatHead(uid, null));
+                    users.put(time,null);
                     child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

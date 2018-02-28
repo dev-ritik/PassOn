@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,11 +81,11 @@ public class PostFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        detachDatabaseReadListener();
+//        detachDatabaseReadListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
-        posts.clear();
-        mAdapterPost.notifyItemRangeRemoved(0, PostFragment.mAdapterPost.getItemCount());
+//        posts.clear();
+//        mAdapterPost.notifyItemRangeRemoved(0, PostFragment.mAdapterPost.getItemCount());
     }
 
     private void attachDatabaseListener() {
@@ -107,12 +108,12 @@ public class PostFragment extends Fragment {
 //            Log.i(mChildEventListenerPost.toString(), "point m293");
 //        }
         if (mChildEventListenerPost == null) {
-            Log.i("mChildEventListenerPost", "standpoint 298");
+            Log.i("mChildEventListenerPost", "point pf111");
             mChildEventListenerPost = new ChildEventListener() {//working with db after authentication
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("onchildadded", "point M114");
-                    Log.i(Integer.toString(posts.size()), "point m289");
+                    Log.i("onchildadded", "point pf115");
+                    Log.i(Integer.toString(posts.size()), "point pf116");
 
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
@@ -132,22 +133,37 @@ public class PostFragment extends Fragment {
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     // changed content of a child
-                    Log.i("child changed", "point m370");
+//                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+////                    Log.i("point pf137", post.gey() + "");
+//
+//                    Log.i("child changed" + post.getBookRequestUsers().get(post.getBookRequestUsers().size() - 1), "point pf138");
+//                    Log.i("point pf139", posts.size() + "");
+//                    ListIterator<Post> iterator = posts.listIterator();
+//                    while (iterator.hasNext()) {
+//                        if (iterator.next().getTime().equals(post.getTime()))
+//                            iterator.set(post);
+//                    }
+//                    Log.i("point pf145", posts.size() + "");
+//                    Log.i("child changed" + post.getBookRequestUsers().get(post.getBookRequestUsers().size() - 1), "point pf146");
+//
+//                    PostFragment.mAdapterPost.notifyDataSetChanged();
+
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     // child deleted
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
+                    Log.i("post deleted", "point m389");
 
                     for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
                         if (iterator.next().getTime() == post.getTime())
                             iterator.remove();
-                        Log.i(Integer.toString(posts.size()), "point m311");
+                        Log.i(Integer.toString(posts.size()), "point pf138");
                     }
                     Log.i(Integer.toString(posts.size()), "point m389");
                     PostFragment.mAdapterPost.notifyDataSetChanged();
-                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
+//                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
 
                 }
 

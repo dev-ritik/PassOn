@@ -19,6 +19,8 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
@@ -148,18 +150,51 @@ public class NotificationActivity extends AppCompatActivity {
 //                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
 //                        requests.add(asd1);
                         mAdapterRequest.notifyDataSetChanged();
-//                        Log.i("point na75", dataSnapshot.toString());
                         Log.i("point na76", dataSnapshot.getKey());
-//                        Log.i("point na77", asd1.getUserId());
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                        ChatHead c1 = dataSnapshot.getValue(ChatHead.class);
+//
+//                        requests.add(c1);
+//                        timeRequests.add(dataSnapshot.getKey());
+////                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
+////                        requests.add(asd1);
+//                        mAdapterRequest.notifyDataSetChanged();
+//
+//
+//                        Log.i("child changed" + post.getBookName(), "point na160");
+//
+//                        ListIterator<Post> iterator = posts.listIterator();
+//                        while (iterator.hasNext()) {
+//                            if (iterator.next().getTime().equals(post.getTime()))
+//                                iterator.set(post);
+//                        }
+//                        PostFragment.mAdapterPost.notifyDataSetChanged();
 
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        ChatHead c1 = dataSnapshot.getValue(ChatHead.class);
+//                        Log.i(requests.size()+"", "point na181");
+//                        Log.i(requests.get(0).getUsername(), "point na182");
+//                        Log.i(requests.get(0).getUserId(), "point na183");
+//                        Log.i(c1.getUsername(), "point na1831");
+//                        Log.i(c1.getUserId(), "point na1832");
+
+//                        requests.remove(dataSnapshot.getValue(ChatHead.class));
+                        timeRequests.remove(dataSnapshot.getKey());
+//                        Log.i(timeRequests.size()+"", "point na185");
+//                        Log.i(requests.size()+"", "point na186");
+
+                        for (Iterator<ChatHead> iterator = requests.iterator(); iterator.hasNext(); ) {
+                            if (iterator.next().getUserId() == c1.getUserId())
+                                iterator.remove();
+                        }
+                        Log.i(requests.size() + "", "point na198");
+                        mAdapterRequest.notifyDataSetChanged();
 
                     }
 
@@ -180,21 +215,18 @@ public class NotificationActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-//                        Log.i("point na107", dataSnapshot.toString());
-//                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
-//                        connections.add(asd1);
-//                        mAdapterConnected.notifyDataSetChanged();
-//                        Log.i("point na112", asd1.getUsername());
-
                         Map<String, Object> asdf = new HashMap<>();
+
                         asdf.put(dataSnapshot.getKey(), dataSnapshot.getValue());
-                        connections.add((ChatHead) asdf.get(dataSnapshot.getKey()));
+                        ChatHead c1 = dataSnapshot.getValue(ChatHead.class);
+
+                        connections.add(c1);
                         timeConnections.add(dataSnapshot.getKey());
 //                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
 //                        requests.add(asd1);
+
                         mAdapterConnected.notifyDataSetChanged();
-//                        Log.i("point na75", dataSnapshot.toString());
-                        Log.i("point na195", dataSnapshot.getKey());
+                        Log.i("point na230", dataSnapshot.getKey());
                     }
 
                     @Override
@@ -204,7 +236,24 @@ public class NotificationActivity extends AppCompatActivity {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        ChatHead c1 = dataSnapshot.getValue(ChatHead.class);
+//                        Log.i(requests.size()+"", "point na181");
+//                        Log.i(requests.get(0).getUsername(), "point na182");
+//                        Log.i(requests.get(0).getUserId(), "point na183");
+//                        Log.i(c1.getUsername(), "point na1831");
+//                        Log.i(c1.getUserId(), "point na1832");
 
+//                        requests.remove(dataSnapshot.getValue(ChatHead.class));
+                        timeConnections.remove(dataSnapshot.getKey());
+//                        Log.i(timeRequests.size()+"", "point na185");
+//                        Log.i(requests.size()+"", "point na186");
+
+                        for (Iterator<ChatHead> iterator = connections.iterator(); iterator.hasNext(); ) {
+                            if (iterator.next().getUserId().equals(c1.getUserId()))
+                                iterator.remove();
+                        }
+                        Log.i(connections.size() + "", "point na255");
+                        mAdapterRequest.notifyDataSetChanged();
                     }
 
                     @Override
