@@ -28,8 +28,8 @@ public class NotificationActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerViewRequest, mRecyclerViewConnected, mRecyclerViewNotice;
     public static RecyclerView.Adapter mAdapterRequest, mAdapterConnected, mAdapterNotice;
-    ArrayList<ChatHead> requests;
-    ArrayList<ChatHead> connections;
+    public static ArrayList<ChatHead> requests;
+    public static ArrayList<ChatHead> connections;
     ArrayList<String> notices;
     public static LinearLayout requestDialog, connectionDialog;
     private FrameLayout notificationActivityScreen;

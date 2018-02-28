@@ -1,5 +1,6 @@
 package com.example.android.passon;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -92,7 +95,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
                     if (!post.getBookRequestUsers().contains(Main2Activity.mUserId)) {
                         post.getBookRequestUsers().add(Main2Activity.mUserId);
-                        setData(post.getPosterId(),post.getTime(), Main2Activity.mUserId, Main2Activity.mUser,position,post.getBookRequestUsers());
+                        setData(post.getPosterId(), post.getTime(), Main2Activity.mUserId, Main2Activity.mUser, position, post.getBookRequestUsers());
                         Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
                     }
                     holder.request.setText("close");
@@ -101,7 +104,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 } else {
                     if (post.getBookRequestUsers().contains(Main2Activity.mUserId)) {
                         post.getBookRequestUsers().remove(Main2Activity.mUserId);
-                        changeData(post.getPosterId(),post.getTime(), Main2Activity.mUserId, Main2Activity.mUser,post.getBookRequestUsers());
+                        changeData(post.getPosterId(), post.getTime(), Main2Activity.mUserId, Main2Activity.mUser, post.getBookRequestUsers());
                         Toast.makeText(view.getContext(), "Request Cancelled", Toast.LENGTH_SHORT).show();
                     }
                     tapCount = false;
@@ -126,9 +129,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Map<String, Object> users = new HashMap<>();
+                    final HashMap<String, Object> users = new HashMap<>();
                     users.put(uid, username);
-                    child.getRef().child("connectionRequestUsers").updateChildren(users);
+                    child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i("point pat137", "completed changing");
+                            if (Main2Activity.userInfo.getConnectionRequestUsers() == null)
+                                Main2Activity.userInfo.setConnectionRequestUsers(users);
+                            else
+                                Main2Activity.userInfo.getConnectionRequestUsers().put(uid, username);
+                        }
+                    });
+
                 }
             }
 
@@ -155,7 +168,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    public void changeData(String posteruid,String time, final String uid, final String username,final ArrayList<String> requestUsers) {
+    public void changeData(String posteruid, String time, final String uid, final String username, final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "standpoint re140");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
@@ -163,9 +176,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Map<String, Object> users = new HashMap<>();
+                    HashMap<String, Object> users = new HashMap<>();
                     users.put(uid, null);
-                    child.getRef().child("connectionRequestUsers").updateChildren(users);
+                    child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i("point pat181", "completed changing");
+                            Main2Activity.userInfo.getConnectionRequestUsers().put(uid, null);
+                        }
+                    });
                 }
             }
 

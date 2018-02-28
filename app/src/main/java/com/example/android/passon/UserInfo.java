@@ -3,6 +3,8 @@ package com.example.android.passon;
 import android.net.Uri;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ritik on 26-01-2018.
@@ -23,14 +25,14 @@ public class UserInfo {
     private String address;
     private int phoneNo;
     private int profileNo;
-    private ArrayList<String> connectedUsers;
-    private ArrayList<ChatHead> connectionRequestUsers;
+    private HashMap<String, Object> connectedUsers;
+    private HashMap<String, Object> connectionRequestUsers;
     private ArrayList<String> notifications;
 
     public UserInfo() {
     }
 
-    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, String rating, String address, int phoneNo, ArrayList<String> connectedUsers, ArrayList<ChatHead> requestededUsers, ArrayList<String> notifications) {
+    public UserInfo(int profileNo, String username, String userid,String photoUrl, String emailId, String rating, String address, int phoneNo, HashMap<String, Object> connectedUsers, HashMap<String, Object> requestededUsers, ArrayList<String> notifications) {
         this.profileNo = profileNo;
         this.userName = username;
         this.userId = userid;
@@ -54,11 +56,11 @@ public class UserInfo {
         this.notifications = notifications;
     }
 
-    public ArrayList<ChatHead> getConnectionRequestUsers() {
+    public HashMap<String, Object> getConnectionRequestUsers() {
         return connectionRequestUsers;
     }
 
-    public void setConnectionRequestUsers(ArrayList<ChatHead> connectionRequestUsers) {
+    public void setConnectionRequestUsers(HashMap<String, Object> connectionRequestUsers) {
         this.connectionRequestUsers = connectionRequestUsers;
     }
 
@@ -67,11 +69,11 @@ public class UserInfo {
     }
 
 
-    public ArrayList<String> getConnectedUsers() {
+    public HashMap<String, Object> getConnectedUsers() {
         return connectedUsers;
     }
 
-    public void setConnectedUsers(ArrayList<String> connectedUsers) {
+    public void setConnectedUsers(HashMap<String, Object> connectedUsers) {
         this.connectedUsers = connectedUsers;
     }
 

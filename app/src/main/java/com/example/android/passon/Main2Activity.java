@@ -51,7 +51,9 @@ import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /*
 This class handles backend all firebase reference, user node updating, navigation drawer handling
@@ -293,13 +295,18 @@ public class Main2Activity extends AppCompatActivity
                         Log.i(currentUser.getUid(), "standpoint m570");
 //                        Log.i("seems new", "point m558");
 
-                        ArrayList<String> connected = new ArrayList<>();
+//                        ArrayList<HashMap<String, Object>> connected = new ArrayList<>();
                         ArrayList<String> notifications = new ArrayList<>();
-                        ArrayList<ChatHead> request = new ArrayList<>();
-                        connected.add("qwert");
+//                        ArrayList<HashMap<String, Object>> request = new ArrayList<>();
+                        HashMap<String, Object> connected = new HashMap<>();
+//                        users.put("india", "china");
+//                        users.put("ritik","agarwal");
+                        HashMap<String, Object> requested = new HashMap<>();
+
+//                        connected.add(users);
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfoNew = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2 + "+" + 2, "iitR", 123456789, connected, request, notifications);
+                        UserInfo userInfoNew = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2 + "+" + 2, "iitR", 123456789, connected, requested, notifications);
                         mUserDatabaseReference.push().setValue(userInfoNew);
                     }
 
