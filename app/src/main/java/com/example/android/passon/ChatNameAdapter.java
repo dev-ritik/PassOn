@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static com.example.android.passon.Main2Activity.mPostDatabaseReference;
@@ -45,6 +46,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     private TextView userName, userNameConnection;
     private ImageView cancelButton, acceptButton, shareDetails, deleteConnection, chatConnection, backgroundButton;
     private FrameLayout screen;
+    private String bookname;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
@@ -117,7 +119,12 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
                     acceptButton = (ImageView) dialogBox1.findViewById(R.id.acceptRequest);
                     shareDetails = (ImageView) dialogBox1.findViewById(R.id.giveHelp);
-                    userName.setText(chat.getUsername() + " sent you a donation request");
+                    Log.i(PostFragment.posts.get(0).getBookName(),"point cna122");
+                    for (Post post:PostFragment.posts)
+                        if (post.getTime().equals(time))
+                            bookname = post.getBookName();
+
+                    userName.setText(chat.getUsername() + " sent you a donation request for " + bookname);
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -143,9 +150,9 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                             backgroundButton.setVisibility(View.INVISIBLE);
                             screen.getForeground().setAlpha(0);
 //                            setDataRequester(Main2Activity.mUserId,chat.getUserId(),Main2Activity.mUser);
-                            Intent intent = new Intent(context, ChatActivity.class);
-                            intent.putExtra("person1", chat.getUserId());
-                            context.startActivity(intent);
+//                            Intent intent = new Intent(context, ChatActivity.class);
+//                            intent.putExtra("person1", chat.getUserId());
+//                            context.startActivity(intent);
 
                         }
                     });
@@ -190,8 +197,8 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
             public void onClick(View v) {
                 Log.i("point cna182", "bb clicked");
                 screen.getForeground().setAlpha(0);
-                backgroundButton.setVisibility(View.INVISIBLE);
                 dialogBox1.setVisibility(View.INVISIBLE);
+                backgroundButton.setVisibility(View.INVISIBLE);
             }
         });
 

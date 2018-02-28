@@ -1,5 +1,6 @@
 package com.example.android.passon;
 
+import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,8 @@ public class NotificationActivity extends AppCompatActivity {
     public static ArrayList<ChatHead> connections;
     public static ArrayList<String> timeRequests;
     public static ArrayList<String> timeConnections;
+    private ChildEventListener mRequestEventListener, mConnectionEventListener;
+    private DatabaseReference requestedUsersReference, connectionChildReference;
 
     ArrayList<String> notices;
     public static LinearLayout requestDialog, connectionDialog;
@@ -134,12 +137,11 @@ public class NotificationActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.i("child", "point na64");
-                DatabaseReference requestChild = dataSnapshot.child("connectionRequestUsers").getRef();
-                requestChild.addChildEventListener(new ChildEventListener() {
+                requestedUsersReference = dataSnapshot.child("connectionRequestUsers").getRef();
+                mRequestEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-//                            ChatHead c1=dataSnapshot.getValue(ChatHead.class);
+                        Log.i("point na141", requests.size() + "");
                         Map<String, Object> asdf = new HashMap<>();
 
                         asdf.put(dataSnapshot.getKey(), dataSnapshot.getValue());
@@ -147,10 +149,10 @@ public class NotificationActivity extends AppCompatActivity {
 
                         requests.add(c1);
                         timeRequests.add(dataSnapshot.getKey());
-//                        ChatHead asd1 = new ChatHead(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
-//                        requests.add(asd1);
                         mAdapterRequest.notifyDataSetChanged();
-                        Log.i("point na76", dataSnapshot.getKey());
+                        Log.i("point na154", dataSnapshot.getKey());
+                        Log.i("point na155", requests.size() + "");
+
                     }
 
                     @Override
@@ -207,11 +209,12 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                };
+                requestedUsersReference.addChildEventListener(mRequestEventListener);
                 Log.i("point na100", "yess");
 
-                DatabaseReference connectionChild = dataSnapshot.child("connectedUsers").getRef();
-                connectionChild.addChildEventListener(new ChildEventListener() {
+                connectionChildReference = dataSnapshot.child("connectedUsers").getRef();
+                mConnectionEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -265,10 +268,13 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                };
+                connectionChildReference.addChildEventListener(mConnectionEventListener);
+
                 Log.i("point na171", "yess");
 
                 DatabaseReference noticeChild = dataSnapshot.child("notifications").getRef();
+
                 noticeChild.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -333,18 +339,20 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         System.out.println("point na166");
-//        if (mChildEventListenerProfile != null) {
-//            Log.i(mChildEventListenerProfile.toString(), "standpoint pr114");
-//            mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId).getRef().child("connectionRequestUsers").removeEventListener(mChildEventListenerProfile);
-//            mChildEventListenerProfile = null;
-//        }
-//        if (mChildEventListenerProfileTest != null) {
-//            Log.i(mChildEventListenerProfileTest.toString(), "standpoint pr114");
-//            mUserDatabaseReference.orderByChild("userId").equalTo(Main2Activity.mUserId).removeEventListener(mChildEventListenerProfileTest);
-//            mChildEventListenerProfileTest = null;
-//        }
+        if (mConnectionEventListener != null) {
+            Log.i(mConnectionEventListener.toString(), "standpoint pr114");
+            connectionChildReference.removeEventListener(mConnectionEventListener);
+            mConnectionEventListener = null;
+        }
+        if (mRequestEventListener != null) {
+            Log.i(mRequestEventListener.toString(), "standpoint pr114");
+            requestedUsersReference.removeEventListener(mRequestEventListener);
+            mRequestEventListener = null;
+        }
         requests.clear();
         mAdapterRequest.notifyItemRangeRemoved(0, mAdapterRequest.getItemCount());
+        connections.clear();
+        mAdapterConnected.notifyItemRangeRemoved(0, mAdapterConnected.getItemCount());
     }
 
     @Override

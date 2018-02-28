@@ -128,7 +128,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public void setData(String posteruid, final String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
 
-        Log.i(posteruid, "standpoint re91");
+        Log.i(posteruid, "point pa131");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -190,7 +190,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("point pat181", "completed changing");
+                            if (Main2Activity.userInfo.getConnectionRequestUsers()!=null)
                             Main2Activity.userInfo.getConnectionRequestUsers().put(time,new ChatHead(uid, null));
+                        }
+                    });
+                    child.getRef().child("connectedUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i("point pat199", "completed changing");
+                            if (Main2Activity.userInfo.getConnectedUsers()  !=null)
+                                Main2Activity.userInfo.getConnectedUsers().put(time, new ChatHead(uid, null));
                         }
                     });
                 }
