@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     private LinearLayout dialogBox1;
     private TextView userName, userNameConnection;
     private ImageView cancelButton, acceptButton, shareDetails, deleteConnection, chatConnection;
+    private FrameLayout screen;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookPic;
@@ -52,7 +54,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         }
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, LinearLayout dialogBox) {
+    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, LinearLayout dialogBox, FrameLayout screen) {
         chats = chatHeads;
         this.context = context;
         this.dialogBox1 = dialogBox;

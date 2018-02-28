@@ -70,6 +70,12 @@
 
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/backgroundButtonNotification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:id="@+id/requestDialog"
         android:layout_width="match_parent"

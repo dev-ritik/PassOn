@@ -59,6 +59,7 @@ public class NotificationActivity extends AppCompatActivity {
         mRecyclerViewConnected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("point na62","recycler view");
                 notificationActivityScreen.getForeground().setAlpha(120);
             }
         });
@@ -73,9 +74,9 @@ public class NotificationActivity extends AppCompatActivity {
         connections = new ArrayList<>();
         notices = new ArrayList<>();
 
-        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, requestDialog);
+        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, requestDialog,notificationActivityScreen);
 
-        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, connectionDialog);
+        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, connectionDialog,notificationActivityScreen);
 
 //        mRecyclerViewRequest.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 

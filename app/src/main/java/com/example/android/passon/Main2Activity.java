@@ -47,6 +47,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +68,7 @@ public class Main2Activity extends AppCompatActivity
     //    public static DatabaseReference mUserCountDatabaseReference;
     public static ChildEventListener mUserEventListener;//to listen the changes in db
     private FirebaseStorage mFirebaseStorage;
-    public static StorageReference mBookPhotosStorageReference,mDpPhotosStorageReference;
+    public static StorageReference mBookPhotosStorageReference, mDpPhotosStorageReference;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     public static ProgressBar mProgressBar;
@@ -82,9 +84,10 @@ public class Main2Activity extends AppCompatActivity
 
     public static String mUserId;
     public static String mUser;
-//    public static Uri mUserProfile;
+    //    public static Uri mUserProfile;
     private String mEmailId;
     private TextView naveUserName, naveUserEmail;
+    private ImageView naveDp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,11 +126,6 @@ public class Main2Activity extends AppCompatActivity
         userInfos = new ArrayList<>();
 
         mInputData = (LinearLayout) findViewById(R.id.inputData);
-        naveUserName = (TextView) findViewById(R.id.nav_user_name);
-        naveUserEmail = (TextView) findViewById(R.id.nav_user_id);
-
-//        naveUserName.setText(mUser);
-//        naveUserEmail.setText(mEmailId);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.visions_viewpager);
 
@@ -169,7 +167,9 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        naveUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
+        naveUserEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_user_id);
+        naveDp = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_pro_pic);
 
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -214,99 +214,7 @@ public class Main2Activity extends AppCompatActivity
 //        };
 
 
-//        if (mUserEventListener == null) {
-//            Log.i("mUserEventListener", "point ma212");
-//            mUserEventListener = new ChildEventListener() {//working with db after authentication
-//                @Override
-//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                    Log.i("onchildadded", "point M114");
-//                    Log.i("point ma221", dataSnapshot.getChildrenCount() + "");
-//                    Log.i("point ma222", dataSnapshot.toString());
-//                    Log.i("point ma222a", dataSnapshot.getValue().toString());
-//                    Log.i("point ma223", dataSnapshot.getChildren().toString());
 //
-//                    //attached to all added child(all past and future child)
-//                    UserInfo userInfo1 = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
-//                    userInfos.add(userInfo1);
-//
-//                    Log.i(Integer.toString(userInfos.size()), "point m228");
-//
-//                }
-//
-//                @Override
-//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                    // changed content of a child
-//                    Log.i("child changed", "point m235");
-//                }
-//
-//                @Override
-//                public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                    // child deleted
-////                    Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-////
-////                    for (Iterator<UserInfo> iterator = userInfos.iterator(); iterator.hasNext(); ) {
-////                        if (iterator.next().getTime() == post.getTime())
-////                            iterator.remove();
-////                        Log.i(Integer.toString(posts.size()), "point m311");
-////                    }
-////                    Log.i(Integer.toString(posts.size()), "point m389");
-////                    PostFragment.mAdapterPost.notifyDataSetChanged();
-////                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//                    //moved position of a child
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    // error or permission denied
-//                }
-//            };
-//            mUserDatabaseReference.addChildEventListener(mUserEventListener);
-//            Log.i("child addeddd", "point m265");
-//        }
-
-
-//        Query query1 = mUserDatabaseReference.orderByChild("userId").equalTo(mUserId);
-//        Log.i("point ma271", mUserId);
-//        Log.i("point ma272", "here");
-//        query1.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Log.i("point ma308", "child added");
-//                Log.i(Integer.toString(userInfos.size()), "point m274");
-//
-//                //attached to all added child(all past and future child)
-//                userInfo = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
-//
-//                Log.i(userInfo.getPhoneNo() + "", "point m279");
-//
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
     }
 
@@ -391,8 +299,8 @@ public class Main2Activity extends AppCompatActivity
                         connected.add("qwert");
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfo = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2+"+"+2, "iitR", 123456789, connected, request, notifications);
-                        mUserDatabaseReference.push().setValue(userInfo);
+                        UserInfo userInfoNew = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2 + "+" + 2, "iitR", 123456789, connected, request, notifications);
+                        mUserDatabaseReference.push().setValue(userInfoNew);
                     }
 
 //                    Log.i("point Ma396", Long.toString(count));
@@ -415,7 +323,56 @@ public class Main2Activity extends AppCompatActivity
 
                     //attached to all added child(all past and future child)
                     userInfo = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
+                    Log.i("point ma359", userInfo.getUserName());
+                    Log.i("point ma360", naveUserName.toString());
+                    naveUserName.setText(userInfo.getUserName());
+                    naveUserEmail.setText(userInfo.getEmailId());
 
+                    if(userInfo.getdpUrl()==null) {
+                        Picasso.with(Main2Activity.this)
+                                .load(userInfo.getdpUrl())
+                                .placeholder(R.mipmap.icon_profile_empty)
+                                .fit()
+                                .centerCrop()
+                                .error(R.drawable.error)
+                                .transform(new RoundedTransformationBuilder()
+                                        .oval(true)
+                                        .build())
+                                .into(naveDp, new com.squareup.picasso.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.i("point ma375", "sucess");
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.i("point ma381", "error");
+
+                                    }
+                                });
+                    }else {
+                        Picasso.with(Main2Activity.this)
+                                .load(userInfo.getdpUrl())
+                                .placeholder(R.drawable.loading_small)
+                                .fit()
+                                .centerCrop()
+                                .error(R.drawable.error)
+                                .transform(new RoundedTransformationBuilder()
+                                        .oval(true)
+                                        .build())
+                                .into(naveDp, new com.squareup.picasso.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.i("point ma365", "sucess");
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.i("point ma371", "error");
+
+                                    }
+                                });
+                    }
                     Log.i(userInfo.getPhoneNo() + "", "point m279");
 
 
