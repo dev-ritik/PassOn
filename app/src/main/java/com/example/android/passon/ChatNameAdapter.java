@@ -39,7 +39,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
     private Context context;
     private LinearLayout dialogBox1;
     private TextView userName, userNameConnection;
-    private ImageView cancelButton, acceptButton, shareDetails, deleteConnection, chatConnection;
+    private ImageView cancelButton, acceptButton, shareDetails, deleteConnection, chatConnection,backgroundButton;
     private FrameLayout screen;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,10 +54,12 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         }
     }
 
-    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, LinearLayout dialogBox, FrameLayout screen) {
+    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context, LinearLayout dialogBox, FrameLayout screen,ImageView backgroundButton) {
         chats = chatHeads;
         this.context = context;
         this.dialogBox1 = dialogBox;
+        this.screen = screen;
+        this.backgroundButton=backgroundButton;
     }
 
 //    public ChatNameAdapter(ArrayList<ChatHead> chatHeads, Context context) {
@@ -100,11 +102,10 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
         holder.requesterInitials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "yupp", Toast.LENGTH_SHORT).show();
-//                LinearLayout dialogBox1 = (LinearLayout) dialogBox;
-
+                screen.getForeground().setAlpha(180);
+                backgroundButton.setVisibility(View.VISIBLE);
                 if (dialogBox1.equals(NotificationActivity.requestDialog)) {
-                    Log.i("point cna105","requestDialog");
+                    Log.i("point cna105", "requestDialog");
                     dialogBox1.setVisibility(View.VISIBLE);
                     userName = (TextView) dialogBox1.findViewById(R.id.userNameAccept);
                     cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
@@ -133,6 +134,8 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         public void onClick(View view) {
                             setDataMe(Main2Activity.mUserId, chat.getUserId(), chat.getUsername());
                             dialogBox1.setVisibility(View.INVISIBLE);
+                            backgroundButton.setVisibility(View.INVISIBLE);
+                            screen.getForeground().setAlpha(0);
 //                            setDataRequester(Main2Activity.mUserId,chat.getUserId(),Main2Activity.mUser);
                             Intent intent = new Intent(context, ChatActivity.class);
                             intent.putExtra("person1", chat.getUserId());
@@ -143,14 +146,14 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                 }
 
                 if (dialogBox1.equals(NotificationActivity.connectionDialog)) {
-                    Log.i("point cna143","connectionDialog");
+                    Log.i("point cna143", "connectionDialog");
 
                     dialogBox1.setVisibility(View.VISIBLE);
                     userNameConnection = (TextView) dialogBox1.findViewById(R.id.userNameConnection);
                     deleteConnection = (ImageView) dialogBox1.findViewById(R.id.deleteConnection);
                     chatConnection = (ImageView) dialogBox1.findViewById(R.id.chatConnection);
 
-                    userNameConnection.setText("chat with "+chat.getUsername());
+                    userNameConnection.setText("chat with " + chat.getUsername());
                     deleteConnection.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -173,7 +176,18 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 
             }
         });
+    backgroundButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.i("point cna 182","bb clicked");
+            screen.getForeground().setAlpha(0);
+            backgroundButton.setVisibility(View.INVISIBLE);
+            dialogBox1.setVisibility(View.INVISIBLE);
+        }
+    });
+
     }
+
 
     private void setDataMe(String userId, final String acceptedId, final String acceptedName) {
 
@@ -274,6 +288,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 //            }
 //        });
     }
+
     @Override
     public int getItemCount() {
         return chats.size();

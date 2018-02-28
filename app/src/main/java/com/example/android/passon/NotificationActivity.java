@@ -33,6 +33,7 @@ public class NotificationActivity extends AppCompatActivity {
     ArrayList<String> notices;
     public static LinearLayout requestDialog, connectionDialog;
     private FrameLayout notificationActivityScreen;
+    private ImageView backgroundButtonNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class NotificationActivity extends AppCompatActivity {
         mRecyclerViewConnected = (RecyclerView) findViewById(R.id.connectedUsers);
         mRecyclerViewNotice = (RecyclerView) findViewById(R.id.noticeRecyclerView);
 
+        backgroundButtonNotification = (ImageView) findViewById(R.id.backgroundButtonNotification);
 
         mRecyclerViewRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,24 +61,46 @@ public class NotificationActivity extends AppCompatActivity {
         mRecyclerViewConnected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("point na62","recycler view");
+                Log.i("point na62", "recycler view");
                 notificationActivityScreen.getForeground().setAlpha(120);
             }
         });
-        notificationActivityScreen.setOnClickListener(new View.OnClickListener() {
+        backgroundButtonNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("point na71", "bb clicked");
                 requestDialog.setVisibility(View.INVISIBLE);
                 connectionDialog.setVisibility(View.INVISIBLE);
+                notificationActivityScreen.getForeground().setAlpha(0);
+            }
+        });
+        requestDialog.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+                Log.i("point na82", "request clicked");
+                // must for making clicks not to go to background switch
+
+            }
+        });
+        connectionDialog.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v) {
+                Log.i("point na92", "connection clicked");
+                // must for making clicks not to go to background switch
+
             }
         });
         requests = new ArrayList<>();
         connections = new ArrayList<>();
         notices = new ArrayList<>();
 
-        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, requestDialog,notificationActivityScreen);
+        mAdapterRequest = new ChatNameAdapter(requests, NotificationActivity.this, requestDialog, notificationActivityScreen, backgroundButtonNotification);
 
-        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, connectionDialog,notificationActivityScreen);
+        mAdapterConnected = new ChatNameAdapter(connections, NotificationActivity.this, connectionDialog, notificationActivityScreen, backgroundButtonNotification);
 
 //        mRecyclerViewRequest.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 

@@ -1,25 +1,19 @@
 package com.example.android.passon;
 
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Movie;
-import android.graphics.Rect;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Transformation;
@@ -60,9 +54,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -189,11 +181,6 @@ public class ProfileActivity extends AppCompatActivity {
                         PackageManager.FEATURE_CAMERA)) {
                     Log.i("point pa178", "camera");
 
-//                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-//                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "IMG_" + timeStamp + ".jpg");
-//                tempuri = Uri.fromFile(file);
-//                i.putExtra(MediaStore.EXTRA_OUTPUT, tempuri);
-//                i.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
                     startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), DP_PHOTO_CLICKER);
                 } else {
                     Toast.makeText(ProfileActivity.this, "camera not found", Toast.LENGTH_SHORT).show();
@@ -401,7 +388,6 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Picasso.with(ProfileActivity.this)
                         .load(Main2Activity.userInfo.getdpUrl())
-//                        .placeholder(R.mipmap.icon_profile_empty)
                         .fit()
                         .centerCrop()
                         .placeholder(R.drawable.loading_big)
@@ -633,39 +619,6 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-//        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-//        if (null == imageReturnedIntent) return;
-//        Uri originalUri = null;
-//        switch (requestCode) {
-//            case CHOOSE_CAMERA_RESULT1:
-//                if (resultCode == RESULT_OK) {
-//                    if (file.exists()) {
-//                        Toast.makeText(this, "The image was saved at " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-//                        ;
-//                    }
-//                    //Uri is at variable tempuri which can be converted to string
-//
-//                    // code for inserting in database
-//                }
-//
-//                break;
-//            case GALLERY_RESULT2:
-//                if (resultCode == RESULT_OK) {
-//                    originalUri = imageReturnedIntent.getData();
-//                    final int takeFlags = imageReturnedIntent.getFlags()
-//                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//                    getContentResolver().takePersistableUriPermission(originalUri, takeFlags);
-//
-//                    //Uri is originalUri which can be converted to string
-//                    // code for inserting in database
-//                }
-//                break;
-//        }
-//
-//    }
 
     private void setData(String userId, final String dpLink) {
 
@@ -690,75 +643,5 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-////return true so that its child work else vic-e-versa
-//        int x = Math.round(ev.getX());
-//        int y = Math.round(ev.getY());
-////
-//        Log.i("x ", x + "");
-//        Log.i("y ", y + "");
-////
-//        Log.i("point up", super.dispatchTouchEvent(ev) + "");
-//        Log.i("point op", isBackground(x, y) + "");
-//
-//
-////        return isBackground(x, y);
-//
-////        return super.dispatchTouchEvent(ev);
-////        if(ref){
-////            ref=false;
-////        }else ref=true;
-//
-//        boolean a=layout_MainMenu.onInterceptTouchEvent(ev);
-//        layout_MainMenu.dispatchTouchEvent(ev);
-//        Log.i("point pa386", ref + "");
-//        return ref;
-//
-//    }
-//
-//    public boolean isBackground(int x, int y) {
-//
-//
-//        Rect loc = new Rect();
-//        int[] location = new int[2];
-//
-//        dpChangeDialog.getLocationOnScreen(location);
-//
-//        loc.left = location[0];
-//        loc.top = location[1];
-//        loc.right = loc.left + dpChangeDialog.getWidth();
-//        loc.bottom = loc.top + dpChangeDialog.getHeight();
-//
-////        Log.i("point pa224 left",loc.left+"");
-////        Log.i("point pa225 right",loc.right+"");
-////        Log.i("point pa226 top",loc.top+"");
-////        Log.i("point pa227 bottom",loc.bottom+"");
-////        Log.i("point pa228 height",loc.height()+"");
-////        Log.i("point pa229 width",loc.width()+"");
-//
-////        Log.i("dl x left", dpChangeDialog.getLeft() + "");
-////        Log.i("dl x right", dpChangeDialog.getRight() + "");
-////        Log.i("dl y top", dpChangeDialog.getTop() + "");
-////        Log.i("dl y bottom", dpChangeDialog.getBottom() + "");
-//
-//        Log.i("point pa332", (x > loc.left) + "");
-//        Log.i("point pa333", (x < loc.right) + "");
-//        Log.i("point pa334", (y < loc.top) + "");
-//        Log.i("point pa335", (y > loc.bottom) + "");
-//        Log.i("point pa336", (dpChangeDialog.getVisibility() == View.VISIBLE) + "");
-//        Log.i("point pa337", (((x > loc.left) || (x < loc.right) || (y < loc.top) || (y > loc.bottom)) && (dpChangeDialog.getVisibility() == View.VISIBLE)) + "");
-//        if (((x < loc.left) || (x > loc.right) || (y < loc.top) || (y > loc.bottom)) && dpChangeDialog.getVisibility() == View.VISIBLE) {
-////            Log.i("point pa337", "false");
-//            dpChangeDialog.setVisibility(View.INVISIBLE);
-//            layout_MainMenu.getForeground().setAlpha(0);
-//            return false;
-//        } else {
-////            Log.i("point pa337", "true");
-//            return true;
-//        }
-//
-//    }
 
 }
