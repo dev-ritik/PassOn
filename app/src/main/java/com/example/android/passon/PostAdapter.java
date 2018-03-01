@@ -76,9 +76,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     // create a new view
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder,int position) {
         final Post post = Posts.get(position);
-//        Log.i("point PoA53",Integer.toString(Posts.size()));
+        Log.i("point PoA53",Integer.toString(Posts.size()));
+        Log.i("point PoA82","postadapter");
         holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
@@ -100,7 +101,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //                    Toast.makeText(view.getContext(), "Sending request", Toast.LENGTH_SHORT).show();
                     if (!post.getBookRequestUsers().contains(Main2Activity.mUserId)) {
                         post.getBookRequestUsers().add(Main2Activity.mUserId);
-                        setData(post.getPosterId(), post.getTime(), Main2Activity.mUserId, Main2Activity.mUser, position, post.getBookRequestUsers());
+                        setData(post.getPosterId(), post.getTime(), Main2Activity.mUserId, Main2Activity.mUser, post.getBookRequestUsers());
                         Toast.makeText(view.getContext(), "Sending Request", Toast.LENGTH_SHORT).show();
                     }
                     holder.request.setText("close");
@@ -126,7 +127,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return Posts.size();
     }
 
-    public void setData(String posteruid, final String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
+    public void setData(String posteruid, final String time, final String uid, final String username, final ArrayList<String> requestUsers) {
 
         Log.i(posteruid, "point poA131");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);

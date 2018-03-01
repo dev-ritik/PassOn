@@ -110,7 +110,7 @@ public class Main2Activity extends AppCompatActivity
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
         email = prefs.getString("Email", null);
 
-        Log.i("point ma107", "reached");
+        Log.i("point ma107", "oncreate");
 
         if (email == null) {
             Log.i("email is null", "point ma84");
@@ -276,13 +276,13 @@ public class Main2Activity extends AppCompatActivity
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         final FirebaseUser currentUser = mAuth.getCurrentUser();
-        Log.i("point ma373", "" + (currentUser == null));
+//        Log.i("point ma373", "" + (currentUser == null));
         if (currentUser != null) {
             //user is signed
             mUser = currentUser.getDisplayName();
             mUserId = currentUser.getUid();
             mEmailId = currentUser.getEmail();
-            Log.i(currentUser.getUid(), "point ma376");
+//            Log.i(currentUser.getUid(), "point ma376");
             Query query = mUserDatabaseReference.orderByChild("userId").equalTo(currentUser.getUid());
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -299,7 +299,7 @@ public class Main2Activity extends AppCompatActivity
 //                        connected.add(users);
                         notifications.add("asdfghj d g dfgdg");
 //                        request.add(new ChatHead("dcd","scs"));
-                        UserInfo userInfoNew = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), "abc", currentUser.getEmail(), 2 + "+" + 2, "iitR", 123456789, connected, requested, notifications);
+                        UserInfo userInfoNew = new UserInfo(1, currentUser.getDisplayName(), currentUser.getUid(), null, currentUser.getEmail(), 2 + "+" + 2, "iitR", 123456789, connected, requested, notifications);
                         mUserDatabaseReference.push().setValue(userInfoNew);
                     }
 

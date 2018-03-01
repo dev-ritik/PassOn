@@ -1,7 +1,9 @@
 package com.example.android.passon;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,13 +52,28 @@ public class PostFragment extends Fragment {
         // Required empty public constructor
     }
 
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        Log.i("point pf57", "onattach");
+//    }
+//
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        Log.i("point pf64", "oncreate");
+//
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_post, container, false);
         mRecyclerViewPost = (RecyclerView) rootView.findViewById(R.id.post_recycler_view);
-        posts = new ArrayList<>();
+//        Log.i("point pf59", "oncreateview");
+        if (posts == null) {
+            posts = new ArrayList<>();
+        }
         mAdapterPost = new PostAdapter(posts);
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -65,7 +82,7 @@ public class PostFragment extends Fragment {
         mRecyclerViewPost.setAdapter(mAdapterPost);
         mLayoutManagerPost = new LinearLayoutManager(rootView.getContext());
         mRecyclerViewPost.setLayoutManager(mLayoutManagerPost);
-        attachDatabaseListener();
+//        attachDatabaseListener();
         Log.i("BooksFrag pf69", mAdapterPost.getItemCount() + "");
         return rootView;
 
@@ -74,6 +91,7 @@ public class PostFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("point pf77", "onresume");
         attachDatabaseListener();
     }
 
@@ -92,7 +110,7 @@ public class PostFragment extends Fragment {
         mPostDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " items");
+                System.out.println("We're done loading the initial " + dataSnapshot.getChildrenCount() + " pf95");
                 Main2Activity.mProgressBar.setVisibility(View.INVISIBLE);
 
             }
@@ -119,10 +137,14 @@ public class PostFragment extends Fragment {
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
                     posts.add(post);
-                    if (PostFragment.mAdapterPost != null) {
-                        PostFragment.mAdapterPost.notifyDataSetChanged();
+                    if (mAdapterPost != null) {
+//                        Log.i("postAdapter", "point pf123");
+                        mAdapterPost.notifyDataSetChanged();
+//                        Log.i("point pf125", mAdapterPost.getItemCount() + "");
+
                     }
                     if (RequestFragment.mAdapterRequest != null) {
+//                        Log.i("requestAdapter", "point pf128");
                         RequestFragment.mAdapterRequest.notifyDataSetChanged();
                     }
                     Log.i(Integer.toString(posts.size()), "point pf295");
@@ -160,7 +182,7 @@ public class PostFragment extends Fragment {
                     for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
                         if (iterator.next().getTime() == post.getTime())
                             iterator.remove();
-                        Log.i(Integer.toString(posts.size()), "point pf138");
+//                        Log.i(Integer.toString(posts.size()), "point pf138");
                     }
                     Log.i(Integer.toString(posts.size()), "point pf389");
                     PostFragment.mAdapterPost.notifyDataSetChanged();

@@ -120,7 +120,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
                     bookRequestUsers.add("ritik");
                     Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2,bookRequestUsers, true,phoneNo.getText().toString(),institute.getText().toString());
 //                posts.add(post);
-                    PostFragment.mPostDatabaseReference.push().setValue(post);
+                    mPostDatabaseReference.push().setValue(post);
                     bookName.setText("");
                     filter1 = "";
                     filter2 = "";

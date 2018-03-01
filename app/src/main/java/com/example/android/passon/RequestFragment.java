@@ -80,9 +80,9 @@ public class RequestFragment extends Fragment {
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
                     requests.add(post);
-                    if (PostFragment.mAdapterPost != null) {
-                        PostFragment.mAdapterPost.notifyDataSetChanged();
-                    }
+//                    if (PostFragment.mAdapterPost != null) {
+//                        PostFragment.mAdapterPost.notifyDataSetChanged();
+//                    }
                     if(RequestFragment.mAdapterRequest!=null) {
                         RequestFragment.mAdapterRequest.notifyDataSetChanged();
                     }
@@ -109,7 +109,7 @@ public class RequestFragment extends Fragment {
                         Log.i(Integer.toString(requests.size()), "point rf109");
                     }
                     Log.i(Integer.toString(requests.size()), "point rf111");
-                    PostFragment.mAdapterPost.notifyDataSetChanged();
+//                    PostFragment.mAdapterPost.notifyDataSetChanged();
                     RequestFragment.mAdapterRequest.notifyDataSetChanged();
 
                 }
