@@ -77,7 +77,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Post post = Posts.get(position);
-//        Log.i("point Re53",Integer.toString(Posts.size()));
+//        Log.i("point Ret53",Integer.toString(Posts.size()));
         holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
@@ -87,7 +87,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         holder.institute.setText(post.getInstitute());
         holder.time.setText(post.getTime());
         if (holder.request == null) {
-            Log.i("ReqAdapter", "Line 64");
+            Log.i("ReqAdapter rat90", "Line 64");
         }
         holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,8 +118,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     public void changeData(String posteruid, final String requesterUid) {
 
-        Log.i(posteruid, "standpoint re91");
-        Log.i(requesterUid, "standpoint re94");
+        Log.i(posteruid, "point rat121");
+        Log.i(requesterUid, "point rat122");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

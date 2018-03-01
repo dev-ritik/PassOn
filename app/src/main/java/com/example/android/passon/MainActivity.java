@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         mfirebaseDatabase = FirebaseDatabase.getInstance();
 
         mUserDatabaseReference = mfirebaseDatabase.getReference().child("user1");
-        Log.i("point ma21","attached");
+        Log.i("point m1a21","attached");
         mUserDatabaseReference.removeValue();
     }
 }

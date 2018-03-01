@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(mEmailView.getText().toString(), mPasswordView.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    Log.d("Flash", "" + task.isSuccessful());
+                    Log.i("Flash", "" + task.isSuccessful());
                     if (task.isSuccessful()) {
 
                         saveCredentials();
@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     } else {
                         errorAlert(getString(R.string.registerFail));
-                        Log.d("Flash", "Registration failed");
+                        Log.i("Flash", "Registration failed");
                     }
                 }
             });
@@ -151,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                                            @Override
                                            public void onComplete(@NonNull Task<Void> task) {
                                                if (task.isSuccessful()) {
-                                                   Log.d("standpoint re152", "User profile successfully updated.");
+                                                   Log.i("standpoint re152", "User profile successfully updated.");
 
                                                }
                                            }

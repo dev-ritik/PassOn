@@ -66,7 +66,7 @@ public class PostFragment extends Fragment {
         mLayoutManagerPost = new LinearLayoutManager(rootView.getContext());
         mRecyclerViewPost.setLayoutManager(mLayoutManagerPost);
         attachDatabaseListener();
-        Log.i("BooksFrag", mAdapterPost.getItemCount() + "");
+        Log.i("BooksFrag pf69", mAdapterPost.getItemCount() + "");
         return rootView;
 
     }
@@ -113,6 +113,7 @@ public class PostFragment extends Fragment {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Log.i("onchildadded", "point pf115");
+//                    Log.i(s, "point pf1151");
                     Log.i(Integer.toString(posts.size()), "point pf116");
 
                     //attached to all added child(all past and future child)
@@ -124,7 +125,7 @@ public class PostFragment extends Fragment {
                     if (RequestFragment.mAdapterRequest != null) {
                         RequestFragment.mAdapterRequest.notifyDataSetChanged();
                     }
-                    Log.i(Integer.toString(posts.size()), "point m295");
+                    Log.i(Integer.toString(posts.size()), "point pf295");
 //                    Log.i(Integer.toString(PostFragment.mAdapterPost.getItemCount()), "point m420");
 //                    Log.i(Integer.toString(RequestFragment.mAdapterRequest.getItemCount()), "point m421");
 
@@ -154,14 +155,14 @@ public class PostFragment extends Fragment {
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     // child deleted
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
-                    Log.i("post deleted", "point m389");
+                    Log.i("post deleted", "point pf389");
 
                     for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
                         if (iterator.next().getTime() == post.getTime())
                             iterator.remove();
                         Log.i(Integer.toString(posts.size()), "point pf138");
                     }
-                    Log.i(Integer.toString(posts.size()), "point m389");
+                    Log.i(Integer.toString(posts.size()), "point pf389");
                     PostFragment.mAdapterPost.notifyDataSetChanged();
 //                    RequestFragment.mAdapterRequest.notifyDataSetChanged();
 
@@ -178,7 +179,7 @@ public class PostFragment extends Fragment {
                 }
             };
             mPostDatabaseReference.addChildEventListener(mChildEventListenerPost);
-            Log.i("child addeddd", "point m610");
+            Log.i("child adddd", "point pf182");
         }
     }
 

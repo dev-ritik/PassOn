@@ -77,14 +77,14 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v("MainActivity", "Permission is granted");
+                Log.v("point bpa80", "Permission is granted");
             } else {
 
-                Log.v("MainActivity", "Permission is revoked");
+                Log.v("point bpa83", "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
         } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("MainActivity", "Permission is granted");
+            Log.v("point bpa87", "Permission is granted");
         }
 
 

@@ -119,8 +119,8 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
                     acceptButton = (ImageView) dialogBox1.findViewById(R.id.acceptRequest);
                     shareDetails = (ImageView) dialogBox1.findViewById(R.id.giveHelp);
-                    Log.i(PostFragment.posts.get(0).getBookName(),"point cna122");
-                    for (Post post:PostFragment.posts)
+                    Log.i(PostFragment.posts.get(0).getBookName(), "point cna122");
+                    for (Post post : PostFragment.posts)
                         if (post.getTime().equals(time))
                             bookname = post.getBookName();
 
@@ -140,6 +140,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         @Override
                         public void onClick(View view) {
                             Toast.makeText(view.getContext(), "shared", Toast.LENGTH_SHORT).show();
+                            shareDetailsNotification(Main2Activity.mUserId,chat.getUserId(),time);
                         }
                     });
                     acceptButton.setOnClickListener(new View.OnClickListener() {
@@ -204,6 +205,39 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
 
     }
 
+    private void shareDetailsNotification(String meUid, String personUid, String time) {
+        Query query =mUserDatabaseReference.orderByChild("userId").equalTo(personUid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    ArrayList<String> notices = (ArrayList<String>) child.child(arrayName).getValue();
+//
+//                    child.getRef().child(arrayName).setValue(getArrayList);
+//
+//
+//                    child.getRef().child("notifications").updateChildren(userAdded).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            Log.i("point cna208", "completed changing");
+//                            backgroundButton.setVisibility(View.INVISIBLE);
+//                            screen.getForeground().setAlpha(0);
+//                            if (Main2Activity.userInfo.getConnectedUsers() == null)
+//                                Main2Activity.userInfo.setConnectedUsers(userAdded);
+//                            else
+//                                Main2Activity.userInfo.getConnectionRequestUsers().put(acceptedId, acceptedName);
+//                        }
+//
+//                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void setDataMe(String userId, final String acceptedId, final String acceptedName, final String time) {
 //switches a person from request to connection
@@ -219,8 +253,6 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Log.i("point cna208", "completed changing");
-//                            NotificationActivity.connections.add(new ChatHead(acceptedId, acceptedName));
-//                            NotificationActivity.mAdapterConnected.notifyDataSetChanged();
                             backgroundButton.setVisibility(View.INVISIBLE);
                             screen.getForeground().setAlpha(0);
                             if (Main2Activity.userInfo.getConnectedUsers() == null)

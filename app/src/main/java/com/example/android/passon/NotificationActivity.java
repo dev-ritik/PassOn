@@ -340,12 +340,12 @@ public class NotificationActivity extends AppCompatActivity {
         super.onPause();
         System.out.println("point na166");
         if (mConnectionEventListener != null) {
-            Log.i(mConnectionEventListener.toString(), "standpoint pr114");
+            Log.i(mConnectionEventListener.toString(), "point NA343");
             connectionChildReference.removeEventListener(mConnectionEventListener);
             mConnectionEventListener = null;
         }
         if (mRequestEventListener != null) {
-            Log.i(mRequestEventListener.toString(), "standpoint pr114");
+            Log.i(mRequestEventListener.toString(), "point Na348");
             requestedUsersReference.removeEventListener(mRequestEventListener);
             mRequestEventListener = null;
         }

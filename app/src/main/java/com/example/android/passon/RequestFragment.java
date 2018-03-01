@@ -70,12 +70,12 @@ public class RequestFragment extends Fragment {
     private void attachDatabaseListener() {
 
         if (mChildEventListenerRequest == null) {
-//            Log.i("mChildEventListenerPost", "standpoint 298");
+//            Log.i("mChildEventListenerPost", "point rf73");
             mChildEventListenerRequest = new ChildEventListener() {//working with db after authentication
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("onchildadded", "point M114");
-                    Log.i(Integer.toString(requests.size()), "point m289");
+                    Log.i("onchildadded", "point rf77");
+                    Log.i(Integer.toString(requests.size()), "point rf78");
 
                     //attached to all added child(all past and future child)
                     Post post = dataSnapshot.getValue(Post.class);//as Post has all the three required parameter
@@ -86,16 +86,16 @@ public class RequestFragment extends Fragment {
                     if(RequestFragment.mAdapterRequest!=null) {
                         RequestFragment.mAdapterRequest.notifyDataSetChanged();
                     }
-                    Log.i(Integer.toString(requests.size()), "point m295");
-//                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point m473");
-//                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point m474");
+                    Log.i(Integer.toString(requests.size()), "point rf89");
+//                    Log.i(Integer.toString(mAdapterPost.getItemCount()), "point rf90");
+//                    Log.i(Integer.toString(mAdapterRequest.getItemCount()), "point rf91");
 
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     // changed content of a child
-                    Log.i("child changed", "point m370");
+                    Log.i("child changed", "point rf98");
                 }
 
                 @Override
@@ -106,9 +106,9 @@ public class RequestFragment extends Fragment {
                     for (Iterator<Post> iterator = requests.iterator(); iterator.hasNext(); ) {
                         if (iterator.next().getTime() == post.getTime())
                             iterator.remove();
-                        Log.i(Integer.toString(requests.size()), "point m311");
+                        Log.i(Integer.toString(requests.size()), "point rf109");
                     }
-                    Log.i(Integer.toString(requests.size()), "point m389");
+                    Log.i(Integer.toString(requests.size()), "point rf111");
                     PostFragment.mAdapterPost.notifyDataSetChanged();
                     RequestFragment.mAdapterRequest.notifyDataSetChanged();
 
@@ -125,7 +125,7 @@ public class RequestFragment extends Fragment {
                 }
             };
             mRequestDatabaseReference.addChildEventListener(mChildEventListenerRequest);
-            Log.i("child addeddd", "point m610");
+            Log.i("child addeddd", "point rf128");
         }
 
     }

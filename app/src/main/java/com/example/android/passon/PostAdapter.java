@@ -78,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Post post = Posts.get(position);
-//        Log.i("point Po53",Integer.toString(Posts.size()));
+//        Log.i("point PoA53",Integer.toString(Posts.size()));
         holder.posterName.setText(post.getPosterName());
         holder.filter1.setText(post.getFilter1());
         holder.filter2.setText(post.getFilter2());
@@ -128,7 +128,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public void setData(String posteruid, final String time, final String uid, final String username, final int position, final ArrayList<String> requestUsers) {
 
-        Log.i(posteruid, "point pa131");
+        Log.i(posteruid, "point poA131");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -142,7 +142,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.i("point pat137", "completed changing");
+                            Log.i("point poa137", "completed changing");
                             if (Main2Activity.userInfo.getConnectionRequestUsers() == null)
                                 Main2Activity.userInfo.setConnectionRequestUsers(users);
                             else
@@ -178,7 +178,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public void changeData(String posteruid, final String time, final String uid, final String username, final ArrayList<String> requestUsers) {
 
-        Log.i(posteruid, "standpoint re140");
+        Log.i(posteruid, "point poa181");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(posteruid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -189,7 +189,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     child.getRef().child("connectionRequestUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.i("point pat181", "completed changing");
+                            Log.i("point poa192", "completed changing");
                             if (Main2Activity.userInfo.getConnectionRequestUsers()!=null)
                             Main2Activity.userInfo.getConnectionRequestUsers().put(time,new ChatHead(uid, null));
                         }
@@ -197,7 +197,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     child.getRef().child("connectedUsers").updateChildren(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.i("point pat199", "completed changing");
+                            Log.i("point poa199", "completed changing");
                             if (Main2Activity.userInfo.getConnectedUsers()  !=null)
                                 Main2Activity.userInfo.getConnectedUsers().put(time, new ChatHead(uid, null));
                         }

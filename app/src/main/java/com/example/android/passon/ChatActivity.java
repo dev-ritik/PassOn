@@ -185,7 +185,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         attachDatabaseListener();
-        Log.i("resume", "point Ch323");
+        Log.i("resume", "point Cha323");
 //        if (mChildEventListener != null) {
 //            Log.i(mChildEventListener.toString(), "point m355");
     }
@@ -210,21 +210,21 @@ public class ChatActivity extends AppCompatActivity {
             mChildEventListener = new ChildEventListener() {//working with db after authentication
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.i("onchildadded", "point CH114");
-                    Log.i(Integer.toString(chats.size()), "point CH289");
+                    Log.i("onchildadded", "point CHa114");
+                    Log.i(Integer.toString(chats.size()), "point CHa289");
 
                     //attached to all added child(all past and future child)
                     Chat chat = dataSnapshot.getValue(Chat.class);//as Post has all the three required parameter
                     chats.add(chat);
                     mAdapter.notifyDataSetChanged();
-                    Log.i(Integer.toString(chats.size()), "point Ch295");
+                    Log.i(Integer.toString(chats.size()), "point Cha295");
 
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     // changed content of a child
-                    Log.i("child changed", "point m370");
+                    Log.i("child changed", "point cha370");
                 }
 
                 @Override
@@ -235,9 +235,9 @@ public class ChatActivity extends AppCompatActivity {
                     for (Iterator<Chat> iterator = chats.iterator(); iterator.hasNext(); ) {
                         if (iterator.next().getTime() == chat.getTime())
                             iterator.remove();
-                        Log.i(Integer.toString(chats.size()), "point CH311");
+                        Log.i(Integer.toString(chats.size()), "point CHa311");
                     }
-                    Log.i(Integer.toString(chats.size()), "point CH389");
+                    Log.i(Integer.toString(chats.size()), "point CHa389");
                     mAdapter.notifyDataSetChanged();
 
                 }
@@ -253,7 +253,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             };
             mChatDatabaseReference.addChildEventListener(mChildEventListener);
-            Log.i("child addeddd", "point CH610");
+            Log.i("child addeddd", "point CHa610");
         }
 
     }

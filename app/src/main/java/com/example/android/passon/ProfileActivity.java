@@ -111,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 //        requestDialog = (LinearLayout) findViewById(R.id.requestDialog);
 
-        Log.i("point pa113", "oncreate");
+        Log.i("point pat113", "oncreate");
         layout_MainMenu = (FrameLayout) findViewById(R.id.mainmenu);
         layout_MainMenu.getForeground().setAlpha(0);
 
@@ -179,7 +179,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if (getPackageManager().hasSystemFeature(
                         PackageManager.FEATURE_CAMERA)) {
-                    Log.i("point pa178", "camera");
+                    Log.i("point pat178", "camera");
 
                     startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), DP_PHOTO_CLICKER);
                 } else {
@@ -194,7 +194,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedImageUri != null) {
-                    Log.i(selectedImageUri.toString(), "point pa152");
+                    Log.i(selectedImageUri.toString(), "point pat152");
 
                     dpChangeDialog.setVisibility(View.INVISIBLE);
                     dpSelectionLayout.setVisibility(View.VISIBLE);
@@ -207,7 +207,7 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
-                            Log.i(selectedImageUri.toString(), "point pa163");
+                            Log.i(selectedImageUri.toString(), "point pat163");
 //                            mProgressBar.setVisibility(View.INVISIBLE);
                             displayPicture.setImageResource(0);
                             setData(Main2Activity.mUserId, downloadUrl.toString());
@@ -227,7 +227,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     .into(displayPicture, new com.squareup.picasso.Callback() {
                                         @Override
                                         public void onSuccess() {
-                                            Log.i("point pa333", "sucess");
+                                            Log.i("point pat333", "sucess");
 
                                             Picasso.with(ProfileActivity.this)
                                                     .load(selectedImageUri)
@@ -244,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onError() {
-                                            Log.i("point pa338", "error");
+                                            Log.i("point pat338", "error");
                                             downloadUrl = null;
                                             selectedImageUri = null;
 
@@ -283,8 +283,8 @@ public class ProfileActivity extends AppCompatActivity {
                     MediaScannerConnection.scanFile(ProfileActivity.this, new String[]{file1.toString()}, null,
                             new MediaScannerConnection.OnScanCompletedListener() {
                                 public void onScanCompleted(String path, final Uri uri) {
-                                    Log.i("point pa289", "Scanned " + path + ":");
-                                    Log.i("point pa290", "uri=" + uri);
+                                    Log.i("point pat289", "Scanned " + path + ":");
+                                    Log.i("point pat290", "uri=" + uri);
                                     clickedImageUri = uri;
 
                                     StorageReference photoREf = Main2Activity.mDpPhotosStorageReference.child(uri.getLastPathSegment());
@@ -314,7 +314,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                     .into(displayPicture, new com.squareup.picasso.Callback() {
                                                         @Override
                                                         public void onSuccess() {
-                                                            Log.i("point pa325", "sucess");
+                                                            Log.i("point pat325", "sucess");
                                                             layout_MainMenu.getForeground().setAlpha(0);
                                                             Picasso.with(ProfileActivity.this)
                                                                     .load(clickedImageUri)
@@ -332,7 +332,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                                         @Override
                                                         public void onError() {
-                                                            Log.i("point pa333a", "error");
+                                                            Log.i("point pat333a", "error");
                                                             downloadUrl = null;
                                                             clickedImageUri = null;
 
@@ -378,7 +378,7 @@ public class ProfileActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                Log.i("point pa215", "pic clicked");
+                Log.i("point pat215", "pic clicked");
                 // must for making clicks not to go to background switch
 
             }
@@ -399,7 +399,7 @@ public class ProfileActivity extends AppCompatActivity {
                 layout_MainMenu.getForeground().setAlpha(0);
                 dialogProfileOriginal.setVisibility(View.VISIBLE);
                 dialogProfileChanged.setVisibility(View.INVISIBLE);
-                Log.i("point pa218", "bb clicked");
+                Log.i("point pat218", "bb clicked");
             }
         });
 
@@ -418,7 +418,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         {
             if (Main2Activity.userInfo.getdpUrl() != null) {
-                Log.i(Main2Activity.userInfo.getdpUrl(), "point pa271");
+                Log.i(Main2Activity.userInfo.getdpUrl(), "point pat271");
 
 //                displayPicture.setImageURI(MainActivity.mUserProfile);
 //                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
@@ -435,12 +435,12 @@ public class ProfileActivity extends AppCompatActivity {
                         .into(displayPicture, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
-                                Log.i("point pa426", "sucess");
+                                Log.i("point pat426", "sucess");
                             }
 
                             @Override
                             public void onError() {
-                                Log.i("point pa432", "error");
+                                Log.i("point pat432", "error");
 
                             }
                         });
@@ -454,12 +454,12 @@ public class ProfileActivity extends AppCompatActivity {
                         .into(dialogProfileOriginal, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
-                                Log.i("point pa441", "sucess");
+                                Log.i("point pat441", "sucess");
                             }
 
                             @Override
                             public void onError() {
-                                Log.i("point pa447", "error");
+                                Log.i("point pat447", "error");
 
                             }
                         });
@@ -474,17 +474,17 @@ public class ProfileActivity extends AppCompatActivity {
                         .into(dialogProfileChanged, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
-                                Log.i("point pa", "sucess");
+                                Log.i("point pat477", "sucess");
                             }
 
                             @Override
                             public void onError() {
-                                Log.i("point pa", "error");
+                                Log.i("point pat482", "error");
 
                             }
                         });
             } else {
-//                Log.i("profile pic=null", "standpoint pr75");
+//                Log.i("profile pic=null", "standpoint pat75");
 
                 displayPicture.setImageResource(R.mipmap.icon_profile_empty);
             }
@@ -493,7 +493,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         {
             displayPicture.setImageResource(R.mipmap.icon_profile_empty);
-            Log.i("point pa292", "error in dp loading");
+            Log.i("point pat292", "error in dp loading");
         }
 
         TextView emailId = (TextView) findViewById(R.id.email);
@@ -518,7 +518,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!(mobNo.getText().toString().equals(""))) {
                     Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    Log.i("point pa220", "camera");
+                    Log.i("point pat220", "camera");
 
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                     file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "IMG_" + timeStamp + ".jpg");
@@ -538,7 +538,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!(mobNo.getText().toString().equals(""))) {
-                    Log.i("point pa238", "gallery");
+                    Log.i("point pat238", "gallery");
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("image/jpeg");
@@ -560,7 +560,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 selectedImageUri = data.getData();
-                Log.i(selectedImageUri.toString(), "point pa286");
+                Log.i(selectedImageUri.toString(), "point pat286");
 //            displayPicture.setImageURI(selectedImageUri);
                 dpSelectionLayout.setVisibility(View.INVISIBLE);
                 dpSelectedLayout.setVisibility(View.VISIBLE);
@@ -579,12 +579,12 @@ public class ProfileActivity extends AppCompatActivity {
                         .into(dialogProfileChanged, new com.squareup.picasso.Callback() {
                             @Override
                             public void onSuccess() {
-                                Log.i("point pa357", "sucess");
+                                Log.i("point pat357", "sucess");
                             }
 
                             @Override
                             public void onError() {
-                                Log.i("point pa362", "error");
+                                Log.i("point pat362", "error");
 
                             }
                         });
@@ -610,7 +610,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        System.out.println("point pr112");
+        System.out.println("point pat112");
     }
 
     @Override
@@ -622,7 +622,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setData(String userId, final String dpLink) {
 
-        Log.i(userId, "point pa333");
+        Log.i(userId, "point pat333");
         Query query = mUserDatabaseReference.orderByChild("userId").equalTo(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

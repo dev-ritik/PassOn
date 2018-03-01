@@ -112,7 +112,7 @@ public class Main2Activity extends AppCompatActivity
         Log.i("point ma107", "reached");
 
         if (email == null) {
-            Log.i("email is null", "standpoint m84");
+            Log.i("email is null", "point ma84");
             Intent intent = new Intent(this, LoginActivity.class);
             finish();
             startActivity(intent);
@@ -279,21 +279,21 @@ public class Main2Activity extends AppCompatActivity
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         final FirebaseUser currentUser = mAuth.getCurrentUser();
-        Log.i("point m373", "" + (currentUser == null));
+        Log.i("point ma373", "" + (currentUser == null));
         if (currentUser != null) {
             //user is signed
             mUser = currentUser.getDisplayName();
             mUserId = currentUser.getUid();
             mEmailId = currentUser.getEmail();
-            Log.i(currentUser.getUid(), "point m376");
+            Log.i(currentUser.getUid(), "point ma376");
             Query query = mUserDatabaseReference.orderByChild("userId").equalTo(currentUser.getUid());
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     count = dataSnapshot.getChildrenCount();
                     if (count == 0) {
-                        Log.i(currentUser.getUid(), "standpoint m570");
-//                        Log.i("seems new", "point m558");
+                        Log.i(currentUser.getUid(), "point ma570");
+//                        Log.i("seems new", "point ma558");
 
                         ArrayList<String> notifications = new ArrayList<>();
                         Map<String, Object> connected = new HashMap<>();
@@ -314,19 +314,19 @@ public class Main2Activity extends AppCompatActivity
                 }
             });
 //            if(count==mUserDatabaseReference.)
-//            Log.i("seems new", "point m462");
+//            Log.i("seems new", "point ma462");
 //            Log.i("point ma271", mUserId);
 //            Log.i("point ma272", "here");
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Log.i("point ma308", "child added");
-                    Log.i(Integer.toString(userInfos.size()), "point m274");
+                    Log.i(Integer.toString(userInfos.size()), "point ma274");
 
                     //attached to all added child(all past and future child)
                     userInfo = dataSnapshot.getValue(UserInfo.class);//as Post has all the three required parameter
-                    Log.i("point ma359", userInfo.getUserName());
-                    Log.i("point ma360", naveUserName.toString());
+//                    Log.i("point ma359", userInfo.getUserName());
+//                    Log.i("point ma360", naveUserName.toString());
                     naveUserName.setText(userInfo.getUserName());
                     naveUserEmail.setText(userInfo.getEmailId());
 
@@ -375,7 +375,7 @@ public class Main2Activity extends AppCompatActivity
                                     }
                                 });
                     }
-                    Log.i(userInfo.getPhoneNo() + "", "point m279");
+                    Log.i(userInfo.getPhoneNo() + "", "point ma279");
 
 
                 }
@@ -402,7 +402,7 @@ public class Main2Activity extends AppCompatActivity
             });
 
         } else {
-            Log.i("current user is null", "standpoint m389");
+            Log.i("current user is null", "point ma389");
             Intent intent = new Intent(this, LoginActivity.class);
             finish();
             startActivity(intent);
@@ -417,9 +417,9 @@ public class Main2Activity extends AppCompatActivity
 //        attachDatabaseListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
-        Log.i("resume", "point m323");
+        Log.i("resume", "point ma323");
 //        if (mChildEventListenerPost != null) {
-//            Log.i(mChildEventListenerPost.toString(), "point m355");
+//            Log.i(mChildEventListenerPost.toString(), "point ma355");
     }
 
 
