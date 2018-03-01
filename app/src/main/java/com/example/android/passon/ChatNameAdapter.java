@@ -119,12 +119,17 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     cancelButton = (ImageView) dialogBox1.findViewById(R.id.cancelRequest);
                     acceptButton = (ImageView) dialogBox1.findViewById(R.id.acceptRequest);
                     shareDetails = (ImageView) dialogBox1.findViewById(R.id.giveHelp);
+
+                    userName.setText(chat.getUsername() + " sent you a donation request");
                     Log.i(PostFragment.posts.get(0).getBookName(), "point cna122");
                     for (Post post : PostFragment.posts)
-                        if (post.getTime().equals(time))
+                        if (post.getTime().equals(time)) {
                             bookname = post.getBookName();
+                            userName.setText(chat.getUsername() + " sent you a donation request for " + bookname);
+                            break;
+                        }
 
-                    userName.setText(chat.getUsername() + " sent you a donation request for " + bookname);
+
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -139,8 +144,7 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     shareDetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(view.getContext(), "shared", Toast.LENGTH_SHORT).show();
-                            shareDetailsNotification(Main2Activity.mUserId,chat.getUserId(),time);
+                            shareDetailsNotification(Main2Activity.mUserId, chat.getUserId(), time);
                         }
                     });
                     acceptButton.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +172,15 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                     chatConnection = (ImageView) dialogBox1.findViewById(R.id.chatConnection);
 
                     userNameConnection.setText("chat with " + chat.getUsername());
+                    Log.i(PostFragment.posts.get(0).getBookName(), "point cna176");
+                    for (Post post : PostFragment.posts)
+                        if (post.getTime().equals(time)) {
+                            bookname = post.getBookName();
+                            userNameConnection.setText("chat with " + chat.getUsername() + " for " + bookname);
+                            break;
+                        }
+
+
                     deleteConnection.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -199,36 +212,37 @@ public class ChatNameAdapter extends RecyclerView.Adapter<ChatNameAdapter.ViewHo
                 Log.i("point cna182", "bb clicked");
                 screen.getForeground().setAlpha(0);
                 dialogBox1.setVisibility(View.INVISIBLE);
+                NotificationActivity.connectionDialog.setVisibility(View.INVISIBLE);
+                NotificationActivity.requestDialog.setVisibility(View.INVISIBLE);
                 backgroundButton.setVisibility(View.INVISIBLE);
             }
         });
 
     }
 
-    private void shareDetailsNotification(String meUid, String personUid, String time) {
-        Query query =mUserDatabaseReference.orderByChild("userId").equalTo(personUid);
+    private void shareDetailsNotification(final String meUid, String personUid, final String time) {
+        Query query = mUserDatabaseReference.orderByChild("userId").equalTo(personUid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                    ArrayList<String> notices = (ArrayList<String>) child.child(arrayName).getValue();
-//
-//                    child.getRef().child(arrayName).setValue(getArrayList);
-//
-//
-//                    child.getRef().child("notifications").updateChildren(userAdded).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            Log.i("point cna208", "completed changing");
-//                            backgroundButton.setVisibility(View.INVISIBLE);
-//                            screen.getForeground().setAlpha(0);
+                    ArrayList<String> notices = (ArrayList<String>) child.child("notifications").getValue();
+                    notices.add(meUid + "+" + time);
+                    child.getRef().child("notifications").setValue(notices).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i("point cna234", "completed changing");
+                            Toast.makeText(context, "shared", Toast.LENGTH_SHORT).show();
+
+                            backgroundButton.setVisibility(View.INVISIBLE);
+                            screen.getForeground().setAlpha(0);
 //                            if (Main2Activity.userInfo.getConnectedUsers() == null)
 //                                Main2Activity.userInfo.setConnectedUsers(userAdded);
 //                            else
 //                                Main2Activity.userInfo.getConnectionRequestUsers().put(acceptedId, acceptedName);
-//                        }
-//
-//                    });
+                        }
+
+                    });
                 }
             }
 

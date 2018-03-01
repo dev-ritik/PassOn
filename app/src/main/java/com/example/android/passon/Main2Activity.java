@@ -73,6 +73,7 @@ public class Main2Activity extends AppCompatActivity
     public static StorageReference mBookPhotosStorageReference, mDpPhotosStorageReference;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private NavigationView navigationView;
     public static ProgressBar mProgressBar;
     private LinearLayout mInputData;
     private String email;
@@ -167,11 +168,12 @@ public class Main2Activity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         naveUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_user_name);
         naveUserEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_user_id);
         naveDp = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_pro_pic);
+
 
         mfirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -266,11 +268,6 @@ public class Main2Activity extends AppCompatActivity
 //            mAuth.removeAuthStateListener(mAuthStateListener);
 //        mUserId = ANONYMOUS;
 //        mEmailId = "";
-//        posts.clear();
-//        requests.clear();
-//        mAdapterPost.notifyItemRangeRemoved(0, mAdapterPost.getItemCount());
-//        mAdapterRequest.notifyItemRangeRemoved(0, mAdapterRequest.getItemCount());
-
 
     }
 
@@ -417,6 +414,14 @@ public class Main2Activity extends AppCompatActivity
 //        attachDatabaseListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
+//        navigationView.getMenu().findItem(R.id.menu_none).setChecked(true);
+//        navigationView.findViewById(R.id.menu_none).setVisibility(View.GONE);
+
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+
         Log.i("resume", "point ma323");
 //        if (mChildEventListenerPost != null) {
 //            Log.i(mChildEventListenerPost.toString(), "point ma355");

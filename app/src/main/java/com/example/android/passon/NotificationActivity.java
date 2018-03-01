@@ -27,7 +27,7 @@ import java.util.Map;
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 
 /*
-This class handles backend of all user to user interaction
+This class handles backend of all user to user interaction with notice menu item
  */
 public class NotificationActivity extends AppCompatActivity {
 
@@ -37,8 +37,8 @@ public class NotificationActivity extends AppCompatActivity {
     public static ArrayList<ChatHead> connections;
     public static ArrayList<String> timeRequests;
     public static ArrayList<String> timeConnections;
-    private ChildEventListener mRequestEventListener, mConnectionEventListener;
-    private DatabaseReference requestedUsersReference, connectionChildReference;
+    private ChildEventListener mRequestEventListener, mConnectionEventListener, mNoticesEventListener;
+    private DatabaseReference requestedUsersReference, connectionChildReference, noticeChild;
 
     ArrayList<String> notices;
     public static LinearLayout requestDialog, connectionDialog;
@@ -273,9 +273,9 @@ public class NotificationActivity extends AppCompatActivity {
 
                 Log.i("point na171", "yess");
 
-                DatabaseReference noticeChild = dataSnapshot.child("notifications").getRef();
+                noticeChild = dataSnapshot.child("notifications").getRef();
 
-                noticeChild.addChildEventListener(new ChildEventListener() {
+                mNoticesEventListener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -307,7 +307,8 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                };
+                noticeChild.addChildEventListener(mNoticesEventListener);
                 Log.i("point na136", "yess");
 
             }
@@ -349,10 +350,17 @@ public class NotificationActivity extends AppCompatActivity {
             requestedUsersReference.removeEventListener(mRequestEventListener);
             mRequestEventListener = null;
         }
+        if (mNoticesEventListener != null) {
+            Log.i(mNoticesEventListener.toString(), "point Na348");
+            noticeChild.removeEventListener(mNoticesEventListener);
+            mNoticesEventListener = null;
+        }
         requests.clear();
         mAdapterRequest.notifyItemRangeRemoved(0, mAdapterRequest.getItemCount());
         connections.clear();
         mAdapterConnected.notifyItemRangeRemoved(0, mAdapterConnected.getItemCount());
+        notices.clear();
+        mAdapterConnected.notifyItemRangeRemoved(0, mAdapterNotice.getItemCount());
     }
 
     @Override
