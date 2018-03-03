@@ -118,7 +118,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
 //                    pust post object to database
                     ArrayList<String> bookRequestUsers=new ArrayList<>();
                     bookRequestUsers.add("ritik");
-                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2,bookRequestUsers, true,phoneNo.getText().toString(),institute.getText().toString());
+                    Post post = new Post(1, null, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser,Main2Activity.userInfo.getRating(), filter1, filter2,bookRequestUsers, true,phoneNo.getText().toString(),institute.getText().toString());
 //                posts.add(post);
                     mPostDatabaseReference.push().setValue(post);
                     bookName.setText("");

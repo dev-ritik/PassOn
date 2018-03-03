@@ -24,11 +24,14 @@ public class Post {
     private ArrayList<String> bookRequestUsers;
     private String time;
     private boolean post;
+    private String posterRating;
+    private String phonenumber;
+    private String institute;
 
     public Post() {
     }
 
-    public Post(int index, Uri photoUrl, String currentTime, String bookname, String posterId, String posterName, String filter1, String filter2,ArrayList<String> bookRequestUsers, boolean post, String phonenumber, String institute) {
+    public Post(int index, Uri photoUrl, String currentTime, String bookname, String posterId, String posterName, String posterRating, String filter1, String filter2, ArrayList<String> bookRequestUsers, boolean post, String phonenumber, String institute) {
         this.index = index;
         this.bookPhotoUrl = photoUrl;
         this.time = currentTime;
@@ -40,10 +43,9 @@ public class Post {
         this.post = post;
         this.institute = institute;
         this.phonenumber = phonenumber;
-        this.bookRequestUsers=bookRequestUsers;
-
+        this.bookRequestUsers = bookRequestUsers;
+        this.posterRating = posterRating;
     }
-    //    private ArrayList<String> unlikedUsers;
 
     public ArrayList<String> getBookRequestUsers() {
         return bookRequestUsers;
@@ -52,7 +54,6 @@ public class Post {
     public void setBookRequestUsers(ArrayList<String> bookRequestUsers) {
         this.bookRequestUsers = bookRequestUsers;
     }
-
 
     public String getPhonenumber() {
         return phonenumber;
@@ -70,10 +71,13 @@ public class Post {
         this.institute = institute;
     }
 
-    private String phonenumber;
-    private String institute;
+    public String getPosterRating() {
+        return posterRating;
+    }
 
-//
+    public void setPosterRating(String posterRating) {
+        this.posterRating = posterRating;
+    }
 
     public String getPosterName() {
         return posterName;
@@ -99,9 +103,6 @@ public class Post {
         this.time = time;
     }
 
-//
-
-
     public int getIndex() {
         return index;
     }
@@ -118,7 +119,6 @@ public class Post {
         this.posterId = posterId;
     }
 
-    //
     public Uri getBookPhotoUrl() {
         return bookPhotoUrl;
     }
