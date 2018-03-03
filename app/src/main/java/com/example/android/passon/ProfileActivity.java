@@ -52,12 +52,10 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+
 
 import static com.example.android.passon.Main2Activity.mUserDatabaseReference;
 import static com.example.android.passon.Main2Activity.mUserId;
@@ -68,7 +66,6 @@ This class handles backend of profile related stuff
  */
 public class ProfileActivity extends AppCompatActivity {
 
-    public static ChildEventListener mChildEventListenerProfile, mChildEventListenerProfileTest;
     public static DatabaseReference mChildUser;
     private LinearLayout requestDialog, contentProfile, dpSelectionLayout, dpSelectedLayout;
     private TextView userName;
@@ -87,7 +84,6 @@ public class ProfileActivity extends AppCompatActivity {
     public static File file;
     InputMethodManager imm;
     private Uri selectedImageUri, downloadUrl, clickedImageUri;
-    boolean ref = false;
     Bitmap dpCameraimage;
     com.squareup.picasso.Transformation transformationSuccessDp;
 
@@ -300,10 +296,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                                             //progress bar
 
-//                                            com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-//                                                    .cornerRadiusDp(30)
-//                                                    .oval(false)
-//                                                    .build();
                                             Picasso.with(ProfileActivity.this)
                                                     .load(uri)
                                                     .placeholder(R.drawable.loading_small)
@@ -421,10 +413,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.i(Main2Activity.userInfo.getdpUrl(), "point pat271");
 
 //                displayPicture.setImageURI(MainActivity.mUserProfile);
-//                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
-////                        .cornerRadiusDp(30)
-//                        .oval(true)
-//                        .build();
+
                 Picasso.with(ProfileActivity.this)
                         .load(Main2Activity.userInfo.getdpUrl())
                         .placeholder(R.drawable.loading_small)
@@ -561,7 +550,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                 selectedImageUri = data.getData();
                 Log.i(selectedImageUri.toString(), "point pat286");
-//            displayPicture.setImageURI(selectedImageUri);
                 dpSelectionLayout.setVisibility(View.INVISIBLE);
                 dpSelectedLayout.setVisibility(View.VISIBLE);
                 dialogProfileOriginal.setVisibility(View.INVISIBLE);

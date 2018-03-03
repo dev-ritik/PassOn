@@ -31,23 +31,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="@color/white"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white" />
 
             <Spinner
                 android:id="@+id/s2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/profile_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/edit11"
@@ -62,10 +61,67 @@
                 android:id="@+id/edit12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:layout_weight="1"
                 android:hint="institute"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/picturePost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:id="@+id/selectedPic"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:scaleType="centerInside"
+                android:src="@drawable/book" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/galleryPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_insert_photo_black_36dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:text="Gallery"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/cameraPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:inputType="textPhonetic|phone"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_camera_black_36dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:text="Camera"
+                    android:textColor="@color/black" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -79,9 +135,6 @@
                 android:layout_height="wrap_content"
                 android:text="post" />
 
-
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>
