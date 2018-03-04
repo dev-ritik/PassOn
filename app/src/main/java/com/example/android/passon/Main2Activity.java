@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.library.library;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -97,6 +98,8 @@ public class Main2Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        library.logString("ma101","oncreate");
+
         mUserId = ANONYMOUS;
         mUser = ANONYMOUS;
 //        mUserProfile = null;
@@ -109,8 +112,6 @@ public class Main2Activity extends AppCompatActivity
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, 0);
         email = prefs.getString("Email", null);
-
-        Log.i("point ma107", "oncreate");
 
         if (email == null) {
             Log.i("email is null", "point ma84");
@@ -282,7 +283,6 @@ public class Main2Activity extends AppCompatActivity
             mUser = currentUser.getDisplayName();
             mUserId = currentUser.getUid();
             mEmailId = currentUser.getEmail();
-//            Log.i(currentUser.getUid(), "point ma376");
             Query query = mUserDatabaseReference.orderByChild("userId").equalTo(currentUser.getUid());
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -414,8 +414,6 @@ public class Main2Activity extends AppCompatActivity
 //        attachDatabaseListener();
 //        if (mAuthStateListener != null)
 //            mAuth.removeAuthStateListener(mAuthStateListener);
-//        navigationView.getMenu().findItem(R.id.menu_none).setChecked(true);
-//        navigationView.findViewById(R.id.menu_none).setVisibility(View.GONE);
 
         int size = navigationView.getMenu().size();
         for (int i = 0; i < size; i++) {
@@ -427,11 +425,11 @@ public class Main2Activity extends AppCompatActivity
 //            Log.i(mChildEventListenerPost.toString(), "point ma355");
     }
 
-
-    public String calculateTime() {
-        return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();
-
-    }
+//
+//    public String calculateTime() {
+//        return android.text.format.DateFormat.format("MMM dd, yyyy hh:mm:ss aaa", new java.util.Date()).toString();
+//
+//    }
 
     public void logout() {
         FirebaseAuth.getInstance().signOut();

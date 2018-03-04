@@ -54,8 +54,6 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
     String filter1, filter2;
     private Button postButton;
     private ImageView galleryPost, cameraPost, selectedBookPic;
-    private Boolean bookNameEnable = false, filter1Enable = false, filter2Enable = false;
-//    private Uri originalUri = null, downloadUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
