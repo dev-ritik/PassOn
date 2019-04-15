@@ -175,7 +175,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
                     selectedImageUri = imageReturnedIntent.getData();
                     Log.i(selectedImageUri.toString(), "point pat286");
 //
-                    Picasso.with(this)
+                    Picasso.get()
                             .load(selectedImageUri)
                             .placeholder(R.drawable.loading_big)
                             .error(R.drawable.error)
@@ -189,7 +189,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
                                 }
 
                                 @Override
-                                public void onError() {
+                                public void onError(Exception e) {
                                     Log.i("point bpa188", "error");
 
                                 }
@@ -212,7 +212,7 @@ public class BookPostActivity extends AppCompatActivity implements AdapterView.O
                             //                    upload file to firebase onsucess of upload
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Uri downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
+                                Uri downloadUrl = taskSnapshot.getStorage().getDownloadUrl().getResult();//url of uploaded image
                                 Log.i(downloadUrl.toString(), "standpoint L255");
                                 Log.i("sucess", "point L170");
 //                                Post post = new Post(1, downloadUrl, calculateTime(), bookName.getText().toString(), Main2Activity.mUserId, Main2Activity.mUser, filter1, filter2, true);

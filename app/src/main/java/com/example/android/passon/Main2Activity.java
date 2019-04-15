@@ -328,7 +328,7 @@ public class Main2Activity extends AppCompatActivity
                     naveUserEmail.setText(userInfo.getEmailId());
 
                     if(userInfo.getdpUrl()==null) {
-                        Picasso.with(Main2Activity.this)
+                        Picasso.get()
                                 .load(userInfo.getdpUrl())
                                 .placeholder(R.mipmap.icon_profile_empty)
                                 .fit()
@@ -344,13 +344,13 @@ public class Main2Activity extends AppCompatActivity
                                     }
 
                                     @Override
-                                    public void onError() {
+                                    public void onError(Exception e) {
                                         Log.i("point ma381", "error");
 
                                     }
                                 });
                     }else {
-                        Picasso.with(Main2Activity.this)
+                        Picasso.get()
                                 .load(userInfo.getdpUrl())
                                 .placeholder(R.drawable.loading_small)
                                 .fit()
@@ -366,7 +366,7 @@ public class Main2Activity extends AppCompatActivity
                                     }
 
                                     @Override
-                                    public void onError() {
+                                    public void onError(Exception e) {
                                         Log.i("point ma371", "error");
 
                                     }

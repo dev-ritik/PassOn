@@ -202,7 +202,7 @@ public class ProfileActivity extends AppCompatActivity {
                         //                    upload file to firebase onsucess of upload
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
+                            downloadUrl = taskSnapshot.getStorage().getDownloadUrl().getResult();//url of uploaded image
                             Log.i(selectedImageUri.toString(), "point pat163");
 //                            mProgressBar.setVisibility(View.INVISIBLE);
                             displayPicture.setImageResource(0);
@@ -212,7 +212,7 @@ public class ProfileActivity extends AppCompatActivity {
                             layout_MainMenu.getForeground().setAlpha(0);
 
 
-                            Picasso.with(ProfileActivity.this)
+                            Picasso.get()
                                     .load(selectedImageUri)
 //                                    .placeholder(R.mipmap.icon_profile_empty)
                                     .fit()
@@ -225,7 +225,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         public void onSuccess() {
                                             Log.i("point pat333", "sucess");
 
-                                            Picasso.with(ProfileActivity.this)
+                                            Picasso.get()
                                                     .load(selectedImageUri)
 //                                                    .placeholder(R.mipmap.icon_profile_empty)
                                                     .fit()
@@ -239,7 +239,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         }
 
                                         @Override
-                                        public void onError() {
+                                        public void onError(Exception e) {
                                             Log.i("point pat338", "error");
                                             downloadUrl = null;
                                             selectedImageUri = null;
@@ -288,7 +288,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         //                    upload file to firebase onsucess of upload
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                            downloadUrl = taskSnapshot.getDownloadUrl();//url of uploaded image
+                                            downloadUrl = taskSnapshot.getStorage().getDownloadUrl().getResult();//url of uploaded image
                                             Log.i(cameraDp.toString(), "point pa300");
 //                            mProgressBar.setVisibility(View.INVISIBLE);
                                             displayPicture.setImageResource(0);
@@ -296,7 +296,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                             //progress bar
 
-                                            Picasso.with(ProfileActivity.this)
+                                            Picasso.get()
                                                     .load(uri)
                                                     .placeholder(R.drawable.loading_small)
                                                     .fit()
@@ -308,7 +308,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                         public void onSuccess() {
                                                             Log.i("point pat325", "sucess");
                                                             layout_MainMenu.getForeground().setAlpha(0);
-                                                            Picasso.with(ProfileActivity.this)
+                                                            Picasso.get()
                                                                     .load(clickedImageUri)
                                                                     .placeholder(R.drawable.loading_big)
                                                                     .fit()
@@ -323,7 +323,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                         }
 
                                                         @Override
-                                                        public void onError() {
+                                                        public void onError(Exception e) {
                                                             Log.i("point pat333a", "error");
                                                             downloadUrl = null;
                                                             clickedImageUri = null;
@@ -378,7 +378,7 @@ public class ProfileActivity extends AppCompatActivity {
         backgroundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Picasso.with(ProfileActivity.this)
+                Picasso.get()
                         .load(Main2Activity.userInfo.getdpUrl())
                         .fit()
                         .centerCrop()
@@ -414,7 +414,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 //                displayPicture.setImageURI(MainActivity.mUserProfile);
 
-                Picasso.with(ProfileActivity.this)
+                Picasso.get()
                         .load(Main2Activity.userInfo.getdpUrl())
                         .placeholder(R.drawable.loading_small)
                         .fit()
@@ -428,12 +428,12 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 Log.i("point pat432", "error");
 
                             }
                         });
-                Picasso.with(ProfileActivity.this)
+                Picasso.get()
                         .load(Main2Activity.userInfo.getdpUrl())
                         .fit()
                         .centerCrop()
@@ -447,13 +447,13 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 Log.i("point pat447", "error");
 
                             }
                         });
 
-                Picasso.with(ProfileActivity.this)
+                Picasso.get()
                         .load(Main2Activity.userInfo.getdpUrl())
                         .fit()
                         .centerCrop()
@@ -467,7 +467,7 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 Log.i("point pat482", "error");
 
                             }
@@ -557,7 +557,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                com.squareup.picasso.Transformation transformation = new RoundedTransformationBuilder()
 //                        .oval(false)
 //                        .build();
-                Picasso.with(this)
+                Picasso.get()
                         .load(selectedImageUri)
                         .placeholder(R.drawable.loading_big)
                         .error(R.drawable.error)
@@ -571,7 +571,7 @@ public class ProfileActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 Log.i("point pat362", "error");
 
                             }
